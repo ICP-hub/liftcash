@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Lift_Cash_backend } from 'declarations/Lift_Cash_backend';
+import { useState } from "react";
+import { Lift_Cash_backend } from "declarations/Lift_Cash_backend";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [greeting, setGreeting] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -15,15 +15,31 @@ function App() {
 
   return (
     <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
+      <img src="/logo2.svg" alt="DFINITY logo" className="mx-auto my-4" />
       <br />
       <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
+      <form
+        action="#"
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center"
+      >
+        <label htmlFor="name" className="mb-2 text-lg font-semibold">
+          Enter your name:
+        </label>
+        <input
+          id="name"
+          alt="Name"
+          type="text"
+          className="border border-gray-300 rounded-md p-2 mb-4 w-64"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 transition duration-200"
+        >
+          Click Me!
+        </button>
       </form>
-      <section id="greeting">{greeting}</section>
+      <section className="mt-4 text-lg">{greeting}</section>
     </main>
   );
 }
