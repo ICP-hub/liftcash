@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "src/Lift_Cash_backend"
+]
+resolver = "2"

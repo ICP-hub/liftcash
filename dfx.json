@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "Lift_Cash_backend": {
+      "candid": "src/Lift_Cash_backend/Lift_Cash_backend.did",
+      "package": "Lift_Cash_backend",
+      "type": "rust"
+    },
+    "Lift_Cash_frontend": {
+      "dependencies": [
+        "Lift_Cash_backend"
+      ],
+      "source": [
+        "src/Lift_Cash_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "Lift_Cash_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
