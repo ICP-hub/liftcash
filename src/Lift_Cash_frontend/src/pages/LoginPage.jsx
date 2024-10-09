@@ -1,8 +1,15 @@
 import React, { useState } from "react";
+import Modal from '../components/Modal';
+import AuthComponent from "../components/AuthComponent";
 
 const LoginPage = () => {
   // State to manage toggle switch
   const [isAnimationEnabled, setIsAnimationEnabled] = useState(false);
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   // Function to toggle the animation setting
   const handleToggle = () => {
@@ -33,11 +40,14 @@ const LoginPage = () => {
 
       {/* Connect Wallet Button */}
       <button
-        onClick={handleConnectionToWallte}
+        onClick={openModal}
         className="mt-6 px-8 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-semibold hover:bg-blue-50"
       >
         Connect Wallet
       </button>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <AuthComponent closeModal={closeModal}/>
+      </Modal>
 
       {/* Additional Info */}
       <p className="mt-6 text-gray-500">
@@ -65,16 +75,14 @@ const LoginPage = () => {
         <label className="flex items-center space-x-3">
           {/* Toggle button */}
           <div
-            className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer ${
-              isAnimationEnabled ? "bg-blue-500" : ""
-            }`}
+            className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer ${isAnimationEnabled ? "bg-blue-500" : ""
+              }`}
             onClick={handleToggle}
           >
             {/* Circle inside the toggle */}
             <div
-              className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
-                isAnimationEnabled ? "translate-x-6" : ""
-              }`}
+              className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${isAnimationEnabled ? "translate-x-6" : ""
+                }`}
             />
           </div>
           <span className="text-gray-600">Enable Animation</span>

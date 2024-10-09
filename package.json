@@ -14,5 +14,12 @@
   "type": "module",
   "workspaces": [
     "src/Lift_Cash_frontend"
-  ]
+  ],
+  "dependencies": {
+    "@dfinity/agent": "^2.1.2",
+    "@dfinity/auth-client": "^2.1.2",
+    "@dfinity/principal": "^2.1.2",
+    "@nfid/embed": "^0.10.3",
+    "react-router-dom": "^6.26.2"
+  }
 }

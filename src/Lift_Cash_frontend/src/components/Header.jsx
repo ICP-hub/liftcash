@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { GoMoon, GoSun } from "react-icons/go";
-
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -57,7 +59,11 @@ const Header = () => {
         </button>
 
         {/* "Open App" Button */}
-        <button className="hidden md:block bg-white text-blue-500 font-bold py-2 px-4 rounded-md hover:bg-gray-100 ">
+        <button className="hidden md:block bg-white text-blue-500 font-bold py-2 px-4 rounded-md hover:bg-gray-100 "
+          onClick={()=>{
+            navigate('/signup');
+          }}
+        >
           Open App
         </button>
 

@@ -1,13 +1,15 @@
 import Header from "./components/Header";
-import LandingPage from "./pages/LandingPage";
+import { Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
-    <>
-      <Header />
-      <LandingPage />
-    </>
+    <Routes>
+      <Route path="/" element={<Header/>} />
+      <Route path="/signup" element={<LoginPage/>} />
+    </Routes>
   );
 }
+
 
 export default App;
