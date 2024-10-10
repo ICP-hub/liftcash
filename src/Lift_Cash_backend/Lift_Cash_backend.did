@@ -1,3 +1,9 @@
+type AuditLog = record {
+  action : text;
+  user : text;
+  timestamp : nat64;
+  details : text;
+};
 type Proposal = record {
   id : nat64;
   hash : text;
@@ -10,16 +16,19 @@ type Proposal = record {
 };
 type Result = variant { Ok; Err : text };
 type Result_1 = variant { Ok : nat64; Err : text };
-type Result_2 = variant { Ok : Proposal; Err : text };
-type Role = variant { Proposer; Executor; Voter };
-service : () -> {
+type Result_2 = variant { Ok : vec AuditLog; Err : text };
+type Result_3 = variant { Ok : Proposal; Err : text };
+type Result_4 = variant { Ok : vec Proposal; Err : text };
+service : {
   assign_role : (text, text) -> (Result);
   create_proposal : (text, nat64) -> (Result_1);
   execute_proposal : (nat64) -> (Result);
+  get_audit_logs : () -> (Result_2) query;
   get_caller : () -> (text) query;
-  get_proposal : (nat64) -> (Result_2) query;
-  get_proposal_history : () -> (vec Proposal) query;
-  list_roles : () -> (vec record { Role; vec text }) query;
+  get_proposal : (nat64) -> (Result_3) query;
+  get_proposal_history : () -> (Result_4) query;
+  initialize : () -> ();
+  list_proposals : () -> (Result_4) query;
   ratify_proposal : (nat64) -> (Result);
   remove_role : (text, text) -> (Result);
   vote : (nat64, bool) -> (Result);
