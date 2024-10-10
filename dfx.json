@@ -15,12 +15,11 @@
       "type": "assets",
       "workspace": "Lift_Cash_frontend"
     },
-    "internet_identity" : {
+    "internet_identity": {
       "type": "pull",
       "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
     }
   },
-  
   "defaults": {
     "build": {
       "args": "",
