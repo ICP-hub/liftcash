@@ -134,7 +134,7 @@ const Footer = () => {
         </div>
 
         {/* Latest Blogs */}
-        <div className="footer-container">
+        <div className="footer-container hidden md:block">
           <h5 className="footer-container-h5 ">Latest Blog</h5>
           <div className="footer-container-ul">
             <a href="/blog/freeos-unchained" className="footer-container-a">
