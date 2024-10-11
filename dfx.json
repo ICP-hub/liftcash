@@ -6,12 +6,8 @@
       "type": "rust"
     },
     "Lift_Cash_frontend": {
-      "dependencies": [
-        "Lift_Cash_backend"
-      ],
-      "source": [
-        "src/Lift_Cash_frontend/dist"
-      ],
+      "dependencies": ["Lift_Cash_backend"],
+      "source": ["src/Lift_Cash_frontend/dist"],
       "type": "assets",
       "workspace": "Lift_Cash_frontend"
     },

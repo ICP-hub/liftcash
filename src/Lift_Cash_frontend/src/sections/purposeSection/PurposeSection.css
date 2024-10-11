@@ -1,0 +1,40 @@
+/* Tailwind CSS classes with @apply */
+.purpose-section {
+  @apply bg-gray-800 text-white py-16 px-8;
+}
+
+.purpose-title {
+  @apply text-blue-400 uppercase text-center text-lg mb-2;
+}
+
+.purpose-heading {
+  @apply text-4xl font-bold text-center mb-4;
+}
+
+.purpose-subheading {
+  @apply text-center text-lg mb-8;
+}
+
+.purpose-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8;
+}
+
+.purpose-card {
+  @apply p-6;
+}
+
+.purpose-icon {
+  @apply text-4xl mb-4;
+}
+
+.purpose-card-title {
+  @apply text-xl font-semibold mb-2;
+}
+
+.purpose-card-description {
+  @apply text-base mb-4;
+}
+
+.purpose-learn-more {
+  @apply text-blue-400 font-semibold hover:underline;
+}

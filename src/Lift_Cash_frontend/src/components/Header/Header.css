@@ -1,0 +1,39 @@
+.header-main {
+  @apply bg-blue-500 p-4 flex items-center justify-between;
+}
+
+.header-logo {
+  @apply flex items-center;
+}
+
+.header-logo-img {
+  @apply h-8 w-8;
+}
+
+.header-navigation-link-nav {
+  @apply hidden md:flex space-x-6 text-white;
+}
+
+.header-navigation-link {
+  @apply hover:text-gray-300;
+}
+
+.header-right-side-buttons {
+  @apply flex items-center space-x-4;
+}
+
+.header-theme-icon {
+  @apply hidden md:block text-white text-2xl;
+}
+
+.header-signUp-btn {
+  @apply hidden md:block bg-white text-blue-500 font-bold py-2 px-4 rounded-md hover:bg-gray-100;
+}
+
+.header-hamburger-icon {
+  @apply text-white text-3xl;
+}
+
+.header-mobile-naviagtion-link {
+  @apply absolute top-16 left-0 w-full bg-black text-white p-6 flex flex-col space-y-4 md:hidden;
+}

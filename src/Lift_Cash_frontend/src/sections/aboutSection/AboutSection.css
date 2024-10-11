@@ -1,0 +1,24 @@
+.about-section-main-div {
+  @apply bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center px-4;
+}
+.about-section-title {
+  @apply text-4xl font-bold mb-2 text-blue-400;
+}
+.about-section-subtitle {
+  @apply text-2xl font-semibold mb-6 text-center;
+}
+.about-section-description {
+  @apply text-yellow-400 text-center mb-12;
+}
+.about-card-section-main-div {
+  @apply flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6;
+}
+.about-section-card-div {
+  @apply bg-red-500  p-6 rounded-lg md:h-[40vh];
+}
+.about-section-card-h3 {
+  @apply text-3xl font-semibold m-4;
+}
+.about-section-card-p {
+  @apply m-4 font-semibold;
+}

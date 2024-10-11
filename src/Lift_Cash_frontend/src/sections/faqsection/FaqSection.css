@@ -1,0 +1,30 @@
+.faq-container {
+  @apply bg-gray-900 text-white py-16;
+}
+
+.faq-title {
+  @apply text-2xl  text-center text-blue-400 mb-2;
+}
+
+.faq-subtitle {
+  @apply text-center text-6xl font-bold mb-4;
+}
+.faq-description {
+  @apply text-center text-2xl;
+}
+
+.faq-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto;
+}
+
+.faq-item {
+  @apply p-6;
+}
+
+.faq-question {
+  @apply text-xl font-bold text-blue-400 mb-4;
+}
+
+.faq-answer {
+  @apply text-base;
+}

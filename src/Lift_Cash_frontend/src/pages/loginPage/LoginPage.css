@@ -1,0 +1,56 @@
+.login-main-conatiner {
+  @apply min-h-screen bg-primary flex flex-col items-center justify-center text-center;
+}
+
+.login-logo-div {
+  @apply mb-8;
+}
+.login-logo-img {
+  @apply w-24 mx-24 rounded-full;
+}
+.login-title-h1 {
+  @apply text-3xl font-bold text-blue-700;
+}
+
+.login-title-h2 {
+  @apply text-6xl font-bold text-blue-400 mt-2;
+}
+.login-subtext-p {
+  @apply mt-4 text-lg text-gray-700;
+}
+.login-btn {
+  @apply mt-6 px-8 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-semibold hover:bg-blue-50;
+}
+.login-additional-info {
+  @apply mt-6 text-gray-500;
+}
+.login-additional-info-link {
+  @apply text-blue-600 underline;
+}
+
+.login-bottom-img-div {
+  @apply m-4 rounded-lg;
+}
+
+.login-bottom-img {
+  @apply w-56 h-36;
+}
+
+.login-toggle-switch-main {
+  @apply flex items-center mt-10;
+}
+.login-toggle-switch-lable {
+  @apply flex items-center space-x-3;
+}
+
+.login-toggle-animation {
+  @apply bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300;
+}
+
+.login-bottom-span {
+  @apply text-gray-600;
+}
+
+.login-version-text {
+  @apply absolute top-4 right-4 text-gray-500 text-sm;
+}

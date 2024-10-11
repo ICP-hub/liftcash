@@ -1,0 +1,23 @@
+/* src/Modal.css */
+.modal-overlay {
+  @apply fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-70 flex  flex-row justify-center items-center z-50;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  width: 400px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
