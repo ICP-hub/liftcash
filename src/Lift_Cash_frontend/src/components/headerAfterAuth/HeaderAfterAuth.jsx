@@ -1,4 +1,5 @@
 import "./HeaderAfterAuth.css"; // Import the CSS file
+import "./Header.css"; // Import the CSS file
 import { useState } from "react";
 import {
   FaTimes,
