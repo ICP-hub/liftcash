@@ -1,5 +1,4 @@
 import "./HeaderAfterAuth.css"; // Import the CSS file
-import "./Header.css"; // Import the CSS file
 import { useState } from "react";
 import {
   FaTimes,
@@ -10,10 +9,10 @@ import {
 } from "react-icons/fa";
 import { FiActivity } from "react-icons/fi";
 import AnimationBtn from "../animationBtn/AnimationBtn";
+import { Link } from "react-router-dom";
 
 const HeaderAfterAuth = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="header">
       {/* Left Side - Hamburger Icon */}
@@ -42,22 +41,30 @@ const HeaderAfterAuth = () => {
 
         {/* Menu Items */}
         <ul className="sidebar-menu">
-          <li className="sidebar-menu-item">
-            <FiActivity size={24} className="sidebar-icon" />
-            <span>Activities</span>
-          </li>
-          <li className="sidebar-menu-item">
-            <FaDollarSign size={24} className="sidebar-icon" />
-            <span>Claim / Assets</span>
-          </li>
-          <li className="sidebar-menu-item">
-            <FaArrowRight size={24} className="sidebar-icon" />
-            <span>Transfer</span>
-          </li>
-          <li className="sidebar-menu-item">
-            <FaInfoCircle size={24} className="sidebar-icon" />
-            <span>Info</span>
-          </li>
+          <Link to="/activities">
+            <li className="sidebar-menu-item">
+              <FiActivity size={24} className="sidebar-icon" />
+              <span>Activities</span>
+            </li>
+          </Link>
+          <Link to="/claim">
+            <li className="sidebar-menu-item">
+              <FaDollarSign size={24} className="sidebar-icon" />
+              <span>Claim / Assets</span>
+            </li>
+          </Link>
+          <Link to="/transfer">
+            <li className="sidebar-menu-item">
+              <FaArrowRight size={24} className="sidebar-icon" />
+              <span>Transfer</span>
+            </li>
+          </Link>
+          <Link to="/info">
+            <li className="sidebar-menu-item">
+              <FaInfoCircle size={24} className="sidebar-icon" />
+              <span>Info</span>
+            </li>
+          </Link>
         </ul>
 
         {/* Enable Animation Toggle */}
