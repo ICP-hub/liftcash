@@ -1,0 +1,27 @@
+.container {
+  @apply flex items-center gap-4; /* Using Tailwind's apply directive */
+}
+
+.slider-container {
+  @apply relative w-14 h-8 rounded-full cursor-pointer transition-colors duration-300;
+}
+
+.enabled {
+  @apply bg-green-500; /* Tailwind's green-500 */
+}
+
+.disabled {
+  @apply bg-gray-300; /* Tailwind's gray-300 */
+}
+
+.slider-knob {
+  @apply absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform duration-300;
+}
+
+.knob-enabled {
+  @apply translate-x-6; /* Move knob to the right */
+}
+
+.knob-disabled {
+  @apply translate-x-0; /* Keep knob on the left */
+}

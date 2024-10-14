@@ -1,0 +1,54 @@
+.header {
+  @apply bg-blue-500 flex justify-between items-center px-4 py-2;
+}
+
+.hamburger-icon {
+  @apply text-white cursor-pointer;
+}
+
+.right-content {
+  @apply flex items-center space-x-4 text-white;
+}
+
+.right-content button:hover {
+  @apply underline;
+}
+
+/* SideBar.css */
+
+.sidebar-container {
+  @apply fixed top-10 left-0 h-full bg-white transition-transform w-64 shadow-lg;
+}
+
+.sidebar-close-btn {
+  @apply flex justify-end p-4;
+}
+
+.sidebar-close-btn button {
+  @apply text-gray-600;
+}
+
+.sidebar-menu {
+  @apply space-y-4 text-lg;
+}
+
+.sidebar-menu-item {
+  @apply flex items-center px-4 py-2 border-b-2;
+}
+
+.sidebar-icon {
+  @apply mr-3;
+}
+
+/* Toggle animation switch */
+.toggle-animation-container {
+  @apply mt-10 px-4;
+}
+
+.toggle-checkbox-container {
+  @apply flex items-center;
+}
+
+.toggle-checkbox {
+  @apply ml-3;
+}
