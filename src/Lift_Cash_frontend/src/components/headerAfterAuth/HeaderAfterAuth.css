@@ -1,5 +1,5 @@
 .header {
-  @apply bg-blue-500 flex justify-between items-center px-4 py-2;
+  @apply bg-blue-500 flex justify-between items-center px-4 py-2 sticky top-0 z-50;
 }
 
 .hamburger-icon {

@@ -22,7 +22,9 @@ const AnimationBtn = () => {
         ></div>
       </div>
 
-      <p>{isEnabled ? "Disable Animation" : "Enable Animation"}</p>
+      <p className="text-sm">
+        {isEnabled ? "Disable Animation" : "Enable Animation"}
+      </p>
     </div>
   );
 };

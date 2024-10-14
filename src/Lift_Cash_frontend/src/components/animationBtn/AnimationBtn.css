@@ -1,5 +1,5 @@
 .container {
-  @apply flex items-center gap-4; /* Using Tailwind's apply directive */
+  @apply flex items-center gap-4;
 }
 
 .slider-container {
@@ -7,11 +7,11 @@
 }
 
 .enabled {
-  @apply bg-green-500; /* Tailwind's green-500 */
+  @apply bg-green-500;
 }
 
 .disabled {
-  @apply bg-gray-300; /* Tailwind's gray-300 */
+  @apply bg-gray-300;
 }
 
 .slider-knob {
@@ -19,9 +19,9 @@
 }
 
 .knob-enabled {
-  @apply translate-x-6; /* Move knob to the right */
+  @apply translate-x-6;
 }
 
 .knob-disabled {
-  @apply translate-x-0; /* Keep knob on the left */
+  @apply translate-x-0;
 }

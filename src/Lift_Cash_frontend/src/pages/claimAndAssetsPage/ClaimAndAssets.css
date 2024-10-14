@@ -1,0 +1,78 @@
+.claim-assets-main-div {
+  @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center;
+}
+.claim-assets-logo {
+  @apply mt-5 text-3xl font-bold;
+}
+.claim-assets-tagline {
+  @apply mt-5 flex;
+}
+
+.claim-assets-tagline-icon {
+  @apply text-xl pt-1;
+}
+
+.claim-asstes-first-container {
+  @apply w-full max-w-lg mt-10 p-6 bg-white rounded-lg shadow-md;
+}
+
+.claim-asstes-first-container-inside {
+  @apply grid grid-cols-3 gap-4 text-center;
+}
+.claim-asstes-first-container-h2 {
+  @apply text-gray-500;
+}
+.claim-asstes-first-container-div {
+  @apply text-2xl font-bold;
+}
+.claim-assets-Iteration-info {
+  @apply mt-8 text-center;
+}
+.claim-assets-Iteration-info-h2 {
+  @apply text-gray-500;
+}
+
+.claim-assets-Iteration-value {
+  @apply text-2xl font-bold mb-2;
+}
+.claim-assets-Iteration-btn {
+  @apply text-gray-400 bg-gray-200 py-2 px-4 rounded-full shadow-md;
+}
+
+.claim-assets-Iteration-text {
+  @apply text-sm;
+}
+
+.claim-asstes-Iteration-p2 {
+  @apply font-bold;
+}
+
+.claim-asstes-claiming-div {
+  @apply text-center mt-6;
+}
+.claim-assets-claiming-p {
+  @apply text-gray-600;
+}
+
+.claim-assets-claiming-link {
+  @apply text-blue-600 hover:underline;
+}
+
+.claim-asstes-locked-section-main {
+  @apply w-full max-w-lg mt-6 p-6 bg-white rounded-lg shadow-md text-center;
+}
+.claim-asstes-locked-section-h2 {
+  @apply text-lg font-semibold;
+}
+.claim-asstes-locked-section-first-div {
+  @apply text-2xl font-bold mt-2;
+}
+.claim-asstes-locked-section-btn {
+  @apply mt-6 py-2 px-4 bg-blue-100 text-blue-600 rounded-full shadow-md;
+}
+.claim-asstes-locked-section-second-div {
+  @apply text-gray-600 mt-4;
+}
+.claim-asstes-locked-section-link {
+  @apply text-blue-600 hover:underline;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import "./TransferPage.css";
 
 const Transferpage = () => {
   return <div className="text-center">Transferpage</div>;
