@@ -1,4 +1,4 @@
-import "./footer.css"; // Import your custom Tailwind CSS file
+import "./Footer.css"; // Import your custom Tailwind CSS file
 import { FaFacebookF, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 import { FaTelegram } from "react-icons/fa";
 import { TbCoinRupeeFilled } from "react-icons/tb";

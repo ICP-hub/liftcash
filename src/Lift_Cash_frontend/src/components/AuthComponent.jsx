@@ -23,6 +23,10 @@ export default function AuthComponent({ closeModal }) {
           setActor(actor);
           console.log("Authenticated successfully");
         },
+        onError:(e)=>{
+          console.log("error in authentication")
+          console.log(e);
+        }
       });
     } catch (err) {
       console.log(err)

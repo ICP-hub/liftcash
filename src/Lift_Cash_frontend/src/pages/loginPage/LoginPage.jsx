@@ -44,7 +44,7 @@ const LoginPage = () => {
         Connect Wallet
       </button>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <AuthComponent />
+        <AuthComponent closeModal={closeModal}/>
       </Modal>
 
       {/* Additional Info */}
