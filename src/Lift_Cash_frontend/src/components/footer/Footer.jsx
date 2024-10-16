@@ -2,10 +2,15 @@ import "./Footer.css"; // Import your custom Tailwind CSS file
 import { FaFacebookF, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 import { FaTelegram } from "react-icons/fa";
 import { TbCoinRupeeFilled } from "react-icons/tb";
+import shape1 from "../../assets/shape-1.svg";
+import shape3 from "../../assets/shape-3.svg";
+import shape2 from "../../assets/shape-2.svg";
 
 const Footer = () => {
   return (
     <footer className="footer-main-conatiner">
+      <img src={shape1} alt="shape1" className="footer-shape-image-top" />
+
       <div className="footer-first-container">
         {/* Freeos Logo and Description */}
         <div className="footer-main-logo">
@@ -166,11 +171,14 @@ const Footer = () => {
         </div>
       </div>
 
+      <img src={shape3} alt="shap2" className="footer-shape-image-bottom " />
+
       {/* Footer Bottom */}
       <div className=" footer-bottom-container">
         <p>© 2024 Lift Cash</p>
         <p>Website Hosted on ICP, powered by Juno</p>
       </div>
+      <img src={shape2} alt="shape2" className="footer-shape-image-top-left" />
     </footer>
   );
 };
