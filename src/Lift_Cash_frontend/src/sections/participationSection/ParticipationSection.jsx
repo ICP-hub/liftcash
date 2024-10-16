@@ -1,7 +1,8 @@
-import React from "react";
 import "./ParticipationSection.css"; // Import the CSS file
+import { useNavigate } from "react-router-dom";
 
 const ParticipationSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="participation-section">
       <div className="content">
@@ -31,7 +32,9 @@ const ParticipationSection = () => {
             </li>
           </ul>
         </section>
-        <button className="open-app-btn">Open App</button>
+        <button className="open-app-btn" onClick={() => navigate("/signup")}>
+          Open App
+        </button>
       </div>
     </section>
   );

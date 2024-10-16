@@ -1,0 +1,98 @@
+{
+  "survey": {
+    "title": "Issuance and Economic Control Survey",
+    "description": "Please provide your input on the issuance and economic control of FREEOS tokens.",
+    "questions": [
+      {
+        "id": "1",
+        "title": "Issuance",
+        "last_weeks_issuance": "50%",
+        "question": "What percentage of the issuance should be minted this week?",
+        "description": "Issuance is the amount of Points issued weekly. Minimising the issuance reduces the supply of FREEOS tokens that can be minted. Restricting supply can increase the price when there is suitable demand.",
+        "slider": {
+          "range": {
+            "min": "0%",
+            "max": "100%",
+            "current": "50%"
+          },
+          "manual_entry": {
+            "label": "Or manually enter amount",
+            "current_value": "50%"
+          }
+        }
+      },
+      {
+        "id": "2",
+        "title": "Burning",
+        "last_weeks_issuance": "30%",
+        "question": "What percentage of the FREEOS tokens should be burned this week?",
+        "description": "Burning removes FREEOS tokens from circulation, which can affect the supply-demand balance and influence the token's price.",
+        "slider": {
+          "range": {
+            "min": "0%",
+            "max": "100%",
+            "current": "30%"
+          },
+          "manual_entry": {
+            "label": "Or manually enter amount",
+            "current_value": "30%"
+          }
+        }
+      },
+      {
+        "id": "3",
+        "title": "Staking Rewards",
+        "last_weeks_issuance": "40%",
+        "question": "What percentage of rewards should be issued for staking this week?",
+        "description": "Staking rewards incentivize participants to lock their FREEOS tokens, reducing the circulating supply and potentially increasing the price.",
+        "slider": {
+          "range": {
+            "min": "0%",
+            "max": "100%",
+            "current": "40%"
+          },
+          "manual_entry": {
+            "label": "Or manually enter amount",
+            "current_value": "40%"
+          }
+        }
+      },
+      {
+        "id": "4",
+        "title": "Locking Threshold",
+        "last_weeks_issuance": "60%",
+        "question": "What percentage of the Locking Threshold should be adjusted this week?",
+        "description": "Locking thresholds determine how much FREEOS needs to be staked for voting and other network activities.",
+        "slider": {
+          "range": {
+            "min": "0%",
+            "max": "100%",
+            "current": "60%"
+          },
+          "manual_entry": {
+            "label": "Or manually enter amount",
+            "current_value": "60%"
+          }
+        }
+      },
+      {
+        "id": "5",
+        "title": "Supply Control",
+        "last_weeks_issuance": "70%",
+        "question": "What percentage of the total supply should be adjusted this week?",
+        "description": "Supply control adjusts the total issuance and burning combined, aiming to maintain a balance between inflation and deflation of FREEOS tokens.",
+        "slider": {
+          "range": {
+            "min": "0%",
+            "max": "100%",
+            "current": "70%"
+          },
+          "manual_entry": {
+            "label": "Or manually enter amount",
+            "current_value": "70%"
+          }
+        }
+      }
+    ]
+  }
+}
