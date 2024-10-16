@@ -1,9 +1,12 @@
 .hero-section-main-div {
-  @apply bg-blue-500 min-h-screen flex flex-col justify-center items-center text-center;
+  @apply bg-primary min-h-screen flex flex-col justify-center items-center text-center mt-20
 }
 
+.hero-section-top-img-div{
+  @apply w-full flex justify-center items-center mx-auto mt-20
+}
 .hero-section-top-img {
-  @apply w-full max-h-72 object-cover;
+  @apply w-[78%] min-h-fit object-cover object-center
 }
 
 .hero-text-section-div {
@@ -11,7 +14,7 @@
 }
 
 .hero-text-section-h1 {
-  @apply text-4xl font-bold;
+  @apply text-4xl font-bold font-sans
 }
 
 .hero-text-section-p {
@@ -22,9 +25,9 @@
   @apply bg-red-500 text-white font-bold py-2 px-6 rounded-md hover:bg-red-600;
 }
 .hero-section-bottom-img-div {
-  @apply container flex justify-center items-center;
+  @apply container flex justify-center items-center
 }
 
 .hero-section-bottom-img {
-  @apply w-[60vw] h-[30vh] object-cover;
+  @apply w-[50vw]  object-cover rounded-t-lg
 }

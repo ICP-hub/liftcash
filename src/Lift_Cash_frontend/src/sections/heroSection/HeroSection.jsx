@@ -6,9 +6,9 @@ const HeroSection = () => {
   return (
     <div className="hero-section-main-div">
       {/* Top Image */}
-      <div className="w-full">
+      <div className="hero-section-top-img-div">
         <img
-          src="https://images.unsplash.com/photo-1640592276475-56a1c277a38f?q=80&w=3005&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://freeos.io/assets/hero/banner.png"
           alt="Lift Cash Logo"
           className="hero-section-top-img"
         />
@@ -36,7 +36,7 @@ const HeroSection = () => {
       {/* Bottom Image */}
       <div className="hero-section-bottom-img-div">
         <img
-          src="https://images.unsplash.com/photo-1639815189096-f75717eaecfe?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://freeos.io/assets/hero/hero-image.jpg"
           alt="screenshot"
           className="hero-section-bottom-img"
         />
