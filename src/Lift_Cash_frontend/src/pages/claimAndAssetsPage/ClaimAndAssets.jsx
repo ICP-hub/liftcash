@@ -1,20 +1,10 @@
-import { IoIosArrowRoundDown } from "react-icons/io";
-import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import "./ClaimAndAssets.css";
+import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 const ClaimAndAssets = () => {
   return (
     <div className="claim-assets-main-div">
       {/* Main content */}
-      <div className="claim-assets-logo ">
-        {/* logo */}
-        <HiOutlineCurrencyRupee />
-      </div>
-      <div className="claim-assets-tagline">
-        <p>Weekly Lift Cash price xUSDC $000.456 </p>
-        <span className="claim-assets-tagline-icon">
-          <IoIosArrowRoundDown />
-        </span>
-      </div>
+      <DashBoardHead />
 
       <div className="claim-asstes-first-container">
         {/* PROMO and LIFT */}

@@ -1,18 +1,11 @@
-import { HiOutlineCurrencyRupee } from "react-icons/hi";
-import { IoIosArrowRoundDown } from "react-icons/io";
 import "./TransferPage.css";
+import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 
 const Transferpage = () => {
   return (
     <div className="transfer-main-section">
       {/* Header Section */}
-      <div className="transfer-header-section-logo">
-        <HiOutlineCurrencyRupee />
-      </div>
-      <div className="transfer-header-section-tagline">
-        <p>Weekly LIFT CASH price xUSDC $0.001840</p>
-        <IoIosArrowRoundDown className="transfer-header-section-tagline-icon " />
-      </div>
+      <DashBoardHead />
 
       {/* Balance Card */}
       <div className="transfer-balance-card-section-main ">

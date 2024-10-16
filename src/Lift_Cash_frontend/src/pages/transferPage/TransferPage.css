@@ -1,16 +1,6 @@
 .transfer-main-section {
   @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center p-5;
 }
-.transfer-header-section-logo {
-  @apply text-3xl font-bold;
-}
-
-.transfer-header-section-tagline {
-  @apply text-center text-gray-900 mt-5 text-2xl font-bold flex;
-}
-.transfer-header-section-tagline-icon {
-  @apply text-xl mt-1;
-}
 
 .transfer-balance-card-section-main {
   @apply w-full max-w-lg mt-8 bg-white rounded-xl shadow-lg p-6 text-center;

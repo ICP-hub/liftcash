@@ -1,16 +1,6 @@
 .claim-assets-main-div {
   @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center;
 }
-.claim-assets-logo {
-  @apply mt-5 text-3xl font-bold;
-}
-.claim-assets-tagline {
-  @apply mt-5 flex;
-}
-
-.claim-assets-tagline-icon {
-  @apply text-xl pt-1;
-}
 
 .claim-asstes-first-container {
   @apply w-full max-w-lg mt-10 p-6 bg-white rounded-lg shadow-md;
