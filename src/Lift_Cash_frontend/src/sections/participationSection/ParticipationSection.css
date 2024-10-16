@@ -31,5 +31,5 @@
 }
 
 .open-app-btn {
-  @apply mt-8 bg-red-600 text-white py-2 px-6 rounded-md text-lg hover:bg-red-500;
+  @apply mt-8 bg-red-500 text-white py-2 px-6 rounded-md text-lg hover:bg-red-600;
 }

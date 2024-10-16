@@ -1,9 +1,9 @@
 .header-main {
-  @apply bg-primary p-4 flex items-center justify-around w-full overflow-hidden fixed left-0 top-0 z-10
+  @apply bg-primary max-h-[65px] p-4 flex items-center justify-around w-full overflow-hidden fixed left-0 top-0 z-10
 }
 
 .header-main-active{
-  @apply bg-secondary p-4 flex items-center justify-around w-full overflow-hidden fixed left-0 top-0 backdrop-blur-md opacity-80
+  @apply fixed left-0 top-0 w-full max-h-[65px] p-4 flex items-center justify-around bg-[#111928cc] backdrop-blur-sm
 }
 
 .header-logo {

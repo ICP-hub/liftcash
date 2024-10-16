@@ -1,7 +1,13 @@
 import "./HeroSection.css";
+import { useNavigate } from "react-router-dom";
+
 const HeroSection = () => {
+
+  const navigate = useNavigate();
+
   const HandleLogin = () => {
     console.log("Login Button Clicked");
+    navigate("/signup")
   };
   return (
     <div className="hero-section-main-div">
@@ -21,7 +27,7 @@ const HeroSection = () => {
           Lift Cash is an Economic System that gives access to an easily
           accessible, democratic, crypto income for everyone.
         </p>
-        <p className="mt-4 text-lg">
+        <p className="hero-text-section-p">
           Freeos is managed directly by the people, for the people.
         </p>
 
