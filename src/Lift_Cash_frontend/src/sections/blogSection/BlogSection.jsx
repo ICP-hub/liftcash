@@ -38,8 +38,8 @@ const BlogSection = () => {
         </p>
       </div>
       <div className="blog-grid">
-        {blogs.map((blog) => (
-          <div key={blog.id} className="blog-card">
+        {blogs.map((blog, index) => (
+          <div key={index} className="blog-card">
             <img src={blog.image} alt={blog.title} className="blog-image" />
             <div className="blog-content">
               <span className="blog-date">{blog.date}</span>

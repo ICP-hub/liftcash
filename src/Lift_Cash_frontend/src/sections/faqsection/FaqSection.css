@@ -1,24 +1,26 @@
 .faq-container {
-  @apply bg-gray-900 text-white py-16;
+  @apply bg-[#111928] text-white py-16;
 }
 
 .faq-title {
-  @apply text-2xl  text-center text-blue-400 mb-2;
+  @apply text-sm md:text-2xl font-bold  text-center text-blue-400 mb-2;
 }
 
 .faq-subtitle {
-  @apply text-center text-6xl font-bold mb-4;
+  @apply text-center  text-2xl md:text-3xl lg:text-6xl font-bold;
 }
 .faq-description {
-  @apply text-center text-2xl;
+  @apply text-center mt-2 text-xs md:text-xl lg:text-2xl;
 }
 
 .faq-grid {
   @apply grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto;
 }
-
+.faq-logo {
+  @apply text-2xl text-center p-2 text-white font-extrabold bg-[#479FE6] w-auto h-10 rounded-xl;
+}
 .faq-item {
-  @apply p-6;
+  @apply p-6 flex gap-4;
 }
 
 .faq-question {

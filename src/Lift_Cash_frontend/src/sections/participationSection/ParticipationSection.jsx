@@ -15,7 +15,7 @@ const ParticipationSection = () => {
         <section className="list-section">
           <ul className="list">
             <li>
-              <a href="javascript:void(0);" className="link">
+              <a href="" className="link">
                 Download the WebAuth
               </a>{" "}
               wallet and setup your Proton account.
@@ -31,6 +31,7 @@ const ParticipationSection = () => {
             </li>
           </ul>
         </section>
+        <button className="open-app-btn">Open App</button>
       </div>
     </section>
   );

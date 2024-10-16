@@ -7,7 +7,7 @@ const LiftCashDAOSection = () => {
         <div className="dao-text">
           <h1 className="dao-title">Lift Cash Economic DAO</h1>
           <p className="dao-description">
-            Freeos is a Decentralized Autonomous Organization (DAO) that
+            Lift Cash is a Decentralized Autonomous Organization (DAO) that
             provides a decentralized, flexible economic model functioning
             independently when other systems fail. In turbulent times, Freeos
             offers a resilient alternative not reliant on central points of

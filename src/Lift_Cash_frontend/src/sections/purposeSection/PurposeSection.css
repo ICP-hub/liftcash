@@ -1,6 +1,6 @@
 /* Tailwind CSS classes with @apply */
 .purpose-section {
-  @apply bg-gray-800 text-white py-16 px-8;
+  @apply bg-[#111928] text-white py-16 px-8;
 }
 
 .purpose-title {
@@ -24,7 +24,7 @@
 }
 
 .purpose-icon {
-  @apply text-4xl mb-4;
+  @apply text-4xl mb-4 text-center bg-[#479FE6] w-14 h-16 pt-4 rounded-xl;
 }
 
 .purpose-card-title {

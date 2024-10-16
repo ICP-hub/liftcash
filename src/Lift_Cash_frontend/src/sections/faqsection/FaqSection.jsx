@@ -1,4 +1,5 @@
 import "./FaqSection.css";
+import { GoQuestion } from "react-icons/go";
 
 const FaqSection = () => {
   const faqs = [
@@ -46,9 +47,15 @@ const FaqSection = () => {
 
       <div className="faq-grid">
         {faqs.map((faq, index) => (
-          <div key={index} className="faq-item">
-            <h3 className="faq-question">{faq.question}</h3>
-            <p className="faq-answer">{faq.answer}</p>
+          <div key={index} className=" faq-item">
+            <span className="faq-logo">
+              <GoQuestion />
+            </span>
+
+            <div>
+              <h3 className="faq-question">{faq.question}</h3>
+              <p className="faq-answer">{faq.answer}</p>
+            </div>
           </div>
         ))}
       </div>

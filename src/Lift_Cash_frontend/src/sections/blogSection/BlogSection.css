@@ -24,7 +24,7 @@
 
 /* Blog card */
 .blog-card {
-  @apply rounded-lg overflow-hidden;
+  @apply rounded-md overflow-hidden;
 }
 
 /* Blog image */
@@ -34,7 +34,7 @@
 
 /* Blog content */
 .blog-content {
-  @apply p-6;
+  @apply pt-6;
 }
 
 /* Blog date */
