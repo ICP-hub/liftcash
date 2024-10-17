@@ -1,24 +1,25 @@
 import React from "react";
 import "./PurposeSection.css"; // Import the CSS file
+import shape4 from "../../assets/shape-4.svg";
 
 const PurposeSection = () => {
   const purposes = [
     {
       title: "Cooperation",
       description:
-        "Cooperation is what we do. Freeos is cooperation as a currency. How we value Freeos is how we value cooperation.",
+        "Cooperation is what we do. Lift Cash is cooperation as a currency. How we value Lift Cash is how we value cooperation.",
       icon: "🎁", // You can replace this with your icon/image
     },
     {
       title: "Benefits",
       description:
-        "What benefits us, benefits others. The weekly income in FREEOS tokens is the benefit for us personally—and also the benefit for each other.",
+        "What benefits us, benefits others. The weekly income in Lift Cash tokens is the benefit for us personally—and also the benefit for each other.",
       icon: "🎁",
     },
     {
       title: "Give + Earn",
       description:
-        "Earn while we’re giving. Give while we’re earning. Every vote in the Freeos Economic System is a gift to ourselves AND others.",
+        "Earn while we’re giving. Give while we’re earning. Every vote in the Lift Cash Economic System is a gift to ourselves AND others.",
       icon: "📦",
     },
     {
@@ -58,8 +59,8 @@ const PurposeSection = () => {
       <h3 className="purpose-title">Purpose</h3>
       <h1 className="purpose-heading">Main Purpose Of Lift Cash</h1>
       <p className="purpose-subheading">
-        Lift Cash is free to enter and start using. Participation only costs
-        minutes of time each week to vote.
+        Lift Cash is free to enter and start using. Participation only <br />{" "}
+        costs minutes of time each week to vote.
       </p>
 
       <div className="purpose-grid">

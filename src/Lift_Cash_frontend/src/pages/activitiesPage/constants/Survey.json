@@ -27,7 +27,7 @@
       },
       {
         "id": 3,
-        "title": "FREEOS Economy Sentiment",
+        "title": " Economy Sentiment",
         "description": "Do you feel the Freeos economy is growing (bull market), shrinking (bear market), or neither (going sideways)?",
         "type": "radiobuttons",
         "options": [
@@ -38,7 +38,7 @@
       },
       {
         "id": 4,
-        "title": "FREEOS Market Change of Direction",
+        "title": " Market Change of Direction",
         "description": "How long will the above Freeos market last before it changes direction?",
         "type": "slider",
         "range": {

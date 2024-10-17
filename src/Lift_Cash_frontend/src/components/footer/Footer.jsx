@@ -1,7 +1,7 @@
 import "./Footer.css"; // Import your custom Tailwind CSS file
 import { FaFacebookF, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 import { FaTelegram } from "react-icons/fa";
-import { TbCoinRupeeFilled } from "react-icons/tb";
+import { SVG } from "../../assets/images/index";
 import shape1 from "../../assets/shape-1.svg";
 import shape3 from "../../assets/shape-3.svg";
 import shape2 from "../../assets/shape-2.svg";
@@ -12,15 +12,13 @@ const Footer = () => {
       <img src={shape1} alt="shape1" className="footer-shape-image-top" />
 
       <div className="footer-first-container">
-        {/* Freeos Logo and Description */}
+        {/* Lift Cash Logo and Description */}
         <div className="footer-main-logo">
-          <div className="mb-4">
-            <TbCoinRupeeFilled className="footer-logo" />
-            <p>
-              We represent economic <br />
-              freedom through democracy.
-            </p>
-          </div>
+          <img src={SVG.logo} className="footer-logo" />
+          <p className="footer-logo-description">
+            We represent economic <br />
+            freedom through democracy.
+          </p>
           {/* Social Icons */}
           <div className="footer-social-icons">
             <a
@@ -148,10 +146,8 @@ const Footer = () => {
                 alt="Blog 1"
                 className="footer-container-img"
               />
-              <div>
-                <h6>Freeos Unchained</h6>
-                <p className="footer-conatiner-p">Mar 18 2024</p>
-              </div>
+
+              <h6 className="w-52">Lift Cash Unchained</h6>
             </a>
             <a
               href="/blog/revolutionising-dao-governance"
@@ -162,10 +158,8 @@ const Footer = () => {
                 alt="Blog 2"
                 className="footer-container-img"
               />
-              <div>
-                <h6>Revolutionising DAO Governance</h6>
-                <p className="footer-conatiner-p">Dec 14 2023</p>
-              </div>
+
+              <h6 className="w-52 truncate">Revolutionising DAO Governance</h6>
             </a>
           </div>
         </div>

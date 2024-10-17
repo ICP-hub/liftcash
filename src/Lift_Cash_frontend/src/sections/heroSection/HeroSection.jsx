@@ -2,12 +2,11 @@ import "./HeroSection.css";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
-
   const navigate = useNavigate();
 
   const HandleLogin = () => {
     console.log("Login Button Clicked");
-    navigate("/signup")
+    navigate("/signup");
   };
   return (
     <div className="hero-section-main-div">
@@ -28,7 +27,7 @@ const HeroSection = () => {
           accessible, democratic, crypto income for everyone.
         </p>
         <p className="hero-text-section-p">
-          Freeos is managed directly by the people, for the people.
+          Lift cash is managed directly by the people, for the people.
         </p>
 
         {/* Open App Button */}

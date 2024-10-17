@@ -1,17 +1,19 @@
 import "./FaqSection.css";
 import { GoQuestion } from "react-icons/go";
+import shape5 from "../../assets/shape-5.svg";
+import shape4 from "../../assets/shape-4.svg";
 
 const FaqSection = () => {
   const faqs = [
     {
       question: "How does Lift Cash work?",
       answer:
-        "Freeos operates by allowing its community members to vote on monetary policies each week. These votes help manage the supply and demand dynamics of Lift Cash tokens, aiming to maintain a healthy token price. Participation is simple and free, requiring just a few minutes each week to vote.",
+        "Lift Cash operates by allowing its community members to vote on monetary policies each week. These votes help manage the supply and demand dynamics of Lift Cash tokens, aiming to maintain a healthy token price. Participation is simple and free, requiring just a few minutes each week to vote.",
     },
     {
       question: "What is Lift Cash?",
       answer:
-        "Freeos is a decentralized economic system that provides a universal basic income (UBI) through its community-driven cryptocurrency, Lift Cash. Participants vote on monetary policies weekly, which directly influences the distribution and value of the Lift Cash tokens.",
+        "Lift cash is a decentralized economic system that provides a universal basic income (UBI) through its community-driven cryptocurrency, Lift Cash. Participants vote on monetary policies weekly, which directly influences the distribution and value of the Lift Cash tokens.",
     },
     {
       question: "Who can join Lift Cash?",
@@ -38,10 +40,11 @@ const FaqSection = () => {
 
   return (
     <div className="faq-container">
+      <img src={shape4} alt="shape4" className="pl-4" />
       <h2 className="faq-title">FAQ</h2>
       <h3 className="faq-subtitle">Your Questions Answered</h3>
       <p className="faq-description">
-        Discover more about Freeos, its benefits, governance, and how <br />
+        Discover more about Lift Cash, its benefits, governance, and how <br />
         you can be a part of this innovative economic system.
       </p>
 
@@ -59,6 +62,7 @@ const FaqSection = () => {
           </div>
         ))}
       </div>
+      <img src={shape5} alt="shape5" className="float-end -mt-15 pr-5" />
     </div>
   );
 };

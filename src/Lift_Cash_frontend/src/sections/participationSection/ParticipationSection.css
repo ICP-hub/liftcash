@@ -1,29 +1,29 @@
 /* Tailwind CSS classes with @apply */
 .participation-section {
-  @apply bg-blue-500 text-white py-16 px-8;
+  @apply bg-primary text-white py-16 px-8;
 }
 
 .content {
-  @apply max-w-3xl mx-auto text-center;
+  @apply max-w-3xl mx-auto font-inter text-center;
 }
 
 .heading {
-  @apply text-3xl font-bold;
+  @apply text-4xl font-inter font-bold;
 }
 
 .sub-heading {
-  @apply text-4xl font-bold mt-4;
+  @apply text-4xl font-inter mt-4;
 }
 
 .description {
-  @apply mt-4 text-lg text-center;
+  @apply mt-4 text-lg font-inter text-center;
 }
 
 .list-section {
   @apply flex  justify-center items-center;
 }
 .list {
-  @apply mt-6 space-y-2 text-left list-disc list-inside;
+  @apply mt-6 space-y-2 font-inter text-left list-disc;
 }
 
 .link {

@@ -1,22 +1,22 @@
 /* Tailwind CSS classes with @apply */
 .purpose-section {
-  @apply bg-[#111928] text-white py-16 px-8;
+  @apply bg-[#111928] text-white py-10 px-8;
 }
 
 .purpose-title {
-  @apply text-blue-400 uppercase text-center text-lg mb-2;
+  @apply font-inter font-medium text-blue-400 uppercase text-center text-lg mb-2;
 }
 
 .purpose-heading {
-  @apply text-4xl font-bold text-center mb-4;
+  @apply font-inter text-4xl font-bold text-center mb-4;
 }
 
 .purpose-subheading {
-  @apply text-center text-lg mb-8;
+  @apply font-inter text-center text-[#9CA3AF] text-lg mb-8;
 }
 
 .purpose-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:m-16;
 }
 
 .purpose-card {
@@ -24,15 +24,15 @@
 }
 
 .purpose-icon {
-  @apply text-4xl mb-4 text-center bg-[#479FE6] w-14 h-16 pt-4 rounded-xl;
+  @apply text-4xl mb-4 text-center bg-[#479FE6] w-16 h-16 flex justify-center items-center rounded-xl;
 }
 
 .purpose-card-title {
-  @apply text-xl font-semibold mb-2;
+  @apply text-xl  font-inter font-semibold mb-2;
 }
 
 .purpose-card-description {
-  @apply text-base mb-4;
+  @apply font-inter text-[#9CA3AF] text-base mb-4;
 }
 
 .purpose-learn-more {

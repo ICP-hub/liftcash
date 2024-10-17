@@ -1,21 +1,21 @@
 .dao-section {
-  @apply bg-[#1F2A37] text-white py-16 px-8;
+  @apply bg-[#1F2A37]  text-white py-16 px-8;
 }
 
 .dao-content {
-  @apply gap-5 flex flex-col lg:flex-row;
+  @apply gap-5 flex flex-col lg:flex-row lg:m-16;
 }
 
 .dao-text {
-  @apply lg:w-1/2 m-4 text-[#9CA3AF] space-y-7;
+  @apply lg:w-1/2 m-4 lg:pr-16 gap-5  text-[#9CA3AF] space-y-7;
 }
 
 .dao-title {
-  @apply text-4xl font-bold mb-4;
+  @apply text-4xl  text-white font-inter font-bold  mb-4;
 }
 
 .dao-description {
-  @apply text-lg;
+  @apply font-inter text-lg;
 }
 
 .dao-button {
@@ -23,9 +23,9 @@
 }
 
 .dao-image-container {
-  @apply lg:w-1/2 mt-8;
+  @apply lg:w-1/2 mt-8 mr-5;
 }
 
 .dao-image {
-  @apply shadow-lg lg:h-[85vh] w-full h-[46vh] object-cover;
+  @apply rounded-md lg:h-[85vh] w-full h-[46vh] object-cover;
 }

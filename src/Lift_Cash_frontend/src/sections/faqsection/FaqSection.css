@@ -3,30 +3,30 @@
 }
 
 .faq-title {
-  @apply text-sm md:text-2xl font-bold  text-center text-blue-400 mb-2;
+  @apply text-sm md:text-2xl font-inter  font-bold  text-center text-blue-400 mb-2;
 }
 
 .faq-subtitle {
-  @apply text-center  text-2xl md:text-3xl lg:text-6xl font-bold;
+  @apply text-center font-inter  text-2xl md:text-3xl lg:text-4xl font-bold;
 }
 .faq-description {
-  @apply text-center mt-2 text-xs md:text-xl lg:text-2xl;
+  @apply text-center mt-2 font-inter text-xs md:text-xl;
 }
 
 .faq-grid {
   @apply grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto;
 }
 .faq-logo {
-  @apply text-2xl text-center p-2 text-white font-extrabold bg-[#479FE6] w-auto h-10 rounded-xl;
+  @apply text-2xl font-inter text-center p-2 text-white font-extrabold bg-[#479FE6] w-auto h-10 rounded-xl;
 }
 .faq-item {
   @apply p-6 flex gap-4;
 }
 
 .faq-question {
-  @apply text-xl font-bold text-blue-400 mb-4;
+  @apply text-xl  font-inter font-bold text-blue-400 mb-4;
 }
 
 .faq-answer {
-  @apply text-base;
+  @apply text-base font-inter text-[#9CA3AF];
 }
