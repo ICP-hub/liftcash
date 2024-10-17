@@ -28,7 +28,7 @@ const BlogSection = () => {
   ];
 
   return (
-    <section className="blog-section-main">
+    <section className="blog-section-main" id="blog">
       <div className="text-center">
         <h1 className="section-title-h1">Our Blogs</h1>
         <h2 className="section-title-h2">Our Recent News</h2>

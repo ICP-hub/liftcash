@@ -9,7 +9,7 @@ const HeroSection = () => {
     navigate("/signup");
   };
   return (
-    <div className="hero-section-main-div">
+    <div className="hero-section-main-div" id="home">
       {/* Top Image */}
       <div className="hero-section-top-img-div">
         <img

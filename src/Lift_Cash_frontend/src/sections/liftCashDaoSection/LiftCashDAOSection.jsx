@@ -2,7 +2,7 @@ import "./LiftCashDAOSection.css"; // Import the CSS file
 
 const LiftCashDAOSection = () => {
   return (
-    <section className="dao-section">
+    <section className="dao-section" id="dao">
       <div className="dao-content">
         <div className="dao-text">
           <h1 className="dao-title">Lift Cash Economic DAO</h1>

@@ -1,36 +1,25 @@
-type AuditLog = record {
-  action : text;
-  user : text;
-  timestamp : nat64;
-  details : text;
-};
-type Proposal = record {
-  id : nat64;
-  hash : text;
-  ratified : bool;
-  description : text;
-  expiration : nat64;
-  votes_for : nat64;
-  executed : bool;
-  votes_against : nat64;
-};
 type Result = variant { Ok; Err : text };
-type Result_1 = variant { Ok : nat64; Err : text };
-type Result_2 = variant { Ok : vec AuditLog; Err : text };
-type Result_3 = variant { Ok : Proposal; Err : text };
-type Result_4 = variant { Ok : vec Proposal; Err : text };
-service : {
-  assign_role : (text, text) -> (Result);
-  create_proposal : (text, nat64) -> (Result_1);
-  execute_proposal : (nat64) -> (Result);
-  get_audit_logs : () -> (Result_2) query;
-  get_caller : () -> (text) query;
-  get_proposal : (nat64) -> (Result_3) query;
-  get_proposal_history : () -> (Result_4) query;
-  initialize : () -> ();
-  list_proposals : () -> (Result_4) query;
-  ratify_proposal : (nat64) -> (Result);
-  remove_role : (text, text) -> (Result);
-  vote : (nat64, bool) -> (Result);
-  withdraw_proposal : (nat64) -> (Result);
+type SurveyResponse = variant {
+  PercentageSlider : nat8;
+  MultipleChoice : text;
+};
+type VoteResponse = variant { PercentageVote : nat8 };
+service : () -> {
+  calculate_total_claim : (text) -> (opt nat8) query;
+  get_active_user_ids : () -> (vec text) query;
+  get_average_votes : () -> (vec record { text; VoteResponse }) query;
+  get_historical_survey_responses : (text) -> (
+      vec vec record { text; SurveyResponse },
+    ) query;
+  get_survey_results : () -> (
+      vec record { text; nat8 },
+      vec record { text; text },
+    ) query;
+  get_weekly_survey_results : (nat64) -> (
+      opt record { vec record { text; nat8 }; vec record { text; text } },
+    ) query;
+  start_new_week : () -> ();
+  submit_ratification : (text, bool) -> (Result);
+  submit_survey : (text, vec record { text; SurveyResponse }) -> (Result);
+  submit_vote : (text, vec record { text; VoteResponse }) -> (Result);
 }

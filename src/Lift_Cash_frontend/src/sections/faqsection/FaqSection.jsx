@@ -39,7 +39,7 @@ const FaqSection = () => {
   ];
 
   return (
-    <div className="faq-container">
+    <div className="faq-container" id="faq">
       <img src={shape4} alt="shape4" className="pl-4" />
       <h2 className="faq-title">FAQ</h2>
       <h3 className="faq-subtitle">Your Questions Answered</h3>

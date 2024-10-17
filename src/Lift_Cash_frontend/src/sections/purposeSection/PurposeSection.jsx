@@ -55,7 +55,7 @@ const PurposeSection = () => {
   ];
 
   return (
-    <section className="purpose-section">
+    <section className="purpose-section" id="purpose"> 
       <h3 className="purpose-title">Purpose</h3>
       <h1 className="purpose-heading">Main Purpose Of Lift Cash</h1>
       <p className="purpose-subheading">
