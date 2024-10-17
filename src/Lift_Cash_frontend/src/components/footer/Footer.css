@@ -22,7 +22,7 @@
   @apply text-3xl font-bold pb-5 w-14;
 }
 .footer-social-icons {
-  @apply flex space-x-4;
+  @apply flex space-x-4 pt-2;
 }
 .social-icon {
   @apply text-2xl;
