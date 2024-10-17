@@ -1,44 +1,24 @@
-import { useState } from "react";
-import { Lift_Cash_backend } from "declarations/Lift_Cash_backend";
-import { AuthClient } from "@dfinity/auth-client";
-import {
-  canisterId,
-  createActor,
-} from "../../../declarations/Lift_Cash_backend/index.js";
-import { HttpAgent } from "@dfinity/agent";
 import { useNavigate } from "react-router-dom";
+import { useAuthClient } from "../utils/useAuthClient.jsx";
+import icpLogo from "../assets/images/ICP.png"
 
 export default function AuthComponent({ closeModal }) {
-  const [actor, setActor] = useState(Lift_Cash_backend);
   const navigate = useNavigate();
+  const {login}=useAuthClient();
 
   async function authenticate() {
     try {
-      const authclient = await AuthClient.create({});
-      authclient.login({
-        identityProvider:
-          process.env.DFX_NETWORK === "ic"
-            ? "https://identity.ic0.app"
-            : `http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943`,
-
-        onSuccess: () => {
-          closeModal();
-          const agent = new HttpAgent({ identity: authclient.getIdentity() });
-          let actor = createActor(process.env.CANISTER_ID_LIFT_CASH_BACKEND, {
-            agent: agent,
-          });
-          setActor(actor);
-          console.log("Authenticated successfully");
-          navigate("/home");
-        },
-        onError:(e)=>{
-          console.log("error in authentication")
-          console.log(e);
-        }
-      });
-    } catch (err) {
-      console.log(err);
+      let resp = await login();
+      console.log("login resp : ", resp)
+      if(resp){
+        closeModal();
+        console.log("Authenticated successfully");
+        navigate("/activities");
+      }
+    } catch (error) {
+      console.error("Error : ", error)
     }
+    
   }
 
   return (
@@ -49,7 +29,7 @@ export default function AuthComponent({ closeModal }) {
           authenticate();
         }}
       >
-        <img src="favicon.ico" alt="" srcset="" />
+        <img src={icpLogo} alt="icp" className="w-12 rounded-full m-1"/>
         Connect with Internet Identity
       </button>
     </div>

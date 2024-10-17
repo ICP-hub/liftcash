@@ -10,9 +10,21 @@ import {
 import { FiActivity } from "react-icons/fi";
 import AnimationBtn from "../animationBtn/AnimationBtn";
 import { Link } from "react-router-dom";
+import { useAuthClient } from "../../utils/useAuthClient";
+import { useNavigate } from "react-router-dom";
+
 
 const HeaderAfterAuth = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuthClient();
+  const navigate = useNavigate();
+
+
+  const Logout =()=>{
+    logout();
+    navigate("/")
+  }
+
   return (
     <div className="header">
       {/* Left Side - Hamburger Icon */}
@@ -24,7 +36,7 @@ const HeaderAfterAuth = () => {
       <div className="right-content">
         <span>v0.6.6</span>
         <span>shadabquad</span>
-        <button className="logout-button">Logout</button>
+        <button className="logout-button" onClick={Logout}>Logout</button>
       </div>
 
       <div

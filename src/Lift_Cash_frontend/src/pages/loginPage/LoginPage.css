@@ -1,25 +1,25 @@
 .login-main-conatiner {
-  @apply min-h-screen bg-primary flex flex-col items-center justify-center text-center;
+  @apply min-h-screen bg-[#d5f2ff] flex flex-col items-center justify-center text-center; 
 }
 
 .login-logo-div {
   @apply mb-8;
 }
 .login-logo-img {
-  @apply w-24 mx-24 rounded-full;
+  @apply w-28 mx-24 mt-20
 }
 .login-title-h1 {
-  @apply text-3xl font-bold text-blue-700;
+  @apply text-3xl font-bold text-black;
 }
 
 .login-title-h2 {
-  @apply text-6xl font-bold text-blue-400 mt-2;
+  @apply text-4xl font-bold text-primary mt-2;
 }
 .login-subtext-p {
-  @apply mt-4 text-lg text-gray-700;
+  @apply mt-4 text-xl text-black font-semibold;
 }
 .login-btn {
-  @apply mt-6 px-8 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-semibold hover:bg-blue-50;
+  @apply mt-6 px-20 py-4 bg-white text-primary text-2xl border border-2 border-primary rounded-lg font-bold hover:bg-blue-50;
 }
 .login-additional-info {
   @apply mt-6 text-gray-500;
@@ -33,11 +33,11 @@
 }
 
 .login-bottom-img {
-  @apply w-56 h-36;
+  @apply min-w-[40vw] h-40 bg-cover
 }
 
 .login-toggle-switch-main {
-  @apply flex items-center mt-10;
+  @apply flex items-center my-10;
 }
 .login-toggle-switch-lable {
   @apply flex items-center space-x-3;
@@ -48,9 +48,9 @@
 }
 
 .login-bottom-span {
-  @apply text-gray-600;
+  @apply text-black font-normal;
 }
 
 .login-version-text {
-  @apply absolute top-4 right-4 text-gray-500 text-sm;
+  @apply fixed top-4 right-4 text-gray-500 text-sm;
 }

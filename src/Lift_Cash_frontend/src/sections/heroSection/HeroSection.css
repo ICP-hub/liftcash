@@ -3,10 +3,10 @@
 }
 
 .hero-section-top-img-div{
-  @apply w-full flex justify-center items-center mx-auto mt-20
+  @apply w-full min-h-[250px] flex justify-center items-center mx-auto mt-20
 }
 .hero-section-top-img {
-  @apply w-[78%] min-h-fit object-cover object-center
+  @apply w-[78%] object-cover object-center
 }
 
 .hero-text-section-div {
