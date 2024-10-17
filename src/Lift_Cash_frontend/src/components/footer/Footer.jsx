@@ -1,7 +1,7 @@
 import "./Footer.css"; // Import your custom Tailwind CSS file
 import { FaFacebookF, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 import { FaTelegram } from "react-icons/fa";
-import { SVG } from "../../assets/images/index";
+import logo from "../../assets/images/logo.png";
 import shape1 from "../../assets/shape-1.svg";
 import shape3 from "../../assets/shape-3.svg";
 import shape2 from "../../assets/shape-2.svg";
@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="footer-first-container">
         {/* Lift Cash Logo and Description */}
         <div className="footer-main-logo">
-          <img src={SVG.logo} className="footer-logo" />
+          <img src={logo} className="footer-logo" />
           <p className="footer-logo-description">
             We represent economic <br />
             freedom through democracy.
@@ -169,8 +169,10 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className=" footer-bottom-container">
-        <p>© 2024 Lift Cash</p>
-        <p>Website Hosted on ICP, powered by Juno</p>
+        <p className="footer-bottom-items">© 2024 Lift Cash</p>
+        <p className="footer-bottom-items">
+          Website Hosted on ICP, powered by Juno
+        </p>
       </div>
       <img src={shape2} alt="shape2" className="footer-shape-image-top-left" />
     </footer>
