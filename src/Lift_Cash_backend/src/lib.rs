@@ -14,6 +14,7 @@ use std::collections::HashSet;
 enum SurveyResponse {
     PercentageSlider(u8),
     MultipleChoice(String),
+    Dropdown(Vec<String>)
 }
 
 #[derive(CandidType, Deserialize, Clone, PartialEq, Eq, Hash)]
@@ -45,9 +46,7 @@ struct VotingSystem {
     last_week_majority_vote: VoteData,
     last_week_ratification: HashMap<String, bool>,
     weekly_participation: HashMap<String, UserClaim>,
-    historical_survey_responses: HashMap<String, SurveyData>,
-    historical_voting_responses: HashMap<u64, HashMap<String, VoteData>>,
-    weekly_survey_results: HashMap<u64, (Vec<(String, u8)>, Vec<(String, String)>)>,
+    weekly_survey_results: HashMap<u64, (Vec<(String, u8)>, Vec<(String, String)>,Vec<(String, String)>)>,
 }
 
 const STAGE_DURATION: u64 = 2 * 24 * 60 * 60 + 8 * 60 * 60; // 2 days and 8 hours in seconds
@@ -66,20 +65,11 @@ impl VotingSystem {
             last_week_majority_vote: HashMap::new(),
             last_week_ratification: HashMap::new(),
             weekly_participation: HashMap::new(),
-            historical_survey_responses: HashMap::new(),
-            historical_voting_responses: HashMap::new(),
             weekly_survey_results: HashMap::new(),
         }
     }
 
     fn start_new_week(&mut self) {
-        for (user_id, survey_data) in &self.survey_responses {
-            self.historical_survey_responses
-                .entry(user_id.clone())
-                .or_insert_with(Vec::new)
-                .extend(survey_data.clone());
-        }
-        self.historical_voting_responses.insert(self.current_week, self.voting_responses.clone());
     
         self.last_week = self.current_week;
         self.last_week_majority_vote = self.calculate_average_votes();
@@ -87,18 +77,19 @@ impl VotingSystem {
     
         let mut weekly_results: Vec<(String, u8)> = Vec::new();
         let mut weekly_mcq_results: Vec<(String, String)> = Vec::new();
+        let mut weekly_dropdown_results: Vec<(String, String)> = Vec::new();
+
     
-        // Calculate survey results here before modifying self
-        let result = self.calculate_survey_results(self.current_week);
-        weekly_results.extend(result.0);
-        weekly_mcq_results.extend(result.1);
+        // // Calculate survey results here before modifying self
+        // let result = self.calculate_survey_results(self.current_week);
+        // weekly_results.extend(result.0);
+        // weekly_mcq_results.extend(result.1);
+        // weekly_dropdown_results.extend(result.2);
     
-        self.weekly_survey_results.insert(self.current_week, (weekly_results, weekly_mcq_results));
+        self.weekly_survey_results.insert(self.current_week, (weekly_results, weekly_mcq_results,weekly_dropdown_results));
     
         self.current_week += 1;
         self.iteration_count += 1;
-        self.participation_count.clear();
-        self.weekly_participation.clear();
     }
     
 
@@ -119,14 +110,10 @@ impl VotingSystem {
         self.participation_count.entry(0).or_insert(0);
         *self.participation_count.get_mut(&0).unwrap() += 1;
 
-        self.historical_survey_responses
-            .entry(user_id.to_string())
-            .or_insert_with(Vec::new)
-            .push(answers.clone());
 
         self.weekly_participation.entry(user_id.to_string()).and_modify(|claim| {
             claim.has_surveyed = true;
-            claim.claim_percentage += 20;
+            claim.claim_percentage+=20;
         }).or_insert(UserClaim {
             has_surveyed: true,
             has_voted: false,
@@ -144,14 +131,9 @@ impl VotingSystem {
         self.participation_count.entry(1).or_insert(0);
         *self.participation_count.get_mut(&1).unwrap() += 1;
 
-        self.historical_voting_responses
-            .entry(self.current_week)
-            .or_insert_with(HashMap::new)
-            .insert(user_id.to_string(), votes.clone());
-
         self.weekly_participation.entry(user_id.to_string()).and_modify(|claim| {
             claim.has_voted = true;
-            claim.claim_percentage += 70;
+            claim.claim_percentage+=70;
         }).or_insert(UserClaim {
             has_surveyed: false,
             has_voted: true,
@@ -165,31 +147,28 @@ impl VotingSystem {
     fn submit_ratification(&mut self, user_id: &str, _approve: bool) -> Result<(), String> {
         self.check_and_close_stage();
         if let Some(claim) = self.weekly_participation.get_mut(user_id) {
-            if !claim.has_voted {
-                return Err("User not eligible for ratification vote".to_string());
+            if claim.has_voted {
+                claim.has_ratified = true;
+                claim.claim_percentage+=10;
+                return Ok(())
+            }else{
+                return  Err("User not eligible for ratification vote".to_string());
             }
-
-            claim.has_ratified = true;
-            if claim.has_surveyed {
-                claim.claim_percentage = 100;
-            } else {
-                claim.claim_percentage += 10;
-            }
-            claim.claim_percentage += 10;
-
-            Ok(())
         } else {
             Err("User not eligible for ratification vote".to_string())
         }
     }
 
-    fn calculate_survey_results(&mut self, current_week: u64) -> (Vec<(String, u8)>, Vec<(String, String)>) {
+    fn calculate_survey_results(&mut self, current_week: u64) -> (Vec<(String, u8)>, Vec<(String, String)>, Vec<(String, String)>) {
         let mut average_responses = Vec::new();
         let mut majority_responses = Vec::new();
-
+        let mut dropdown_responses = Vec::new();
+    
         let mut average_data: HashMap<String, (u32, u32)> = HashMap::new();
         let mut majority_data: HashMap<String, HashMap<String, usize>> = HashMap::new();
-
+        let mut dropdown_data: HashMap<String, HashMap<String, usize>> = HashMap::new(); // Separate data for Dropdown
+    
+        // Iterate through all survey responses
         for (_user_id, answer_vec) in &self.survey_responses {
             for answers in answer_vec {
                 for (question_id, response) in answers {
@@ -203,26 +182,44 @@ impl VotingSystem {
                             let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
                             *entry.entry(choice.clone()).or_insert(0) += 1;
                         }
+                        SurveyResponse::Dropdown(ref options) => {
+                            let entry = dropdown_data.entry(question_id.clone()).or_insert(HashMap::new());
+                            for option in options {
+                                *entry.entry(option.clone()).or_insert(0) += 1;  // Count each selected option
+                            }
+                        }
                     }
                 }
             }
         }
-
+    
+        // Calculate average responses for slider questions
         for (question_id, (total, count)) in average_data {
             let average = total as u8 / count as u8;
             average_responses.push((question_id, average));
         }
-
+    
+        // Calculate majority responses for MultipleChoice questions
         for (question_id, counts) in majority_data {
             if let Some((majority_response, _)) = counts.iter().max_by_key(|entry| entry.1) {
                 majority_responses.push((question_id, majority_response.clone()));
             }
         }
-
-        self.weekly_survey_results.insert(current_week, (average_responses.clone(), majority_responses.clone()));
-
-        (average_responses, majority_responses)
+    
+        // Calculate most selected options for Dropdown questions
+        for (question_id, dropdown_counts) in dropdown_data {
+            if let Some((most_selected_option, _)) = dropdown_counts.iter().max_by_key(|entry| entry.1) {
+                dropdown_responses.push((question_id, most_selected_option.clone()));
+            }
+        }
+    
+        // Store the results for the current week with three sets of data (average, majority, and dropdown responses)
+        self.weekly_survey_results.insert(current_week, (average_responses.clone(), majority_responses.clone(), dropdown_responses.clone()));
+    
+        // Return all three sets of responses
+        (average_responses, majority_responses, dropdown_responses)
     }
+    
 
     fn calculate_average_votes(&self) -> HashMap<String, VoteResponse> {
         let mut average_responses: HashMap<String, (u32, u32)> = HashMap::new();
@@ -269,21 +266,21 @@ impl VotingSystem {
         }
     }
 
-    fn get_active_users(&self) -> Vec<String> {
-        self.weekly_participation.iter()
-            .filter_map(|(user_id, claim)| {
-                if claim.has_surveyed && claim.has_voted && claim.has_ratified {
-                    Some(user_id.clone())
-                } else {
-                    None
-                }
-            })
-            .collect()
-    }
+    // fn get_active_users(&self) -> Vec<String> {
+    //     self.weekly_participation.iter()
+    //         .filter_map(|(user_id, claim)| {
+    //             if claim.has_surveyed && claim.has_voted && claim.has_ratified {
+    //                 Some(user_id.clone())
+    //             } else {
+    //                 None
+    //             }
+    //         })
+    //         .collect()
+    // }
 
-    fn get_weekly_survey_results(&self, week: u64) -> Option<&(Vec<(String, u8)>, Vec<(String, String)>)> {
-        self.weekly_survey_results.get(&week)
-    }
+    // fn get_weekly_survey_results(&self, week: u64) -> Option<&(Vec<(String, u8)>, Vec<(String, String)>)> {
+    //     self.weekly_survey_results.get(&week)
+    // }
 }
 
 lazy_static! {
@@ -327,7 +324,7 @@ fn calculate_total_claim(user_id: String) -> Option<u8> {
 }
 
 #[query]
-fn get_survey_results() -> (Vec<(String, u8)>, Vec<(String, String)>) {
+fn get_survey_results() -> (Vec<(String, u8)>, Vec<(String, String)>, Vec<(String, String)>) {
     let mut voting_system = VOTING_SYSTEM.write().expect("Failed to acquire write lock");
     let current_week = voting_system.current_week;
     voting_system.calculate_survey_results(current_week)
@@ -339,20 +336,14 @@ fn get_average_votes() -> HashMap<String, VoteResponse> {
     voting_system.calculate_average_votes()
 }
 
-#[query]
-fn get_active_user_ids() -> Vec<String> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    voting_system.get_active_users()
-}
+// #[query]
+// fn get_active_user_ids() -> Vec<String> {
+//     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
+//     voting_system.get_active_users()
+// }
 
 #[query]
-fn get_historical_survey_responses(user_id: String) -> Vec<HashMap<String, SurveyResponse>> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    voting_system.historical_survey_responses.get(&user_id).cloned().unwrap_or_else(Vec::new)
-}
-
-#[query]
-fn get_weekly_survey_results(week: u64) -> Option<(Vec<(String, u8)>, Vec<(String, String)>)> {
+fn get_weekly_survey_results(week: u64) -> Option<(Vec<(String, u8)>, Vec<(String, String)>, Vec<(String, String)>)>{
     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
     voting_system.weekly_survey_results.get(&week).cloned()
 }

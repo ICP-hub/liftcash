@@ -2,21 +2,23 @@ type Result = variant { Ok; Err : text };
 type SurveyResponse = variant {
   PercentageSlider : nat8;
   MultipleChoice : text;
+  Dropdown : vec text;
 };
 type VoteResponse = variant { PercentageVote : nat8 };
 service : () -> {
   calculate_total_claim : (text) -> (opt nat8) query;
-  get_active_user_ids : () -> (vec text) query;
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
-  get_historical_survey_responses : (text) -> (
-      vec vec record { text; SurveyResponse },
-    ) query;
   get_survey_results : () -> (
       vec record { text; nat8 },
       vec record { text; text },
+      vec record { text; text },
     ) query;
   get_weekly_survey_results : (nat64) -> (
-      opt record { vec record { text; nat8 }; vec record { text; text } },
+      opt record {
+        vec record { text; nat8 };
+        vec record { text; text };
+        vec record { text; text };
+      },
     ) query;
   start_new_week : () -> ();
   submit_ratification : (text, bool) -> (Result);
