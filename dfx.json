@@ -1,20 +1,31 @@
 {
   "canisters": {
-    "Lift_Cash_backend": {
-      "candid": "src/Lift_Cash_backend/Lift_Cash_backend.did",
-      "package": "Lift_Cash_backend",
-      "type": "rust"
+    "internet_identity": {
+      "type": "pull",
+      "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
     },
     "Lift_Cash_frontend": {
-      "dependencies": ["Lift_Cash_backend"],
+      "dependencies": ["Community_Backend"],
       "source": ["src/Lift_Cash_frontend/dist"],
       "type": "assets",
       "workspace": "Lift_Cash_frontend"
     },
-    "internet_identity": {
-      "type": "pull",
-      "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+    "Community_Backend": {
+      "candid": "src/Community_Backend/Community_Backend.did",
+      "package": "Community_Backend",
+      "type": "rust"
+    },
+    "Economy_Backend": {
+      "candid": "src/Economy_Backend/Economy_Backend.did",
+      "package": "Economy_Backend",
+      "type": "rust"
+    },
+    "User_Backend": {
+      "candid": "src/User_Backend/User_Backend.did",
+      "package": "User_Backend",
+      "type": "rust"
     }
+    
   },
   "defaults": {
     "build": {

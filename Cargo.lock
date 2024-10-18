@@ -3,7 +3,37 @@
 version = 3
 
 [[package]]
-name = "Lift_Cash_backend"
+name = "Community_Backend"
+version = "0.1.0"
+dependencies = [
+ "candid",
+ "ic-cdk",
+ "ic-cdk-macros",
+ "ic-cdk-timers",
+ "lazy_static",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "sha2 0.9.9",
+]
+
+[[package]]
+name = "Economy_Backend"
+version = "0.1.0"
+dependencies = [
+ "candid",
+ "ic-cdk",
+ "ic-cdk-macros",
+ "ic-cdk-timers",
+ "lazy_static",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "sha2 0.9.9",
+]
+
+[[package]]
+name = "User_Backend"
 version = "0.1.0"
 dependencies = [
  "candid",

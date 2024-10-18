@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent } from '@dfinity/agent';
-import { createActor } from '../../../declarations/Lift_Cash_backend';
+import { createActor } from '../../../declarations/Community_Backend';
 
 const AuthContext = createContext();
 

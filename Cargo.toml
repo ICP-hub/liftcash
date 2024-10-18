@@ -1,5 +1,6 @@
 [workspace]
-members = [
-    "src/Lift_Cash_backend"
-]
+members = [ 
+    "src/Community_Backend",
+    "src/Economy_Backend",
+    "src/User_Backend"]
 resolver = "2"
