@@ -70,7 +70,8 @@ impl VotingSystem {
     }
 
     fn start_new_week(&mut self) {
-    
+        
+        let current_week =1;
         self.last_week = self.current_week;
         self.last_week_majority_vote = self.calculate_average_votes();
         self.last_week_ratification = self.ratification_responses.clone();
@@ -80,16 +81,18 @@ impl VotingSystem {
         let mut weekly_dropdown_results: Vec<(String, String)> = Vec::new();
 
     
-        // // Calculate survey results here before modifying self
-        // let result = self.calculate_survey_results(self.current_week);
-        // weekly_results.extend(result.0);
-        // weekly_mcq_results.extend(result.1);
-        // weekly_dropdown_results.extend(result.2);
+        // Calculate survey results here before modifying self
+        let result = self.calculate_survey_results(self.current_week);
+        weekly_results.extend(result.0);
+        weekly_mcq_results.extend(result.1);
+        weekly_dropdown_results.extend(result.2);
+        
     
         self.weekly_survey_results.insert(self.current_week, (weekly_results, weekly_mcq_results,weekly_dropdown_results));
     
         self.current_week += 1;
         self.iteration_count += 1;
+
     }
     
 
@@ -265,22 +268,6 @@ impl VotingSystem {
             None
         }
     }
-
-    // fn get_active_users(&self) -> Vec<String> {
-    //     self.weekly_participation.iter()
-    //         .filter_map(|(user_id, claim)| {
-    //             if claim.has_surveyed && claim.has_voted && claim.has_ratified {
-    //                 Some(user_id.clone())
-    //             } else {
-    //                 None
-    //             }
-    //         })
-    //         .collect()
-    // }
-
-    // fn get_weekly_survey_results(&self, week: u64) -> Option<&(Vec<(String, u8)>, Vec<(String, String)>)> {
-    //     self.weekly_survey_results.get(&week)
-    // }
 }
 
 lazy_static! {
@@ -335,12 +322,6 @@ fn get_average_votes() -> HashMap<String, VoteResponse> {
     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
     voting_system.calculate_average_votes()
 }
-
-// #[query]
-// fn get_active_user_ids() -> Vec<String> {
-//     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-//     voting_system.get_active_users()
-// }
 
 #[query]
 fn get_weekly_survey_results(week: u64) -> Option<(Vec<(String, u8)>, Vec<(String, String)>, Vec<(String, String)>)>{
