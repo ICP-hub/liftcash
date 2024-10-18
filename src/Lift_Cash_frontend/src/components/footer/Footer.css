@@ -1,5 +1,5 @@
 .footer-main-conatiner {
-  @apply bg-[#090E34] py-10 text-white  z-10 relative lg:h-[43vh];
+  @apply bg-[#090E34] py-10 text-white  z-10 relative h-[43vh];
 }
 .footer-shape-image-top {
   @apply absolute top-0 left-0 lg:h-[32vh] object-cover z-[-1];
@@ -52,7 +52,7 @@
 }
 
 .footer-bottom-container {
-  @apply mt-8 text-[#CED4DA] font-inter font-medium  border-t border-[#3B4261]   text-xs md:text-sm  flex justify-between p-4;
+  @apply mt-12 text-[#CED4DA] font-inter font-medium  border-t border-[#3B4261]  text-xs md:text-sm  flex justify-between p-4 bg-[#090E34]
 }
 .footer-bottom-items {
   @apply md:pt-4  lg:ml-36 lg:mr-20 md:ml-10 md:mr-10;

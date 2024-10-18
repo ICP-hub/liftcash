@@ -1,6 +1,7 @@
 import React from "react";
 import "./PurposeSection.css"; // Import the CSS file
 import { purposes } from "../../assets/data/Purpose";
+import shape4 from "../../assets/images/shape-4.svg";
 
 const PurposeSection = () => {
   return (

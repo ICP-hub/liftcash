@@ -5,11 +5,14 @@ import "./LoginPage.css";
 import { useAuthClient } from "../../utils/useAuthClient";
 import logo from "../../assets/images/logo.png"
 import svg from "../../assets/images/SVG.png"
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   // State to manage toggle switch
   const [isAnimationEnabled, setIsAnimationEnabled] = useState(false);
   const { isAuthenticated, logout } = useAuthClient();
+
+  const navigate = useNavigate();
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -50,7 +53,10 @@ const LoginPage = () => {
 
       {
         isAuthenticated ?
-          <button onClick={logout} className="login-btn">
+          <button onClick={()=>{
+            logout();
+            navigate("/")
+          }} className="login-btn">
             Logout
           </button>
           :
