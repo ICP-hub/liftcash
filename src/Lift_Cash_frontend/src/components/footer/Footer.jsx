@@ -2,9 +2,9 @@ import "./Footer.css"; // Import your custom Tailwind CSS file
 import { FaFacebookF, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 import { FaTelegram } from "react-icons/fa";
 import logo from "../../assets/images/logo.png";
-import shape1 from "../../assets/shape-1.svg";
-import shape3 from "../../assets/shape-3.svg";
-import shape2 from "../../assets/shape-2.svg";
+import shape1 from "../../assets/images/shape-1.svg";
+import shape3 from "../../assets/images/shape-3.svg";
+import shape2 from "../../assets/images/shape-2.svg";
 
 const Footer = () => {
   return (

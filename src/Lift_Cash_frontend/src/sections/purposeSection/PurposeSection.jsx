@@ -1,6 +1,5 @@
 import React from "react";
 import "./PurposeSection.css"; // Import the CSS file
-import shape4 from "../../assets/shape-4.svg";
 
 const PurposeSection = () => {
   const purposes = [
@@ -55,7 +54,7 @@ const PurposeSection = () => {
   ];
 
   return (
-    <section className="purpose-section" id="purpose"> 
+    <section className="purpose-section" id="purpose">
       <h3 className="purpose-title">Purpose</h3>
       <h1 className="purpose-heading">Main Purpose Of Lift Cash</h1>
       <p className="purpose-subheading">

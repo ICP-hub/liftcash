@@ -1,7 +1,7 @@
 import "./FaqSection.css";
 import { GoQuestion } from "react-icons/go";
-import shape5 from "../../assets/shape-5.svg";
-import shape4 from "../../assets/shape-4.svg";
+import shape5 from "../../assets/images/shape-5.svg";
+import shape4 from "../../assets/images/shape-4.svg";
 
 const FaqSection = () => {
   const faqs = [
