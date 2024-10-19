@@ -1,8 +1,8 @@
 .claim-assets-logo {
-  @apply mt-5 text-7xl  font-bold  flex justify-center items-center;
+  @apply mt-5   w-11;
 }
 .claim-assets-tagline {
-  @apply mt-5  flex justify-center items-center;
+  @apply mt-5   flex justify-center items-center;
 }
 
 .claim-assets-tagline-icon {

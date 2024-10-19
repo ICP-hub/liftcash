@@ -1,5 +1,6 @@
 import { IoIosArrowRoundDown } from "react-icons/io";
-import { HiOutlineCurrencyRupee } from "react-icons/hi";
+import logo from "../../assets/images/logo.png";
+
 import "./DashBoardHead.css";
 
 const DashBoardHead = () => {
@@ -7,7 +8,7 @@ const DashBoardHead = () => {
     <>
       <div className="claim-assets-logo ">
         {/* logo */}
-        <HiOutlineCurrencyRupee />
+        <img src={logo} alt="" />
       </div>
       <div className="claim-assets-tagline">
         <p>Weekly Lift Cash price xUSDC $000.456 </p>
