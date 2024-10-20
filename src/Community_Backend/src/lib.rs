@@ -32,8 +32,6 @@ impl<'de> ArgumentDecoder<'de> for StableMemoryState {
     }
 }
 
-
-
 #[derive(CandidType, Deserialize, Clone, PartialEq, Eq, Hash)]
 enum VoteResponse {
     PercentageVote(u8),
@@ -60,10 +58,11 @@ struct VotingSystem {
     survey_responses: HashMap<String, SurveyData>,
     voting_responses: HashMap<String, VoteData>,
     ratification_responses: HashMap<String, bool>,
+    ratification_results: HashMap<String, u64>,
     weekly_participation: HashMap<String, UserClaim>, // Ensure this is defined
     weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
     stable_memory_state: StableMemoryState,
-}
+}      
 
 
 const STAGE_DURATION: u64 = 2 * 24 * 60 * 60 + 8 * 60 * 60; // 2 days and 8 hours in seconds
@@ -79,6 +78,7 @@ impl VotingSystem {
             survey_responses: HashMap::new(),
             voting_responses: HashMap::new(),
             ratification_responses: HashMap::new(),
+            ratification_results: HashMap::new(),
             weekly_participation: HashMap::new(), // Initialize to match type
             weekly_survey_results: HashMap::new(), // Initialize to match type
             stable_memory_state: StableMemoryState {
@@ -94,15 +94,16 @@ impl VotingSystem {
     }
 
     fn start_new_week(&mut self) {
-        
+        println!("Starting a new week...");
         self.last_week = self.current_week;
         let results = self.calculate_survey_results(self.last_week);
+        println!("Calculated results for week {}: {:?}", self.last_week, results);
         self.weekly_survey_results.insert(self.last_week, results);
         self.current_week += 1;
         self.iteration_count += 1;
+        self.save_to_stable_memory();
         self.survey_responses.clear();
-        self.voting_responses.clear();
-        self.save_to_stable_memory();  
+        self.voting_responses.clear();  
     }
     
     fn check_and_close_stage(&mut self) {
@@ -160,6 +161,10 @@ impl VotingSystem {
         self.check_and_close_stage();
         if let Some(claim) = self.weekly_participation.get_mut(user_id) {
             if claim.has_voted {
+                self.ratification_responses.insert(user_id.to_string(),_approve);
+                // Update the ratification results count
+                let vote_key = if _approve { "Yes" } else { "No" };
+                *self.ratification_results.entry(vote_key.to_string()).or_insert(0) += 1;
                 claim.has_ratified = true;
                 claim.claim_percentage+=10;
                 return Ok(())
@@ -171,120 +176,6 @@ impl VotingSystem {
         }
     }
 
-    // fn calculate_survey_results(&mut self, current_week: u64) -> Vec<(String, String)> {
-    //     let mut results = Vec::new(); // Store results as tuples of (question_id, result)
-    
-    //     let mut average_data: HashMap<String, (u32, u32)> = HashMap::new(); // (total, count)
-    //     let mut majority_data: HashMap<String, HashMap<String, usize>> = HashMap::new(); // Counts for choices
-    
-    //     // Iterate through all survey responses
-    //     for (_user_id, answer_vec) in &self.survey_responses {
-    //         for answers in answer_vec {
-    //             for (question_id, response) in answers {
-    //                 match response {
-    //                     SurveyResponse::PercentageSlider(value) => {
-    //                         let entry = average_data.entry(question_id.clone()).or_insert((0, 0));
-    //                         entry.0 += *value as u32; // Accumulate total
-    //                         entry.1 += 1; // Increment count
-    //                     }
-    //                     SurveyResponse::MultipleChoice(ref choice) => {
-    //                         let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
-    //                         *entry.entry(choice.clone()).or_insert(0) += 1; // Count each choice
-    //                     }
-    //                     SurveyResponse::Dropdown(ref options) => {
-    //                         let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
-    //                         for option in options {
-    //                             *entry.entry(option.clone()).or_insert(0) += 1; // Count each selected option
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    
-    //     // Calculate average responses for slider questions
-    //     for (question_id, (total, count)) in average_data {
-    //         if count > 0 {
-    //             let average = total / count; // Calculate average percentage
-    //             results.push((question_id, format!("Average: {}", average))); // Store as "Average: X"
-    //         } else {
-    //             results.push((question_id, format!("Average: N/A"))); // Handle no responses case
-    //         }
-    //     }
-    
-    //     // Calculate majority responses for MultipleChoice and Dropdown questions
-    //     for (question_id, counts) in majority_data {
-    //         if let Some((majority_response, _)) = counts.iter().max_by_key(|entry| entry.1) {
-    //             results.push((question_id, format!("Majority: {}", majority_response))); // Store as "Majority: X"
-    //         } else {
-    //             results.push((question_id, format!("Majority: N/A"))); // Handle no responses case
-    //         }
-    //     }
-    
-    //     // Store the results for the current week
-    //     self.weekly_survey_results.insert(current_week, results.clone());
-    
-    //     // Return the results vector
-    //     results
-    // }
-    
-    // fn calculate_survey_results(&mut self, current_week: u64) -> Vec<(String, String)> {
-    //     let mut results = Vec::new(); // Store results as tuples of (question_id, result)
-    
-    //     let mut average_data: HashMap<String, (u32, u32)> = HashMap::new(); // (total, count)
-    //     let mut majority_data: HashMap<String, HashMap<String, usize>> = HashMap::new(); // Counts for choices
-    
-    //     // Iterate through all survey responses
-    //     for (_user_id, answer_vec) in &self.survey_responses {
-    //         for answers in answer_vec {
-    //             for (question_id, response) in answers {
-    //                 match response {
-    //                     SurveyResponse::PercentageSlider(value) => {
-    //                         let entry = average_data.entry(question_id.clone()).or_insert((0, 0));
-    //                         entry.0 += *value as u32; // Accumulate total
-    //                         entry.1 += 1; // Increment count
-    //                     }
-    //                     SurveyResponse::MultipleChoice(ref choice) => {
-    //                         let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
-    //                         *entry.entry(choice.clone()).or_insert(0) += 1; // Count each choice
-    //                     }
-    //                     SurveyResponse::Dropdown(ref options) => {
-    //                         let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
-    //                         for option in options {
-    //                             *entry.entry(option.clone()).or_insert(0) += 1; // Count each selected option
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    
-    //     // Calculate average responses for slider questions
-    //     for (question_id, (total, count)) in average_data {
-    //         if count > 0 {
-    //             let average = total as f32 / count as f32; // Cast to f32 for accurate division
-    //             results.push((question_id, format!("Average: {:.2}", average))); // Store as "Average: X.XX"
-    //         } else {
-    //             results.push((question_id, format!("Average: N/A"))); // Handle no responses case
-    //         }
-    //     }
-    
-    //     // Calculate majority responses for MultipleChoice and Dropdown questions
-    //     for (question_id, counts) in majority_data {
-    //         if let Some((majority_response, _)) = counts.iter().max_by_key(|entry| entry.1) {
-    //             results.push((question_id, format!("Majority: {}", majority_response))); // Store as "Majority: X"
-    //         } else {
-    //             results.push((question_id, format!("Majority: N/A"))); // Handle no responses case
-    //         }
-    //     }
-    
-    //     // Store the results for the current week
-    //     self.weekly_survey_results.insert(current_week, results.clone());
-    
-    //     // Return the results vector
-    //     results
-    // }
-    
     fn calculate_survey_results(&mut self, current_week: u64) -> Vec<(String, String)> {
         let mut results = Vec::new(); // Store results as tuples of (question_id, result)
     
@@ -456,8 +347,8 @@ fn calculate_total_claim(user_id: String) -> Option<u8> {
 #[query]
 fn get_survey_results() -> Vec<(String, String)> {
     let mut voting_system = VOTING_SYSTEM.write().expect("Failed to acquire write lock"); // Change to write lock
-    let current_week = voting_system.current_week;
-    voting_system.calculate_survey_results(current_week) // Call remains the same
+    let last_week = voting_system.last_week;
+    voting_system.calculate_survey_results(last_week) // Call remains the same
 }
 
 #[query]
@@ -467,11 +358,23 @@ fn get_average_votes() -> HashMap<String, VoteResponse> {
 }
 
 #[query]
+fn get_ratification_results() -> HashMap<String, u64> {
+    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
+    voting_system.ratification_results.clone() // Return a clone of the ratification results
+}
+
+
+#[query]
 fn get_weekly_survey_results(week: u64) -> Option<Vec<(String, String)>> {
     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
     
     // Fetch and clone the results for the specified week
-    voting_system.weekly_survey_results.get(&week).cloned()
+    if let Some(results) = voting_system.weekly_survey_results.get(&week) {
+        Some(results.clone()) // Return a clone of the results for that week
+    } else {
+        None // Return None if the week is not found
+    }
+    // voting_system.weekly_survey_results.get(&week).cloned()
 }
 
 export_candid!();
