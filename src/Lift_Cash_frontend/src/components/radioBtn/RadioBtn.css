@@ -1,0 +1,6 @@
+.radio-option {
+  @apply md:pl-10 pl-5;
+}
+.radio-btn {
+  @apply mr-2 p-4 cursor-pointer;
+}

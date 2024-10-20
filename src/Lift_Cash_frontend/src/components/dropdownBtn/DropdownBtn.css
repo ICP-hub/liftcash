@@ -1,0 +1,13 @@
+.dropdown-main-div {
+  @apply px-10;
+}
+.dropdown-ul {
+  @apply list-disc list-inside mb-4;
+}
+.dropdown-option-main {
+  @apply mb-4;
+}
+
+.dropdown-option {
+  @apply mt-1 p-5 block w-full bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
+}
