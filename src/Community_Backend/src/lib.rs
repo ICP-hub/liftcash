@@ -61,6 +61,8 @@ struct VotingSystem {
     ratification_results: HashMap<String, u64>,
     weekly_participation: HashMap<String, UserClaim>, // Ensure this is defined
     weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
+    weekly_vote_results: HashMap<u64, HashMap<String, VoteResponse>>, // Store vote results per week
+    weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>, 
     stable_memory_state: StableMemoryState,
 }      
 
@@ -70,7 +72,7 @@ const STAGE_DURATION: u64 = 2 * 24 * 60 * 60 + 8 * 60 * 60; // 2 days and 8 hour
 impl VotingSystem {
     fn new() -> Self {
         let mut instance = VotingSystem {
-            current_week: 1,
+            current_week: 0,
             last_week: 0,
             iteration_count: 0,
             participation_count: HashMap::new(),
@@ -81,6 +83,8 @@ impl VotingSystem {
             ratification_results: HashMap::new(),
             weekly_participation: HashMap::new(), // Initialize to match type
             weekly_survey_results: HashMap::new(), // Initialize to match type
+            weekly_vote_results: HashMap::new(), // Store vote results per week
+            weekly_ratification_counts: HashMap::new(), 
             stable_memory_state: StableMemoryState {
                 survey_results: HashMap::new(),
                 vote_results: HashMap::new(),
@@ -94,16 +98,24 @@ impl VotingSystem {
     }
 
     fn start_new_week(&mut self) {
-        println!("Starting a new week...");
         self.last_week = self.current_week;
         let results = self.calculate_survey_results(self.last_week);
-        println!("Calculated results for week {}: {:?}", self.last_week, results);
-        self.weekly_survey_results.insert(self.last_week, results);
+        self.weekly_survey_results.insert(self.last_week, results);// Ensure this function is defined and returns the expected type
+        let vote_results = self.calculate_average_votes(self.last_week);
+        self.weekly_vote_results.insert(self.last_week, vote_results);
+        let ratification_results = self.calculate_ratification_results(self.last_week);
+        self.weekly_ratification_counts.insert(self.last_week, ratification_results);
         self.current_week += 1;
         self.iteration_count += 1;
-        self.save_to_stable_memory();
+        // self.save_to_stable_memory();
         self.survey_responses.clear();
-        self.voting_responses.clear();  
+        self.voting_responses.clear(); 
+        self.ratification_responses.clear(); 
+        for (_user_id, claim) in self.weekly_participation.iter_mut() {
+        claim.has_voted = false;       // Reset voting status
+        claim.has_ratified = false;    // Reset ratification status
+        claim.claim_percentage = 0;    // Reset claim percentage if necessary
+        }
     }
     
     fn check_and_close_stage(&mut self) {
@@ -158,23 +170,34 @@ impl VotingSystem {
     }
 
     fn submit_ratification(&mut self, user_id: &str, _approve: bool) -> Result<(), String> {
-        self.check_and_close_stage();
+        // Check if the current week is valid
+        if self.current_week == 0 {
+            return Err("No current week available".to_string());
+        }
+    
         if let Some(claim) = self.weekly_participation.get_mut(user_id) {
+            // Check if the user has voted in the current week using the mutable reference
             if claim.has_voted {
-                self.ratification_responses.insert(user_id.to_string(),_approve);
+                self.ratification_responses.insert(user_id.to_string(), _approve);
                 // Update the ratification results count
                 let vote_key = if _approve { "Yes" } else { "No" };
                 *self.ratification_results.entry(vote_key.to_string()).or_insert(0) += 1;
+    
+                let week_counts = self.weekly_ratification_counts.entry(self.current_week).or_insert_with(HashMap::new);
+                *week_counts.entry(vote_key.to_string()).or_insert(0) += 1;
+    
                 claim.has_ratified = true;
-                claim.claim_percentage+=10;
-                return Ok(())
-            }else{
-                return  Err("User not eligible for ratification vote".to_string());
+                claim.claim_percentage += 10;
+    
+                return Ok(());
+            } else {
+                return Err("User has not voted in the current week".to_string());
             }
         } else {
             Err("User not eligible for ratification vote".to_string())
         }
     }
+    
 
     fn calculate_survey_results(&mut self, current_week: u64) -> Vec<(String, String)> {
         let mut results = Vec::new(); // Store results as tuples of (question_id, result)
@@ -234,7 +257,9 @@ impl VotingSystem {
     }
     
     
-    fn calculate_average_votes(&self) -> HashMap<String, VoteResponse> {
+    fn calculate_average_votes(&mut self,current_week: u64) -> HashMap<String,VoteResponse> {
+        
+        let mut result: HashMap<String, VoteResponse> = HashMap::new(); 
         let mut average_responses: HashMap<String, (u32, u32)> = HashMap::new();
 
         for (_user_id, user_votes) in &self.voting_responses {
@@ -250,17 +275,24 @@ impl VotingSystem {
         }
 
         
-
-
-        let mut result = HashMap::new();
         for (question_id, (total, count)) in average_responses {
             let average = total as u8 / count as u8;
             let average_vote = VoteResponse::PercentageVote(average);
             result.insert(question_id, average_vote);
         }
 
+        self.weekly_vote_results.insert(current_week, result.clone());
         result
     }
+
+    fn calculate_ratification_results(&self, week: u64) -> HashMap<String, u64> {
+        if let Some(week_results) = self.weekly_ratification_counts.get(&week) {
+            week_results.clone()
+        } else {
+            HashMap::new()
+        }
+    }
+    
 
     fn calculate_total_claim(&self, user_id: &str) -> Option<u8> {
         if let Some(claim) = self.weekly_participation.get(user_id) {
@@ -281,16 +313,16 @@ impl VotingSystem {
             None
         }
     }
-    fn save_to_stable_memory(&self) {
-        let state = StableMemoryState {
-            survey_results: self.weekly_survey_results.clone(),
-            vote_results: self.voting_responses.clone(),
-        };
+    // fn save_to_stable_memory(&self) {
+    //     let state = StableMemoryState {
+    //         survey_results: self.weekly_survey_results.clone(),
+    //         vote_results: self.voting_responses.clone(),
+    //     };
     
-        if let Err(err) = ic_cdk::storage::stable_save((state,)) {
-            ic_cdk::api::print(format!("Error saving to stable memory: {:?}", err));
-        }
-    }
+    //     if let Err(err) = ic_cdk::storage::stable_save((state,)) {
+    //         ic_cdk::api::print(format!("Error saving to stable memory: {:?}", err));
+    //     }
+    // }
     
     fn load_from_stable_memory(&mut self) {
         let stable_state: StableMemoryState = ic_cdk::storage::stable_restore::<StableMemoryState>()
@@ -353,28 +385,61 @@ fn get_survey_results() -> Vec<(String, String)> {
 
 #[query]
 fn get_average_votes() -> HashMap<String, VoteResponse> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    voting_system.calculate_average_votes()
+    let mut voting_system = VOTING_SYSTEM.write().expect("Failed to acquire read lock");
+    let last_week = voting_system.last_week;
+    voting_system.calculate_average_votes(last_week)
 }
 
 #[query]
 fn get_ratification_results() -> HashMap<String, u64> {
     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    voting_system.ratification_results.clone() // Return a clone of the ratification results
+    voting_system.calculate_ratification_results(voting_system.last_week)
 }
 
 
 #[query]
-fn get_weekly_survey_results(week: u64) -> Option<Vec<(String, String)>> {
+fn get_weekly_survey_results() -> Vec<(u64, Vec<(String, String)>)> {
     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    
-    // Fetch and clone the results for the specified week
-    if let Some(results) = voting_system.weekly_survey_results.get(&week) {
-        Some(results.clone()) // Return a clone of the results for that week
-    } else {
-        None // Return None if the week is not found
+
+    // Collect the last 4 weeks of survey results
+    let mut results = Vec::new();
+
+    // Get the week numbers in descending order
+    let mut weeks: Vec<u64> = voting_system.weekly_survey_results.keys().cloned().collect();
+    weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
+
+    // Fetch up to 4 weeks of results
+    for week in weeks.iter().take(4) {
+        if let Some(week_results) = voting_system.weekly_survey_results.get(week) {
+            results.push((*week, week_results.clone()));
+        }
     }
-    // voting_system.weekly_survey_results.get(&week).cloned()
+
+    results // Return the vector of week and corresponding results
+}
+
+#[query]
+fn get_weekly_vote_results() -> HashMap<u64, HashMap<String, VoteResponse>> {
+    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
+
+    // Collect the last 4 weeks of vote results
+    let mut results: HashMap<u64, HashMap<String, VoteResponse>> = HashMap::new();
+    let mut weeks: Vec<u64> = voting_system.weekly_vote_results.keys().cloned().collect();
+    weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
+
+    for week in weeks.iter().take(4) {
+        if let Some(week_results) = voting_system.weekly_vote_results.get(week) {
+            results.insert(*week, week_results.clone());
+        }
+    }
+
+    results
+}
+
+#[query]
+fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
+    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
+    voting_system.weekly_ratification_counts.clone()
 }
 
 export_candid!();

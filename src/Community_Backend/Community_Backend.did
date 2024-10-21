@@ -10,7 +10,15 @@ service : () -> {
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
   get_ratification_results : () -> (vec record { text; nat64 }) query;
   get_survey_results : () -> (vec record { text; text }) query;
-  get_weekly_survey_results : (nat64) -> (opt vec record { text; text }) query;
+  get_weekly_ratification_counts : () -> (
+      vec record { nat64; vec record { text; nat64 } },
+    ) query;
+  get_weekly_survey_results : () -> (
+      vec record { nat64; vec record { text; text } },
+    ) query;
+  get_weekly_vote_results : () -> (
+      vec record { nat64; vec record { text; VoteResponse } },
+    ) query;
   start_new_week : () -> ();
   submit_ratification : (text, bool) -> (Result);
   submit_survey : (text, vec record { text; SurveyResponse }) -> (Result);
