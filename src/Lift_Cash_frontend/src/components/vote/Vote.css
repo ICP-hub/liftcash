@@ -1,0 +1,76 @@
+.vote-main-div {
+  @apply max-w-lg   mx-auto bg-white rounded-lg  border border-blue-500 shadow-md mt-8 overflow-hidden;
+}
+.navigate-to-survey-result {
+  @apply p-4 text-blue-400 hover:underline cursor-pointer;
+}
+
+.vote-header-div {
+  @apply rounded-t-lg;
+}
+
+.vote-title {
+  @apply py-5 text-2xl font-bold text-center;
+}
+.vote-sub-title {
+  @apply py-5 text-center bg-blue-200;
+}
+.vote-time-description {
+  @apply mb-4;
+}
+.vote-remaining-time {
+  @apply text-lg  py-5 text-center bg-[#00A1ED] font-bold text-white;
+}
+
+.vote-description {
+  @apply px-10 my-4;
+}
+.vote-link {
+  @apply text-blue-600 underline;
+}
+/* .vote-card-container {
+  @apply mb-6 p-5;
+} */
+
+.vote-card-title {
+  @apply px-10 text-lg py-5 font-bold bg-[#00A1ED];
+}
+
+.vote-card-sub-title {
+  @apply px-10 py-5  bg-[#DAECFA];
+}
+.vote-card-question {
+  @apply px-10 py-5  mt-2  font-semibold;
+}
+.vote-card-question-description {
+  @apply px-10 py-5  mt-2;
+}
+
+.vote-input-container {
+  @apply flex justify-center;
+}
+.vote-slider {
+  @apply lg:w-[30vw] md:w-[57vw] w-[74vw];
+}
+.vote-display-percent {
+  @apply flex justify-between mx-10;
+}
+
+.vote-manual-input-container {
+  @apply mb-6 flex md:space-x-28 space-x-4;
+}
+
+.vote-manual-input-p {
+  @apply text-sm font-semibold flex items-center md:mx-10 mx-6;
+}
+
+.vote-input-container {
+  @apply flex items-center mt-2;
+}
+
+.vote-input {
+  @apply border rounded p-2 w-20 text-center;
+}
+.vote-percent-sign {
+  @apply hidden md:block font-bold;
+}

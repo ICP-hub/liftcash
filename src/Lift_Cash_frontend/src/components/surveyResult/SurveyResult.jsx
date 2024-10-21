@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SurveyResult.css";
 import { surveyResults } from "../../pages/activitiesPage/constants/SurveyResult";
+import Vote from "../vote/Vote";
 
 const SurveyResult = () => {
-  return (
+  const [vote, setVote] = useState(false);
+
+  return !vote ? (
     <div className="survey-result-main-div">
       <h1 className="survey-result-h1"> This Week's Survey Results</h1>
       <p className="survey-result-p">
@@ -38,9 +41,13 @@ const SurveyResult = () => {
         </div>
       ))}
       <div className="survey-result-btn-div">
-        <button className="survey-result-btn">Start vote</button>
+        <button className="survey-result-btn" onClick={() => setVote(true)}>
+          Start this week's vote
+        </button>
       </div>
     </div>
+  ) : (
+    <Vote />
   );
 };
 

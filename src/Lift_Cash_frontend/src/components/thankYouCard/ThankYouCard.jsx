@@ -4,7 +4,7 @@ import SVG from "../../assets/images/SVG.png";
 import SurveyResult from "../surveyResult/SurveyResult";
 
 const ThankYouCard = () => {
-  const [timeLeft, setTimeLeft] = useState(1);
+  const [timeLeft, setTimeLeft] = useState(0);
   const [formattedTime, setFormattedTime] = useState("");
 
   // Function to format time based on remaining hours

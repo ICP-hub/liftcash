@@ -8,7 +8,7 @@ import DropdownBtn from "../../components/dropdownBtn/DropdownBtn";
 import ThankYouCard from "../../components/thankYouCard/ThankYouCard";
 
 const ActivitiesPage = () => {
-  const [timeLeft, setTimeLeft] = useState(15); // minutes
+  const [timeLeft, setTimeLeft] = useState(0); // minutes
   const [selectedData, setSelectedData] = useState({});
   const [isSurveyCompleted, setIsSurveyCompleted] = useState(false);
 
