@@ -1,0 +1,25 @@
+.survey-result-main-div {
+  @apply w-full max-w-md mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8;
+}
+.survey-result-h1 {
+  @apply text-center font-bold text-3xl m-5;
+}
+
+.survey-result-p {
+  @apply bg-blue-200 font-semibold text-center py-5 px-2;
+}
+.survey-result-container {
+  @apply px-5 py-4 space-y-5;
+}
+.survey-result-options-container {
+  @apply px-5 py-2 space-y-2;
+}
+.survey-result-question {
+  @apply text-blue-500  font-bold;
+}
+.survey-result-btn-div {
+  @apply text-center mt-4 mb-4 px-10;
+}
+.survey-result-btn {
+  @apply py-4  text-xl w-full  bg-blue-600 text-white rounded-md hover:bg-blue-700;
+}

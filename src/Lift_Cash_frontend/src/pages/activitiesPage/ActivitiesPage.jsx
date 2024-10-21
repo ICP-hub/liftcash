@@ -46,7 +46,7 @@ const ActivitiesPage = () => {
       <DashBoardHead />
 
       {/* Conditional rendering based on survey completion */}
-      {!isSurveyCompleted ? (
+      {!isSurveyCompleted && timeLeft > 0 ? (
         <div className="activities-primary-container">
           <h2 className="container-title">Welcome to the Survey </h2>
           <p className="container-description">
