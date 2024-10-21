@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./ThankYouCard.css";
 import SVG from "../../assets/images/SVG.png";
+import SurveyResult from "../surveyResult/SurveyResult";
 
 const ThankYouCard = () => {
-  const [timeLeft, setTimeLeft] = useState(48);
+  const [timeLeft, setTimeLeft] = useState(1);
   const [formattedTime, setFormattedTime] = useState("");
 
   // Function to format time based on remaining hours
@@ -32,7 +33,9 @@ const ThankYouCard = () => {
     }
   }, [timeLeft]);
 
-  return (
+  return timeLeft === 0 ? (
+    <SurveyResult />
+  ) : (
     <div className="thank-you-main-card-div">
       <h1 className="thank-you-card-h1">Your survey is completed</h1>
       <h2 className="thank-you-card-h2">
