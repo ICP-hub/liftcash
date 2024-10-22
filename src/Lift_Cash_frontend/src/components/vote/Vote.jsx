@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Vote.css";
 import { voteQuestions } from "../../pages/activitiesPage/constants/Vote";
 import SurveyResult from "../surveyResult/SurveyResult";
+import RatifyCard from "../ratify/RatifyCard";
 
 const Vote = () => {
   const [percent, setPercent] = useState({});
@@ -10,6 +11,7 @@ const Vote = () => {
     minutes: 10,
   });
   const [isVote, setIsVote] = useState(true);
+  const [isRatify, setISRatify] = useState(false);
 
   useEffect(() => {
     // Initialize percent state with default values
@@ -51,7 +53,11 @@ const Vote = () => {
       return;
     }
     console.log("Selected Vote Data:", percent);
+    setISRatify(true);
   };
+  if (isRatify) {
+    return <RatifyCard />;
+  }
 
   return isVote ? (
     <div>

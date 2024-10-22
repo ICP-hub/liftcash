@@ -1,0 +1,41 @@
+.ratify-main-div {
+  @apply max-w-lg   mx-auto bg-white rounded-lg  border border-blue-500 shadow-md mt-8 overflow-hidden;
+}
+
+.ratify-title {
+  @apply text-center text-2xl my-5 font-bold;
+}
+
+.ratify-vote-title {
+  @apply pl-2 md:pl-10  py-5 text-xl  text-white font-bold bg-[#00A1ED];
+}
+
+.ratify-vote-lable-even {
+  @apply pl-2 md:pl-10 py-5 bg-[#DAECFA];
+}
+.ratify-vote-lable-odd {
+  @apply pl-2 md:pl-10 py-5 flex md:space-x-2;
+}
+
+.ratify-vote-value {
+  @apply font-bold;
+}
+.ratify-indicator {
+  @apply text-sm text-red-500 flex items-center;
+}
+
+.ratify-vote-question-title {
+  @apply p-4 bg-[#00A1ED] text-white text-lg font-bold text-center;
+}
+
+.ratify-vote-btn-container {
+  @apply flex space-x-4 mt-4 justify-center;
+}
+
+.ratify-vote-btn {
+  @apply text-white bg-[#00A1ED]  py-3 px-14 rounded-lg hover:bg-blue-500;
+}
+
+.ratify-note {
+  @apply text-sm text-center text-red-600 my-5;
+}
