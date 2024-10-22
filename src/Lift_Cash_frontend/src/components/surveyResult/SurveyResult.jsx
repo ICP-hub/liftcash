@@ -27,7 +27,7 @@ const SurveyResult = () => {
           <h2 className="survey-result-question">{`Q${data.id}: ${data.question}`}</h2>
           <div className="survey-result-options-container">
             {data.results.map((result, index) => (
-              <p className={index === 0 ? "font-bold" : ""}>
+              <p className={index === 0 ? "font-bold" : ""} key={index}>
                 {result.percentage ? (
                   <>
                     {result.percentage} {result.label}

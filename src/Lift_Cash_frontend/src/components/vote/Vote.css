@@ -74,3 +74,14 @@
 .vote-percent-sign {
   @apply hidden md:block font-bold;
 }
+
+.vote-bottom-instruction {
+  @apply bg-[#00A1ED] text-white text-center font-bold py-5;
+}
+
+.vote-btn-div {
+  @apply text-center mt-4 mb-4 px-10;
+}
+.vote-btn {
+  @apply py-4  text-xl w-full  bg-[#00A1ED] text-white rounded-md hover:bg-blue-700;
+}
