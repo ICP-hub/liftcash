@@ -1,12 +1,39 @@
 .thank-you-main-card-div {
-  @apply w-full max-w-md mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 text-center;
+  @apply w-full max-w-lg mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 text-center;
 }
 .thank-you-card-h1 {
-  @apply mt-10 font-bold text-2xl;
+  @apply mt-10 font-bold text-3xl;
+}
+.thank-you-card-p-top {
+  @apply text-center text-[#00A1ED];
 }
 .thank-you-card-h2 {
-  @apply mt-5  w-full pl-10 font-bold text-xl bg-blue-200 p-5;
+  @apply mt-5  w-full pl-10 font-bold text-xl  text-center p-5;
+}
+
+.thank-you-card-image-container {
+  @apply flex ml-5 items-center md:pl-20;
 }
 .thank-you-card-image {
-  @apply w-[90vw] mt-10 mb-10;
+  @apply w-28 mt-5 mb-5;
+}
+.thank-you-card-btn-container {
+  @apply bg-blue-500 w-32 h-32 rounded-full flex justify-center items-center;
+}
+.thank-you-card-btn {
+  @apply bg-[#00A1ED] w-28 h-28 rounded-full;
+}
+
+.thank-you-card-h2-bottom {
+  @apply text-2xl bg-[#DAECFA] py-5;
+}
+.thank-you-card-h2-time {
+  @apply py-5 bg-[#00A1ED] font-bold text-white text-2xl;
+}
+.thank-you-card-p-bottom {
+  @apply py-5 bg-[#DAECFA];
+}
+
+.thank-you-card-last-h1 {
+  @apply py-5 font-bold text-2xl;
 }
