@@ -33,21 +33,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "User_Backend"
-version = "0.1.0"
-dependencies = [
- "candid",
- "ic-cdk",
- "ic-cdk-macros",
- "ic-cdk-timers",
- "lazy_static",
- "serde",
- "serde_derive",
- "serde_json",
- "sha2 0.9.9",
-]
-
-[[package]]
 name = "anyhow"
 version = "1.0.89"
 source = "registry+https://github.com/rust-lang/crates.io-index"

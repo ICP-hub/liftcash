@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent } from "@dfinity/agent";
-import { createActor } from "../../../declarations/Lift_Cash_backend/index";
+import { createActor as createCommunityActor } from "../../../declarations/Community_Backend";
+import { createActor as createEconomyActor } from '../../../declarations/Economy_Backend';
+import { createActor as createLiftActor } from "../../../declarations/LedgerDid/lift";
+import { createActor as createPromoActor } from "../../../declarations/LedgerDid/promo";
+
 
 const AuthContext = createContext();
 
@@ -25,16 +29,30 @@ export const useAuthClient = () => {
     setPrincipal(principal);
 
     if (
-      isAuthenticated &&
+      authStatus &&
       identity &&
       principal &&
       principal.isAnonymous() === false
     ) {
       const agent = new HttpAgent({ identity: client.getIdentity() });
-      let actor = createActor(process.env.CANISTER_ID_LIFT_CASH_BACKEND, {
+      let communityActor = createCommunityActor(process.env.CANISTER_ID_COMMUNITY_BACKEND, {
         agent: agent,
       });
-      setActors(actor);
+      let economoyActor = createEconomyActor(process.env.CANISTER_ID_ECONOMY_BACKEND, {
+        agent: agent,
+      });
+      let liftLedgerActor = createLiftActor(process.env.CANISTER_ID_LIFT_LEDGER_CANISTER, {
+        agent: agent,
+      })
+      let promoLedgerActor = createPromoActor(process.env.CANISTER_ID_PROMO_LEDGER_CANISTER, {
+        agent: agent,
+      })
+      setActors({
+        communityActor,
+        economoyActor,
+        liftLedgerActor,
+        promoLedgerActor
+      });
     }
     return true;
   };
@@ -52,7 +70,7 @@ export const useAuthClient = () => {
         if (
           authClient.isAuthenticated() &&
           (await authClient.getIdentity().getPrincipal().isAnonymous()) ===
-            false
+          false
         ) {
           resolve(clientInfo(authClient));
         } else {
@@ -61,7 +79,6 @@ export const useAuthClient = () => {
               process.env.DFX_NETWORK === "ic"
                 ? "https://identity.ic0.app/"
                 : `http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943`,
-            // identityProvider:"https://identity.ic0.app/",
             onError: (error) => reject(error),
             onSuccess: () => resolve(clientInfo(authClient)),
           });

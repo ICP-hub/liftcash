@@ -4,9 +4,23 @@
       "type": "pull",
       "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
     },
+    "Lift_ledger_canister": {
+      "type": "custom",
+      "candid": "src/Lift_ledger_canister/ic-icrc1-ledger.did",
+      "wasm": "src/Lift_ledger_canister/ic-icrc1-ledger.wasm.gz"
+    },
+    "Promo_ledger_canister": {
+      "type": "custom",
+      "candid": "src/Promo_ledger_canister/ic-icrc1-ledger.did",
+      "wasm": "src/Promo_ledger_canister/ic-icrc1-ledger.wasm.gz"
+    },
     "Lift_Cash_frontend": {
-      "dependencies": ["Community_Backend"],
-      "source": ["src/Lift_Cash_frontend/dist"],
+      "dependencies": [
+        "Community_Backend"
+      ],
+      "source": [
+        "src/Lift_Cash_frontend/dist"
+      ],
       "type": "assets",
       "workspace": "Lift_Cash_frontend"
     },
@@ -19,13 +33,7 @@
       "candid": "src/Economy_Backend/Economy_Backend.did",
       "package": "Economy_Backend",
       "type": "rust"
-    },
-    "User_Backend": {
-      "candid": "src/User_Backend/User_Backend.did",
-      "package": "User_Backend",
-      "type": "rust"
     }
-    
   },
   "defaults": {
     "build": {
