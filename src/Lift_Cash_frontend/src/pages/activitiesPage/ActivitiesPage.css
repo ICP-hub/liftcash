@@ -41,5 +41,5 @@
   @apply text-center mt-4 mb-4 px-10;
 }
 .activities-container-btn {
-  @apply py-4  text-xl w-full  bg-blue-600 text-white rounded-md hover:bg-blue-700;
+  @apply py-4  text-xl w-full  bg-[#00A1ED] text-white rounded-md hover:bg-blue-700;
 }

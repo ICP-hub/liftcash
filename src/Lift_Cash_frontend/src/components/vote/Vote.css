@@ -10,7 +10,7 @@
 }
 
 .vote-title {
-  @apply py-5 text-2xl font-bold text-center;
+  @apply py-5 text-2xl  font-bold text-center;
 }
 .vote-sub-title {
   @apply py-5 text-center bg-blue-200;
@@ -33,7 +33,7 @@
 } */
 
 .vote-card-title {
-  @apply px-10 text-lg py-5 font-bold bg-[#00A1ED];
+  @apply px-10 text-lg py-5 font-bold text-white bg-[#00A1ED];
 }
 
 .vote-card-sub-title {
