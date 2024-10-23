@@ -1,3 +1,13 @@
+// mod statehandler;
+
+// pub use statehandler::{
+//     submit_survey, submit_vote, submit_ratification,
+//     calculate_total_claim, get_survey_results,
+//     get_average_votes, get_ratification_results,
+//     get_weekly_survey_results, get_weekly_vote_results,
+//     get_weekly_ratification_counts,
+// };
+
 use ic_cdk_macros::export_candid;
 #[macro_use]
 extern crate lazy_static;
@@ -19,19 +29,6 @@ enum SurveyResponse {
     Dropdown(Vec<String>)
 }
 
-#[derive(CandidType, Deserialize, Clone,Default)]
-struct StableMemoryState {
-    survey_results: HashMap<u64, Vec<(String, String)>>, 
-    vote_results: HashMap<String, HashMap<String, VoteResponse>>, 
-}
-
-impl<'de> ArgumentDecoder<'de> for StableMemoryState {
-    fn decode(de: &mut candid::de::IDLDeserialize<'de>) -> Result<Self, candid::Error> {
-        let stable_memory_state: StableMemoryState = de.get_value()?; // Extract the value
-        Ok(stable_memory_state)
-    }
-}
-
 #[derive(CandidType, Deserialize, Clone, PartialEq, Eq, Hash)]
 enum VoteResponse {
     PercentageVote(u8),
@@ -45,8 +42,9 @@ struct UserClaim {
     claim_percentage: u8,
 }
 
-type SurveyData = Vec<HashMap<String, SurveyResponse>>;
+type SurveyData =HashMap<String, SurveyResponse>;
 type VoteData = HashMap<String, VoteResponse>;
+type ratificationdata=HashMap<String, bool>;
 
 #[derive(Default)]
 struct VotingSystem {
@@ -57,13 +55,12 @@ struct VotingSystem {
     last_stage_timestamp: u64,
     survey_responses: HashMap<String, SurveyData>,
     voting_responses: HashMap<String, VoteData>,
-    ratification_responses: HashMap<String, bool>,
+    ratification_responses: ratificationdata,
     ratification_results: HashMap<String, u64>,
     weekly_participation: HashMap<String, UserClaim>, // Ensure this is defined
     weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
     weekly_vote_results: HashMap<u64, HashMap<String, VoteResponse>>, // Store vote results per week
     weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>, 
-    stable_memory_state: StableMemoryState,
 }      
 
 
@@ -84,16 +81,8 @@ impl VotingSystem {
             weekly_participation: HashMap::new(), // Initialize to match type
             weekly_survey_results: HashMap::new(), // Initialize to match type
             weekly_vote_results: HashMap::new(), // Store vote results per week
-            weekly_ratification_counts: HashMap::new(), 
-            stable_memory_state: StableMemoryState {
-                survey_results: HashMap::new(),
-                vote_results: HashMap::new(),
-            },
+            weekly_ratification_counts: HashMap::new(),
         };
-        
-        // Load previous state from stable memory
-        instance.load_from_stable_memory(); // Implement this function to restore data
-        
         instance
     }
 
@@ -107,7 +96,6 @@ impl VotingSystem {
         self.weekly_ratification_counts.insert(self.last_week, ratification_results);
         self.current_week += 1;
         self.iteration_count += 1;
-        // self.save_to_stable_memory();
         self.survey_responses.clear();
         self.voting_responses.clear(); 
         self.ratification_responses.clear(); 
@@ -127,10 +115,7 @@ impl VotingSystem {
 
     fn submit_survey(&mut self, user_id: &str, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
         // self.check_and_close_stage();
-        self.survey_responses
-            .entry(user_id.to_string())
-            .or_insert_with(Vec::new)
-            .push(answers);
+        self.survey_responses.insert(user_id.to_string(), answers);
 
         self.participation_count.entry(0).or_insert(0);
         *self.participation_count.get_mut(&0).unwrap() += 1;
@@ -206,31 +191,28 @@ impl VotingSystem {
         let mut majority_data: HashMap<String, HashMap<String, usize>> = HashMap::new(); // Counts for choices
     
         // Iterate through all survey responses
-        for (_user_id, answer_vec) in &self.survey_responses {
-            for answers in answer_vec {
-                for (question_id, response) in answers {
-                    match response {
-                        SurveyResponse::PercentageSlider(value) => {
-                            let entry = average_data.entry(question_id.clone()).or_insert((0, 0));
-                            entry.0 += *value as u32; // No need to dereference value
-                            entry.1 += 1; // Increment count
-                        }
-                        SurveyResponse::MultipleChoice(ref choice) => {
-                            let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
-                            *entry.entry(choice.clone()).or_insert(0) += 1; // Count each choice
-                        }
-                        SurveyResponse::Dropdown(ref options) => {
-                            let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
-                            for option in options {
-                                *entry.entry(option.clone()).or_insert(0) += 1; // Count each selected option
-                            }
+        for (_user_id, answers) in &self.survey_responses {
+            for (question_id, response) in answers{
+                match response {
+                    SurveyResponse::PercentageSlider(value) => {
+                        let entry = average_data.entry(question_id.clone()).or_insert((0, 0));
+                        entry.0 += *value as u32; // No need to dereference value
+                        entry.1 += 1; // Increment count
+                    }
+                    SurveyResponse::MultipleChoice(ref choice) => {
+                        let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
+                        *entry.entry(choice.clone()).or_insert(0) += 1; // Count each choice
+                    }
+                    SurveyResponse::Dropdown(ref options) => {
+                        let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
+                        for option in options {
+                            *entry.entry(option.clone()).or_insert(0) += 1; // Count each selected option
                         }
                     }
                 }
             }
         }
-    
-        // Calculate average responses for slider questions
+
         for (question_id, (total, count)) in average_data {
             if count > 0 {
                 let average = total as u32 / count as u32; // Cast to f32 for accurate division
@@ -312,28 +294,7 @@ impl VotingSystem {
         } else {
             None
         }
-    }
-    // fn save_to_stable_memory(&self) {
-    //     let state = StableMemoryState {
-    //         survey_results: self.weekly_survey_results.clone(),
-    //         vote_results: self.voting_responses.clone(),
-    //     };
-    
-    //     if let Err(err) = ic_cdk::storage::stable_save((state,)) {
-    //         ic_cdk::api::print(format!("Error saving to stable memory: {:?}", err));
-    //     }
-    // }
-    
-    fn load_from_stable_memory(&mut self) {
-        let stable_state: StableMemoryState = ic_cdk::storage::stable_restore::<StableMemoryState>()
-            .unwrap_or_else(|err| {
-                ic_cdk::api::print(format!("Error loading from stable memory: {:?}", err));
-                StableMemoryState::default() // Return default if error occurs
-            });
-    
-        self.weekly_survey_results = stable_state.survey_results;
-        self.voting_responses = stable_state.vote_results; 
-    }    
+    }   
 }
 
 lazy_static! {
@@ -400,8 +361,6 @@ fn get_ratification_results() -> HashMap<String, u64> {
 #[query]
 fn get_weekly_survey_results() -> Vec<(u64, Vec<(String, String)>)> {
     let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-
-    // Collect the last 4 weeks of survey results
     let mut results = Vec::new();
 
     // Get the week numbers in descending order
