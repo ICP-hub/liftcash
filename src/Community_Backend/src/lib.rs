@@ -1,13 +1,3 @@
-// mod statehandler;
-
-// pub use statehandler::{
-//     submit_survey, submit_vote, submit_ratification,
-//     calculate_total_claim, get_survey_results,
-//     get_average_votes, get_ratification_results,
-//     get_weekly_survey_results, get_weekly_vote_results,
-//     get_weekly_ratification_counts,
-// };
-
 use ic_cdk_macros::export_candid;
 #[macro_use]
 extern crate lazy_static;
@@ -16,11 +6,14 @@ use serde::{Deserialize, Serialize};
 use candid::{CandidType, Decode,Encode};
 use candid::utils::ArgumentDecoder;
 use ic_cdk_macros::{init, query, update};
+use std::cell::RefCell;
 use std::collections::HashMap;
 use std::sync::RwLock;
 use ic_cdk::api::time;
 use std::collections::HashSet;
 
+use ic_stable_structures::{StableCell, memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
+use std::borrow::Cow;
 
 #[derive(CandidType, Deserialize, Clone, PartialEq, Eq, Hash)]
 enum SurveyResponse {
@@ -45,7 +38,10 @@ struct UserClaim {
 type SurveyData =HashMap<String, SurveyResponse>;
 type VoteData = HashMap<String, VoteResponse>;
 
-#[derive(Default)]
+pub type VMem = VirtualMemory<DefaultMemoryImpl>;
+const VOTING_SYSTEM_MEMORY_ID: MemoryId = MemoryId::new(1);
+
+#[derive(Default,CandidType,Deserialize,Clone)]
 struct VotingSystem {
     current_week: u64,
     last_week: u64,
@@ -62,7 +58,45 @@ struct VotingSystem {
     weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>, 
 }      
 
+impl Storable for VotingSystem {
+    const BOUND: ic_stable_structures::storable::Bound = ic_stable_structures::storable::Bound::Unbounded;
 
+    fn to_bytes(&self) -> Cow<[u8]> {
+        Cow::Owned(Encode!(self).unwrap())
+    }
+
+    fn from_bytes(bytes: Cow<[u8]>) -> Self {
+        Decode!(bytes.as_ref(), VotingSystem).unwrap()
+    }
+}
+
+thread_local! {
+    static MEMORY_MANAGER: RefCell<MemoryManager<DefaultMemoryImpl>> = RefCell::new(
+        MemoryManager::init(DefaultMemoryImpl::default())
+    );
+    
+    static VOTING_SYSTEM_CELL: RefCell<StableCell<VotingSystem, VMem>> = RefCell::new({
+        let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(VOTING_SYSTEM_MEMORY_ID));
+        StableCell::init(memory, VotingSystem::new()).expect("Failed to initialize VotingSystem")
+    });
+}
+
+fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
+    VOTING_SYSTEM_CELL.with(|cell| {
+        let voting_system = cell.borrow();
+        f(voting_system.get()) // Directly use the reference to VotingSystem
+    })
+}
+
+fn mutate_voting_system<R>(f: impl FnOnce(&mut VotingSystem) -> R) -> R {
+    VOTING_SYSTEM_CELL.with(|cell| {
+        let mut state = cell.borrow_mut();
+        let mut voting_system = state.get().clone(); // Make sure to clone if needed for mutability
+        let result = f(&mut voting_system);
+        state.set(voting_system).expect("Failed to update VotingSystem in stable memory"); // Save the new state
+        result
+    })
+}
 const STAGE_DURATION: u64 = 2 * 24 * 60 * 60 + 8 * 60 * 60; // 2 days and 8 hours in seconds
 
 impl VotingSystem {
@@ -118,7 +152,6 @@ impl VotingSystem {
 
         self.participation_count.entry(0).or_insert(0);
         *self.participation_count.get_mut(&0).unwrap() += 1;
-
 
         self.weekly_participation.entry(user_id.to_string()).and_modify(|claim| {
             claim.has_surveyed = true;
@@ -183,7 +216,7 @@ impl VotingSystem {
     }
     
 
-    fn calculate_survey_results(&mut self, current_week: u64) -> Vec<(String, String)> {
+    fn calculate_survey_results(&self, current_week: u64) -> Vec<(String, String)> {
         let mut results = Vec::new(); // Store results as tuples of (question_id, result)
     
         let mut average_data: HashMap<String, (u32, u32)> = HashMap::new(); // (total, count)
@@ -191,11 +224,11 @@ impl VotingSystem {
     
         // Iterate through all survey responses
         for (_user_id, answers) in &self.survey_responses {
-            for (question_id, response) in answers{
+            for (question_id, response) in answers {
                 match response {
                     SurveyResponse::PercentageSlider(value) => {
                         let entry = average_data.entry(question_id.clone()).or_insert((0, 0));
-                        entry.0 += *value as u32; // No need to dereference value
+                        entry.0 += *value as u32; // Increment total
                         entry.1 += 1; // Increment count
                     }
                     SurveyResponse::MultipleChoice(ref choice) => {
@@ -211,59 +244,55 @@ impl VotingSystem {
                 }
             }
         }
-
+    
+        // Process average data
         for (question_id, (total, count)) in average_data {
             if count > 0 {
-                let average = total as u32 / count as u32; // Cast to f32 for accurate division
-                results.push((question_id, format!("Average: {:.2}", average))); // Store as "Average: X.XX"
+                let average = total as u32 / count as u32; // Calculate average
+                results.push((question_id, format!("Average: {:.2}", average)));
             } else {
-                results.push((question_id, format!("Average: N/A"))); // Handle no responses case
+                results.push((question_id, format!("Average: N/A")));
             }
         }
     
-        // Calculate majority responses for MultipleChoice and Dropdown questions
+        // Process majority data for MultipleChoice and Dropdown questions
         for (question_id, counts) in majority_data {
             if let Some((majority_response, _)) = counts.iter().max_by_key(|entry| entry.1) {
-                results.push((question_id, format!("Majority: {}", majority_response))); // Store as "Majority: X"
+                results.push((question_id, format!("Majority: {}", majority_response)));
             } else {
-                results.push((question_id, format!("Majority: N/A"))); // Handle no responses case
+                results.push((question_id, format!("Majority: N/A")));
             }
         }
     
-        // Store the results for the current week
-        self.weekly_survey_results.insert(current_week, results.clone());
-    
-        // Return the results vector
-        results
+        results // Return results without modifying state
     }
     
     
-    fn calculate_average_votes(&mut self,current_week: u64) -> HashMap<String,VoteResponse> {
-        
+    fn calculate_average_votes(&self, current_week: u64) -> HashMap<String, VoteResponse> {
         let mut result: HashMap<String, VoteResponse> = HashMap::new(); 
         let mut average_responses: HashMap<String, (u32, u32)> = HashMap::new();
-
+    
+        // Iterate through all voting responses
         for (_user_id, user_votes) in &self.voting_responses {
             for (question_id, vote) in user_votes {
                 match vote {
                     VoteResponse::PercentageVote(value) => {
                         let entry = average_responses.entry(question_id.clone()).or_insert((0, 0));
-                        entry.0 += *value as u32;
-                        entry.1 += 1;
+                        entry.0 += *value as u32; // Add vote value to total
+                        entry.1 += 1; // Increment count
                     }
                 }
             }
         }
-
-        
+    
+        // Compute average votes
         for (question_id, (total, count)) in average_responses {
-            let average = total as u8 / count as u8;
+            let average = total as u8 / count as u8; // Calculate average
             let average_vote = VoteResponse::PercentageVote(average);
             result.insert(question_id, average_vote);
         }
-
-        self.weekly_vote_results.insert(current_week, result.clone());
-        result
+    
+        result // Return results without modifying state
     }
 
     fn calculate_ratification_results(&self, week: u64) -> HashMap<String, u64> {
@@ -302,102 +331,108 @@ lazy_static! {
 
 #[init]
 fn init() {
-    let mut voting_system = VOTING_SYSTEM.write().expect("Failed to acquire write lock");
-    *voting_system = VotingSystem::new();
+    VOTING_SYSTEM_CELL.with(|cell| {
+        *cell.borrow_mut() = StableCell::init(
+            MEMORY_MANAGER.with(|mm| mm.borrow().get(VOTING_SYSTEM_MEMORY_ID)),
+            VotingSystem::default(),
+        ).expect("Failed to initialize VotingSystem");
+    });
 }
 
 #[update]
 fn start_new_week() {
-    let mut voting_system = VOTING_SYSTEM.write().expect("Failed to acquire write lock");
-    voting_system.start_new_week();
+    mutate_voting_system(|voting_system| {
+        voting_system.start_new_week();
+    });
 }
 
 #[update]
 fn submit_survey(user_id: String, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
-    let mut voting_system = VOTING_SYSTEM.write().map_err(|_| "Failed to acquire write lock")?;
-    voting_system.submit_survey(&user_id, answers)
+    mutate_voting_system(|voting_system| {
+        voting_system.submit_survey(&user_id, answers)
+    })
 }
 
 #[update]
 fn submit_vote(user_id: String, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
-    let mut voting_system = VOTING_SYSTEM.write().map_err(|_| "Failed to acquire write lock")?;
-    voting_system.submit_vote(&user_id, votes)
+    mutate_voting_system(|voting_system| {
+        voting_system.submit_vote(&user_id, votes)
+    })
 }
 
 #[update]
 fn submit_ratification(user_id: String, ratify: bool) -> Result<(), String> {
-    let mut voting_system = VOTING_SYSTEM.write().map_err(|_| "Failed to acquire write lock")?;
-    voting_system.submit_ratification(&user_id, ratify)
+    mutate_voting_system(|voting_system| {
+        voting_system.submit_ratification(&user_id, ratify)
+    })
 }
 
 #[query]
 fn calculate_total_claim(user_id: String) -> Option<u8> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    voting_system.calculate_total_claim(&user_id)
+    read_voting_system(|voting_system| {
+        voting_system.calculate_total_claim(&user_id)
+    })
 }
 
 #[query]
 fn get_survey_results() -> Vec<(String, String)> {
-    let mut voting_system = VOTING_SYSTEM.write().expect("Failed to acquire write lock"); // Change to write lock
-    let last_week = voting_system.last_week;
-    voting_system.calculate_survey_results(last_week) // Call remains the same
+    read_voting_system(|voting_system| {
+        let last_week = voting_system.last_week;
+        voting_system.calculate_survey_results(last_week)
+    })
 }
 
 #[query]
 fn get_average_votes() -> HashMap<String, VoteResponse> {
-    let mut voting_system = VOTING_SYSTEM.write().expect("Failed to acquire read lock");
-    let last_week = voting_system.last_week;
-    voting_system.calculate_average_votes(last_week)
+    read_voting_system(|voting_system| {
+        let last_week = voting_system.last_week;
+        voting_system.calculate_average_votes(last_week)
+    })
 }
 
 #[query]
 fn get_ratification_results() -> HashMap<String, u64> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    voting_system.calculate_ratification_results(voting_system.last_week)
+    read_voting_system(|voting_system| {
+        voting_system.calculate_ratification_results(voting_system.last_week)
+    })
 }
-
 
 #[query]
 fn get_weekly_survey_results() -> Vec<(u64, Vec<(String, String)>)> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    let mut results = Vec::new();
-
-    // Get the week numbers in descending order
-    let mut weeks: Vec<u64> = voting_system.weekly_survey_results.keys().cloned().collect();
-    weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
-
-    // Fetch up to 4 weeks of results
-    for week in weeks.iter().take(4) {
-        if let Some(week_results) = voting_system.weekly_survey_results.get(week) {
-            results.push((*week, week_results.clone()));
+    read_voting_system(|voting_system| {
+        let mut results = Vec::new();
+        let mut weeks: Vec<u64> = voting_system.weekly_survey_results.keys().cloned().collect();
+        weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
+        for week in weeks.iter().take(4) {
+            if let Some(week_results) = voting_system.weekly_survey_results.get(week) {
+                results.push((*week, week_results.clone()));
+            }
         }
-    }
-
-    results // Return the vector of week and corresponding results
+        results
+    })
 }
 
 #[query]
 fn get_weekly_vote_results() -> HashMap<u64, HashMap<String, VoteResponse>> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-
-    // Collect the last 4 weeks of vote results
-    let mut results: HashMap<u64, HashMap<String, VoteResponse>> = HashMap::new();
-    let mut weeks: Vec<u64> = voting_system.weekly_vote_results.keys().cloned().collect();
-    weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
-
-    for week in weeks.iter().take(4) {
-        if let Some(week_results) = voting_system.weekly_vote_results.get(week) {
-            results.insert(*week, week_results.clone());
+    read_voting_system(|voting_system| {
+        let mut results = HashMap::new();
+        let mut weeks: Vec<u64> = voting_system.weekly_vote_results.keys().cloned().collect();
+        weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
+        for week in weeks.iter().take(4) {
+            if let Some(week_results) = voting_system.weekly_vote_results.get(week) {
+                results.insert(*week, week_results.clone());
+            }
         }
-    }
-
-    results
+        results
+    })
 }
 
 #[query]
 fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
-    let voting_system = VOTING_SYSTEM.read().expect("Failed to acquire read lock");
-    voting_system.weekly_ratification_counts.clone()
+    read_voting_system(|voting_system| {
+        voting_system.weekly_ratification_counts.clone()
+    })
 }
 
 export_candid!();
+

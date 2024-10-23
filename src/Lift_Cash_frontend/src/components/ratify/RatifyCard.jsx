@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./RatifyCard.css";
+import "./Ratifycard.css";
 import { voteData } from "../../pages/activitiesPage/constants/Ratify";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
