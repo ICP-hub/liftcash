@@ -44,7 +44,6 @@ struct UserClaim {
 
 type SurveyData =HashMap<String, SurveyResponse>;
 type VoteData = HashMap<String, VoteResponse>;
-type ratificationdata=HashMap<String, bool>;
 
 #[derive(Default)]
 struct VotingSystem {
@@ -55,7 +54,7 @@ struct VotingSystem {
     last_stage_timestamp: u64,
     survey_responses: HashMap<String, SurveyData>,
     voting_responses: HashMap<String, VoteData>,
-    ratification_responses: ratificationdata,
+    ratification_responses: HashMap<String, bool>,
     ratification_results: HashMap<String, u64>,
     weekly_participation: HashMap<String, UserClaim>, // Ensure this is defined
     weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
