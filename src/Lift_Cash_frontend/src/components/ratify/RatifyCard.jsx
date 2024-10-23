@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import "./Ratifycard.css";
 import { voteData } from "../../pages/activitiesPage/constants/Ratify";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import RatifyResult from "../ratifyResult/RatifyResult";
 
 const RatifyCard = () => {
   const [vote, setVote] = useState(null);
+  const [isRetifyResult, setIsRetifyResult] = useState(false);
 
   const handleVote = (action) => {
     setVote(action);
     console.log(`You voted: ${action === "agree" ? "Yes" : "No"}`);
+    setIsRetifyResult(true);
   };
 
-  return (
+  return !isRetifyResult ? (
     <div className="ratify-main-div">
       <h1 className="ratify-title">Welcome to the Ratify</h1>
 
@@ -62,6 +65,8 @@ const RatifyCard = () => {
 
       <p className="ratify-note">{voteData.important_note.text}</p>
     </div>
+  ) : (
+    <RatifyResult />
   );
 };
 

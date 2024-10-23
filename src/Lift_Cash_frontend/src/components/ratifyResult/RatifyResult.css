@@ -1,0 +1,31 @@
+.ratify-result-main-card-div {
+  @apply w-full max-w-lg mx-auto bg-white rounded-lg border border-blue-500 shadow-md mt-8 text-center;
+}
+.ratify-result-card-h1 {
+  @apply mt-10   font-bold text-3xl;
+}
+.ratify-result-card-p-top {
+  @apply text-center text-[#00A1ED];
+}
+.ratify-result-card-h2 {
+  @apply mt-5  w-full pl-10 font-bold text-xl p-5;
+}
+
+.ratify-result-container {
+  @apply mb-10 flex  items-center  justify-evenly font-bold text-white;
+}
+
+.ratify-result-card-container {
+  @apply bg-[#00A1ED] w-32 h-32 rounded-full flex justify-center items-center cursor-pointer;
+}
+.ratify-result-card {
+  @apply bg-[#00A1ED] w-28 h-28  border border-white rounded-full flex  flex-col items-center justify-center;
+}
+
+.ratify-result-card-p-bottom {
+  @apply p-5 bg-[#DAECFA];
+}
+
+.ratify-result-card-last-h1 {
+  @apply py-5 font-bold text-2xl;
+}
