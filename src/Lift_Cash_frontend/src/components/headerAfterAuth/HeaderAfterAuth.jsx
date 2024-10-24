@@ -71,6 +71,12 @@ const HeaderAfterAuth = () => {
               <span>Transfer</span>
             </li>
           </Link>
+          <Link to="/mint">
+            <li className="sidebar-menu-item">
+              <FaArrowRight size={24} className="sidebar-icon" />
+              <span>Mint</span>
+            </li>
+          </Link>
           <Link to="/info">
             <li className="sidebar-menu-item">
               <FaInfoCircle size={24} className="sidebar-icon" />
