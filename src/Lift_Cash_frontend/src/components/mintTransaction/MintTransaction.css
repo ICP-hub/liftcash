@@ -1,5 +1,5 @@
 .mint-transaction-main-div {
-  @apply max-w-lg  rounded-lg  mx-4 my-6 border border-[#61A5FA] bg-transparent;
+  @apply max-w-lg  rounded-lg  mx-4  border border-[#61A5FA] bg-transparent;
 }
 
 .mint-transaction-title {

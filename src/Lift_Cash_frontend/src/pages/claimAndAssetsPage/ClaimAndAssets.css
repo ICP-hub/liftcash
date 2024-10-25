@@ -8,7 +8,7 @@
 }
 
 .asset-row {
-  @apply flex px-6 justify-between items-center mb-4 text-center;
+  @apply flex px-6 justify-between items-center my-4 text-center;
 }
 
 .asset-label {

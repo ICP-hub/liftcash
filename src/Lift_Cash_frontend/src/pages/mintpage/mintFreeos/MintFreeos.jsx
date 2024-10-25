@@ -71,6 +71,7 @@
 
 import React from 'react';
 import './MintFreeos.css'; 
+import MintTransaction from '../../../components/mintTransaction/MintTransaction';
 
 const MintFreeos = () => {
   return (
@@ -127,6 +128,9 @@ const MintFreeos = () => {
             or 10.20099 XUSDC
           </p>
         </div>
+      </div>
+      <div className="mint-container">
+        <MintTransaction/>
       </div>
     </div>
   );

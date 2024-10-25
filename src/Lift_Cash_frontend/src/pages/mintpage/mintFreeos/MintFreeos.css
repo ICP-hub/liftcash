@@ -44,7 +44,7 @@
   }
   
   .mint-fee-section {
-    @apply bg-[#DAECFA] text-center py-2 rounded-b-lg;
+    @apply bg-[#DAECFA] text-center py-2 pb-4 rounded-b-lg;
   }
   
   .mint-fee-title {
@@ -53,5 +53,8 @@
   
   .mint-fee-values {
     @apply text-sm font-semibold text-gray-900;
+  }
+  .mint-container {
+   @apply flex justify-center;
   }
   
