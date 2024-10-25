@@ -1,0 +1,33 @@
+
+.page-container {
+    @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 pb-8 flex flex-col items-center;
+  }
+  
+  .card-container {
+    @apply mt-6 pt-2 w-full max-w-md mx-auto bg-white rounded-lg border-2 border-[#00A1ED];
+  }
+  
+  .heading-title {
+    @apply text-3xl font-semibold p-4 text-[#222222] mb-4 text-center;
+  }
+
+  .tabs-container {
+    @apply flex justify-around px-6;
+  }
+  
+  .tab-button {
+    @apply w-full py-2 text-lg font-medium rounded-t-md border;
+  }
+  
+  .active-tab {
+    @apply bg-[#CCCCCC] border-blue-500 border-b-0 border-r-0 mt-3 text-gray-800;
+  }
+  
+  .inactive-tab {
+    @apply text-black py-4 border-2 border-b-0 border-blue-500;
+  }
+  
+  .divider {
+    @apply h-px bg-black;
+  }
+  

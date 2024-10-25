@@ -1,0 +1,37 @@
+
+.mint-header {
+    @apply bg-[#00A1ED] text-white text-[16px] font-medium py-4 flex justify-center items-center;
+  }
+  
+  .mint-header-title {
+    @apply text-xl text-center font-semibold;
+  }
+  
+  .mint-info-text {
+    @apply text-[14px] font-light text-start text-black py-4 px-6;
+  }
+  
+  .mint-info-link {
+    @apply text-[#0000EE] underline;
+  }
+  
+  .balances-container {
+    @apply bg-white border mx-4 my-2 border-blue-400 rounded-lg p-2 mb-4;
+  }
+  
+  .balances-title {
+    @apply text-base text-center text-[#00A1ED] font-medium mb-2;
+  }
+  
+  .balances-content {
+    @apply flex flex-col items-center;
+  }
+  
+  .balances-item {
+    @apply bg-[#DAECFA] w-1/2 flex flex-col justify-center items-center rounded-md text-sm text-[#00A1ED] py-1 font-medium;
+  }
+  
+  .balances-item-number {
+    @apply text-lg text-gray-800;
+  }
+  
