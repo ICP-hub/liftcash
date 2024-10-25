@@ -50,6 +50,7 @@ import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import MintFreebi from "./mintFreebi/MintFreebi";
 import MintFreeos from "./mintFreeos/MintFreeos";
 import './MintPage.css'; 
+import MintTransaction from "../../components/mintTransaction/MintTransaction";
 
 const MintPage = () => {
   const [activeTab, setActiveTab] = useState("FREEOS");
