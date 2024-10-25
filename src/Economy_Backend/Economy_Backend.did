@@ -1,1 +1,28 @@
-service : { greet : (text) -> (text) query }
+type StakerInfo = record {
+    amount: nat64;
+    start_time: nat64;
+};
+
+type KeyValuePair = record {
+    key: principal;
+    value: StakerInfo;
+};
+
+type DAOState = record {
+    stakers: vec KeyValuePair;
+    treasury_pool: nat;
+    reward_pool: nat;
+};
+
+type StakeResult = variant { Ok : null; Err : text };
+type UnstakeResult = variant { Ok : nat64; Err : text };
+
+service : {
+    "initialize_dao" : (nat64, nat64) -> ();
+
+    "stake" : (principal, nat64) -> (StakeResult);
+
+    "unstake" : (principal) -> (UnstakeResult);
+
+    "get_rewards" : (principal) -> (nat64);
+};
