@@ -5,7 +5,7 @@ import SurveyResult from "../surveyResult/SurveyResult";
 import { useNavigate } from "react-router-dom";
 
 const ThankYouCard = () => {
-  const [timeLeft, setTimeLeft] = useState(0); // Change this value as needed for testing
+  const [timeLeft, setTimeLeft] = useState(1); // Change this value as needed for testing
   const [formattedTime, setFormattedTime] = useState("");
 
   const navigate = useNavigate();
