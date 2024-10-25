@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
+import MintTransaction from "../../components/mintTransaction/MintTransaction";
 
 const MintPage = () => {
   const [activeTab, setActiveTab] = useState("FREEOS");
@@ -43,7 +44,10 @@ const MintPage = () => {
           </div>
         ) : (
           <div className="bg-[#00A1ED] text-white text-[16px]  font-medium py-4 flex justify-center items-center">
-            <p className="text-xl text-center font-semibold">Mint <span className="text-[22px] ">POINTS</span> to <span className="text-[22px] ">FREEBI</span></p>
+            <p className="text-xl text-center font-semibold">
+              Mint <span className="text-[22px] ">POINTS</span> to{" "}
+              <span className="text-[22px] ">FREEBI</span>
+            </p>
           </div>
         )}
 
@@ -103,6 +107,11 @@ const MintPage = () => {
             </p>
           </div>
         </div>
+        {/* Mint Transaction */}
+
+        {/* <>
+          <MintTransaction />
+        </> */}
       </div>
     </div>
   );
