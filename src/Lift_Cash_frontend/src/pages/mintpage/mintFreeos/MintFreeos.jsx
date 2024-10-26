@@ -68,23 +68,22 @@
 
 // export default MintFreeos
 
-
-import React from 'react';
-import './MintFreeos.css'; 
-import MintTransaction from '../../../components/mintTransaction/MintTransaction';
+import React from "react";
+import "./MintFreeos.css";
+import MintTransaction from "../../../components/mintTransaction/MintTransaction";
 
 const MintFreeos = () => {
   return (
     <div>
       <div className="header-bg">
-        <p className="text-xl text-center font-semibold">
+        <p className="text-xl py-2 px-1  text-center font-semibold">
           This could be a taxable event in your jurisdiction
         </p>
       </div>
 
       <p className="main-text">
-        The Mint Fee applies when you mint your ‘Claimed POINTS’ or FREEBI
-        into a tradable token (FREEOS). For more info{" "}
+        The Mint Fee applies when you mint your ‘Claimed POINTS’ or PROMO into a
+        tradable token (LIFT). For more info{" "}
         <a href="#" className="info-link">
           click here
         </a>
@@ -96,19 +95,19 @@ const MintFreeos = () => {
         <div className="balance-grid">
           <div className="balance-card">
             <p className="balance-text">0</p>
-            <p>POINT</p>
+            <p>PORMO</p>
           </div>
           <div className="balance-card">
             <p className="balance-text">0</p>
-            <p>FREEBI</p>
+            <p>LIFT</p>
           </div>
-          <div className="balance-card">
+          <div className="balance-card   ">
             <p className="balance-text">0</p>
-            <p>FREEOS</p>
+            <p>ICP</p>
           </div>
-          <div className="balance-card">
+          <div className="balance-card   ">
             <p className="balance-text">0</p>
-            <p>XPR</p>
+            <p>XUSDC</p>
           </div>
         </div>
       </div>
@@ -116,24 +115,24 @@ const MintFreeos = () => {
       <div className="fee-container">
         <h3 className="fee-heading">Mint Fee Details:</h3>
         <p className="fee-details">
-          FREEOS = 9.0588% | XPR = 13.8529% | XUSDC = 14.0441%
+          LIFT = 9.0588% | ICP = 13.8529% | XUSDC = 14.0441%
         </p>
         <div className="mint-fee-section">
           <p className="mint-fee-title">Minimum Mint Fee</p>
           <p className="mint-fee-values">
-            3000 FREEOS
+            3000 LIFT
             <br />
-            or 4139.5982 XPR
+            or 4139.5982 ICP
             <br />
             or 10.20099 XUSDC
           </p>
         </div>
       </div>
       <div className="mint-container">
-        <MintTransaction/>
+        <MintTransaction />
       </div>
     </div>
   );
-}
+};
 
 export default MintFreeos;

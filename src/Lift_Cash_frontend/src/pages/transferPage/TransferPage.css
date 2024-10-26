@@ -17,7 +17,7 @@
 }
 
 .balance-item {
-  @apply bg-[#DAECFA] rounded-md p-1 w-[40%] mb-6 ;
+  @apply bg-[#DAECFA] rounded-md p-1 w-[40%] mb-6;
 }
 
 .balance-amount {

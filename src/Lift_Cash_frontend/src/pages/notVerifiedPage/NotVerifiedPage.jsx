@@ -44,16 +44,14 @@ const NotVerifiedPage = () => {
         <h2 className="title">Sorry You are Not Verified</h2>
 
         <div className="notice">
-          You must be verified to mint <span className="text-[24px]">FREEBI</span>
+          You must be verified to mint{" "}
+          <span className="text-[24px]">PROMO</span>
         </div>
 
         <div className="verify-text">
           <p className="verify-link">
             Verify your account at{" "}
-            <a
-              href="https://identity.metallicus.com"
-              className="link"
-            >
+            <a href="https://identity.metallicus.com" className="link">
               identity.metallicus.com
             </a>
           </p>

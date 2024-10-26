@@ -49,10 +49,9 @@
 
 // export default MintFreebi;
 
-
 import React from "react";
 import NotVerifiedPage from "../../notVerifiedPage/NotVerifiedPage";
-import './MintFreebi.css'; 
+import "./MintFreebi.css";
 
 const MintFreebi = () => {
   return (
@@ -60,17 +59,20 @@ const MintFreebi = () => {
       <div className="mint-header">
         <p className="mint-header-title">
           Mint <span className="text-[22px]">POINTS</span> to{" "}
-          <span className="text-[22px]">FREEBI</span>
+          <span className="text-[22px]">PROMO</span>
         </p>
       </div>
 
       <p className="mint-info-text">
-        FREEBI is our internal trading token within the community and isn't
-        subject to a Mint Fee. The FREEBI tokens exist as a way for participants
+        PROMO is our internal trading token within the community and isn't
+        subject to a Mint Fee. The PROMO tokens exist as a way for participants
         to have a limited, but tradable, token that can be used for Peer-to-Peer
-        activities, while protecting the FREEOS token's circulating supply. For
+        activities, while protecting the LIFT token's circulating supply. For
         more info{" "}
-        <a href="#" className="mint-info-link">click here</a>.
+        <a href="#" className="mint-info-link">
+          click here
+        </a>
+        .
       </p>
 
       <div className="balances-container">
@@ -83,19 +85,18 @@ const MintFreebi = () => {
             </div>
             <div className="balances-item">
               <p className="balances-item-number">0</p>
-              <p>FREEBI</p>
+              <p>PROMO</p>
             </div>
           </div>
-          <div className="balances-item w-1/2">
+          <div className="balances-item w-1/2 ">
             <p className="balances-item-number">0</p>
-            <p>FREEOS</p>
+            <p>LIFT</p>
           </div>
         </div>
       </div>
       <div className="flex justify-center mx-4">
-      <NotVerifiedPage />
+        <NotVerifiedPage />
       </div>
-      
     </div>
   );
 };

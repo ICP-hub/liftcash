@@ -49,8 +49,7 @@ import React, { useState } from "react";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import MintFreebi from "./mintFreebi/MintFreebi";
 import MintFreeos from "./mintFreeos/MintFreeos";
-import './MintPage.css'; 
-import MintTransaction from "../../components/mintTransaction/MintTransaction";
+import "./MintPage.css";
 
 const MintPage = () => {
   const [activeTab, setActiveTab] = useState("FREEOS");
@@ -68,7 +67,7 @@ const MintPage = () => {
               activeTab === "FREEOS" ? "active-tab" : "inactive-tab"
             }`}
           >
-            Mint FREEOS
+            Mint LIFT
           </button>
           <button
             onClick={() => setActiveTab("FREEBI")}
@@ -76,7 +75,7 @@ const MintPage = () => {
               activeTab === "FREEBI" ? "active-tab" : "inactive-tab"
             }`}
           >
-            Mint FREEBI
+            Mint PROMO
           </button>
         </div>
         <div className="divider"></div>
@@ -88,4 +87,3 @@ const MintPage = () => {
 };
 
 export default MintPage;
-

@@ -1,60 +1,58 @@
-
 .header-bg {
-    @apply bg-[#00A1ED] text-white text-[16px] font-medium py-4 flex justify-center items-center;
-  }
-  
-  .main-text {
-    @apply text-sm  text-start text-black p-6;
-  }
-  
-  .info-link {
-    @apply text-[#0000EE] underline;
-  }
-  
-  .balance-container {
-    @apply bg-white border mx-4 my-2 flex flex-col border-blue-400 rounded-lg p-2 mb-4;
-  }
-  
-  .balance-heading {
-    @apply text-base text-center text-[#00A1ED] font-medium mb-2;
-  }
-  
-  .balance-grid {
-    @apply grid grid-cols-2 gap-2;
-  }
-  
-  .balance-card {
-    @apply bg-[#DAECFA] flex flex-col justify-center items-center rounded-md text-sm text-[#00A1ED] py-1 font-medium;
-  }
-  
-  .balance-text {
-    @apply text-lg text-gray-800;
-  }
-  
-  .fee-container {
-    @apply bg-white border mx-4 m-6 border-blue-400 rounded-lg;
-  }
-  
-  .fee-heading {
-    @apply text-base font-medium text-center text-[#00A1ED] pt-2 pb-1;
-  }
-  
-  .fee-details {
-    @apply text-sm text-center font-medium text-gray-800 mb-2;
-  }
-  
-  .mint-fee-section {
-    @apply bg-[#DAECFA] text-center py-2 pb-4 rounded-b-lg;
-  }
-  
-  .mint-fee-title {
-    @apply text-sm text-blue-500 font-bold mb-2;
-  }
-  
-  .mint-fee-values {
-    @apply text-sm font-semibold text-gray-900;
-  }
-  .mint-container {
-   @apply flex justify-center;
-  }
-  
+  @apply bg-[#00A1ED] text-white text-[16px] font-medium py-4 flex justify-center items-center;
+}
+
+.main-text {
+  @apply text-sm  text-start text-black p-6;
+}
+
+.info-link {
+  @apply text-[#0000EE] underline;
+}
+
+.balance-container {
+  @apply bg-white border mx-4 my-2 flex flex-col border-blue-400 rounded-lg p-2 mb-4;
+}
+
+.balance-heading {
+  @apply text-base text-center text-[#00A1ED] font-medium mb-2;
+}
+
+.balance-grid {
+  @apply grid grid-cols-2 gap-2;
+}
+
+.balance-card {
+  @apply bg-[#DAECFA] flex flex-col justify-center items-center rounded-md text-sm text-[#00A1ED] py-1 font-medium;
+}
+
+.balance-text {
+  @apply text-lg text-gray-800;
+}
+
+.fee-container {
+  @apply bg-white border mx-4 m-6 border-blue-400 rounded-lg;
+}
+
+.fee-heading {
+  @apply text-base font-medium text-center text-[#00A1ED] pt-2 pb-1;
+}
+
+.fee-details {
+  @apply text-sm text-center font-medium text-gray-800 mb-2;
+}
+
+.mint-fee-section {
+  @apply bg-[#DAECFA] text-center py-2 pb-4 rounded-b-lg;
+}
+
+.mint-fee-title {
+  @apply text-sm text-blue-500 font-bold mb-2;
+}
+
+.mint-fee-values {
+  @apply text-sm font-semibold text-gray-900;
+}
+.mint-container {
+  @apply flex justify-center;
+}

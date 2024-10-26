@@ -85,14 +85,12 @@
 
 // // export default Transferpage;
 
-
-
 import "./TransferPage.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import React, { useState } from "react";
 
 const Transferpage = () => {
-  const [activeTab, setActiveTab] = useState("FREEOS");
+  const [activeTab, setActiveTab] = useState("LIFT");
 
   return (
     <div className="page-container">
@@ -104,46 +102,46 @@ const Transferpage = () => {
         <div className="balanceContainer">
           <div className="balance-item">
             <p className="balance-amount">0</p>
-            <p className="balance-label">FREEOS</p>
+            <p className="balance-label">LIFT</p>
           </div>
           <div className="balance-item">
             <p className="balance-amount">0</p>
-            <p className="balance-label">FREEBI</p>
+            <p className="balance-label">PROMO</p>
           </div>
         </div>
 
-        <div className="tabs-container">
+        {/* <div className="tabs-container">
           <button
-            onClick={() => setActiveTab("FREEOS")}
+            onClick={() => setActiveTab("LIFT")}
             className={`tab-button ${
-              activeTab === "FREEOS" ? "active-tab" : "inactive-tab"
+              activeTab === "LIFT" ? "active-tab" : "inactive-tab"
             }`}
           >
-            Send FREEOS
+            Send LIFT
           </button>
           <button
-            onClick={() => setActiveTab("FREEBI")}
+            onClick={() => setActiveTab("PROMO")}
             className={`tab-button ${
-              activeTab === "FREEBI" ? "active-tab" : "inactive-tab"
+              activeTab === "PROMO" ? "active-tab" : "inactive-tab"
             }`}
           >
-            Send FREEBI
+            Send PROMO
           </button>
-        </div>
+        </div> */}
 
         <div className="divider"></div>
 
-        {activeTab === "FREEOS" && (
+        {activeTab === "LIFT" && (
           <div className="transfer-fee">
             <p className="transfer-fee-text">
-              FREEBI transfer fee is currently 1.00%
+              PROMO transfer fee is currently 1.00%
             </p>
           </div>
         )}
 
         <div className="info-section">
           <p className="info-text">
-            For more info on sending FREEOS{" "}
+            For more info on sending LIFT{" "}
             <a href="#" className="text-[#0000EE] underline">
               click here
             </a>
@@ -165,7 +163,7 @@ const Transferpage = () => {
           .
         </p>
         <p className="receive-username">@vikashvijay</p>
-        <button className="need-tokens-button">Need Tokens? Try Alcor</button>
+        <button className="need-tokens-button">Need Tokens? </button>
       </div>
     </div>
   );
