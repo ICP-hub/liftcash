@@ -106,7 +106,7 @@ const ClaimAndAssets = () => {
       <div className="card-container">
         <div className="asset-row">
           <div>
-            <p className="asset-label">POINT</p>
+            <p className="asset-label">PROMO</p>
             <p className="asset-amount">0</p>
           </div>
           <div>
@@ -118,16 +118,16 @@ const ClaimAndAssets = () => {
             </div>
           </div>
           <div>
-            <p className="asset-label">FREEOS</p>
+            <p className="asset-label">LIFT</p>
             <p className="asset-amount">0</p>
           </div>
         </div>
-        <div className="asset-row my-4 py-4">
+        {/* <div className="asset-row my-4 py-4">
           <div>
             <p className="asset-label">FREEBI</p>
             <p className="asset-amount">0</p>
           </div>
-        </div>
+        </div> */}
 
         <div className="claim-box">
           <button
