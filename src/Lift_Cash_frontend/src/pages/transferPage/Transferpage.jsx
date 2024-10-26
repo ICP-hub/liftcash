@@ -87,16 +87,16 @@
 
 import "./TransferPage.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
-import React, { useState } from "react";
+// import React, { useState } from "react";
 
 const Transferpage = () => {
-  const [activeTab, setActiveTab] = useState("LIFT");
+  // const [activeTab, setActiveTab] = useState("LIFT");
 
   return (
     <div className="page-container">
-      <DashBoardHead />
+      <DashBoardHead className="border-red-900" />
 
-      <div className="card-container">
+      <div className="card-container border-blue-500">
         <h2 className="balance-title">Your current balances:</h2>
 
         <div className="balanceContainer">
@@ -129,15 +129,12 @@ const Transferpage = () => {
           </button>
         </div> */}
 
-        <div className="divider"></div>
-
-        {activeTab === "LIFT" && (
-          <div className="transfer-fee">
-            <p className="transfer-fee-text">
-              PROMO transfer fee is currently 1.00%
-            </p>
-          </div>
-        )}
+        <div className="transfer-fee">
+          <p className="transfer-fee-text">
+            <span className="text-base">PROMO </span>transfer fee is currently
+            1.00%
+          </p>
+        </div>
 
         <div className="info-section">
           <p className="info-text">
@@ -153,7 +150,7 @@ const Transferpage = () => {
         </div>
       </div>
 
-      <div className="receive-tokens-container">
+      <div className="receive-tokens-container ">
         <h2 className="receive-title">Receive Tokens</h2>
         <p className="receive-info-text">
           For more info{" "}

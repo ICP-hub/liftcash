@@ -1,19 +1,19 @@
 /* TransferPage.css */
 
 .page-container {
-  @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center p-5;
+  @apply min-h-screen   bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center p-5;
 }
 
 .card-container {
-  @apply bg-white rounded-lg shadow-md mt-6 py-6 w-full max-w-md mx-auto text-center border-2 border-[#64C6F4];
+  @apply shadow-md rounded-lg  mt-6 py-6  w-full max-w-lg mx-auto text-center;
 }
 
 .balance-title {
-  @apply text-base text-[#00A1ED] mt-4 font-medium mb-4;
+  @apply text-base font-bold text-[#00A1ED] my-10;
 }
 
 .balanceContainer {
-  @apply flex justify-center w-full gap-2;
+  @apply flex justify-center  items-center gap-4;
 }
 
 .balance-item {
@@ -28,32 +28,28 @@
   @apply text-sm text-[#00A1ED] font-semibold;
 }
 
-.tabs-container {
-  @apply flex justify-around px-6;
-}
+/* .tabs-container {
+  @apply flex justify-around px-6 border-[#3B82F6];
+} */
 
-.tab-button {
+/* .tab-button {
   @apply w-full py-2 text-lg font-medium rounded-t-md border;
-}
+} */
 
-.active-tab {
+/* .active-tab {
   @apply bg-[#CCCCCC] border-blue-500 border-b-0 border-r-0 mt-3 text-gray-800;
-}
+} */
 
-.inactive-tab {
+/* .inactive-tab {
   @apply text-black py-4 border-2 border-b-0 border-blue-500;
-}
-
-.divider {
-  @apply h-px bg-gray-800;
-}
+} */
 
 .transfer-fee {
   @apply bg-[#00A1ED];
 }
 
 .transfer-fee-text {
-  @apply text-[16px] font-medium text-white p-4;
+  @apply text-[16px] text-sm font-bold text-white p-4;
 }
 
 .info-section {
@@ -69,7 +65,7 @@
 }
 
 .receive-tokens-container {
-  @apply bg-white rounded-lg mt-6 p-6 w-full max-w-md mx-auto text-center border-2 border-[#64C6F4];
+  @apply bg-white rounded-lg mt-6 p-6 w-full max-w-md mx-auto text-center border-2 border-blue-500;
 }
 
 .receive-title {
