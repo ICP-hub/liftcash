@@ -7,6 +7,7 @@ import ActivitiesPage from "./pages/activitiesPage/ActivitiesPage";
 import Transferpage from "./pages/transferPage/Transferpage";
 import InfoPage from "./pages/infoPage/InfoPage";
 import { useAuthClient } from "./utils/useAuthClient";
+import MintPage from "./pages/mintpage/MintPage";
 
 function App() {
 
@@ -40,6 +41,13 @@ function App() {
         element={
           <AfterAuthPage>
             <Transferpage />
+          </AfterAuthPage>
+        }
+      />
+      <Route path="/mint"
+        element={
+          <AfterAuthPage>
+            <MintPage/>
           </AfterAuthPage>
         }
       />

@@ -120,10 +120,10 @@ const Vote = () => {
                   />
                 </div>
                 <div className="vote-display-percent">
-                  <p>
+                  <p className="sliderunitfirst">
                     {data.slider.min} {data.slider.unit}
                   </p>
-                  <p>
+                  <p className="sliderunitsecond">
                     {data.slider.max} {data.slider.unit}
                   </p>
                 </div>

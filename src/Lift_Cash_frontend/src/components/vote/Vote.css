@@ -50,10 +50,16 @@
   @apply flex justify-center;
 }
 .vote-slider {
-  @apply lg:w-[30vw] md:w-[57vw] w-[74vw];
+  @apply w-[85%];
 }
 .vote-display-percent {
-  @apply flex justify-between mx-10;
+  @apply flex justify-center w-[85%] mx-[8%] ;
+}
+.sliderunitfirst {
+  @apply w-1/2 flex justify-start ;
+}
+.sliderunitsecond {
+  @apply w-1/2 flex justify-end ;
 }
 
 .vote-manual-input-container {

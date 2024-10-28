@@ -1,46 +1,85 @@
-.transfer-main-section {
-  @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center p-5;
+/* TransferPage.css */
+
+.page-container {
+  @apply min-h-screen   bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center p-5;
 }
 
-.transfer-balance-card-section-main {
-  @apply w-full max-w-lg mt-8 bg-white rounded-xl shadow-lg p-6 text-center;
-}
-.transfer-balance-card-section-amount {
-  @apply text-lg font-semibold text-blue-600;
-}
-.transfer-balance-card-section-tokens {
-  @apply grid grid-cols-2 gap-4 mt-4;
-}
-.transfer-balance-card-section-present-tokens {
-  @apply text-2xl font-bold;
-}
-.transfer-balance-card-send-section-main {
-  @apply flex justify-center mt-6;
-}
-.transfer-balance-card-send-section-btn {
-  @apply flex-1 text-center py-2 bg-blue-100 text-blue-600 font-bold rounded-lg ml-4;
-}
-.transfer-balance-card-text {
-  @apply mt-4 text-sm text-gray-500;
-}
-.transfer-balance-card-link {
-  @apply text-blue-600 underline;
+.card-container {
+  @apply shadow-md rounded-lg  mt-6 py-6  w-full max-w-lg mx-auto text-center;
 }
 
-.transfer-recevie-token-section-main {
-  @apply w-full max-w-lg mt-6 bg-white rounded-xl shadow-lg p-6 text-center;
-}
-.transfer-recevie-token-section-text {
-  @apply text-2xl font-bold;
+.balance-title {
+  @apply text-base font-bold text-[#00A1ED] my-10;
 }
 
-.transfer-recevie-token-section-info {
-  @apply text-sm mt-2;
+.balanceContainer {
+  @apply flex justify-center  items-center gap-4;
 }
 
-.transfer-recevie-token-section-link {
-  @apply text-blue-600 underline;
+.balance-item {
+  @apply bg-[#DAECFA] rounded-md p-1 w-[40%] mb-6;
 }
-.transfer-recevie-token-section-username {
-  @apply font-bold text-lg mt-2;
+
+.balance-amount {
+  @apply text-base font-medium text-[#222222];
+}
+
+.balance-label {
+  @apply text-sm text-[#00A1ED] font-semibold;
+}
+
+/* .tabs-container {
+  @apply flex justify-around px-6 border-[#3B82F6];
+} */
+
+/* .tab-button {
+  @apply w-full py-2 text-lg font-medium rounded-t-md border;
+} */
+
+/* .active-tab {
+  @apply bg-[#CCCCCC] border-blue-500 border-b-0 border-r-0 mt-3 text-gray-800;
+} */
+
+/* .inactive-tab {
+  @apply text-black py-4 border-2 border-b-0 border-blue-500;
+} */
+
+.transfer-fee {
+  @apply bg-[#00A1ED];
+}
+
+.transfer-fee-text {
+  @apply text-[16px] text-sm font-bold text-white p-4;
+}
+
+.info-section {
+  @apply p-6;
+}
+
+.info-text {
+  @apply text-sm text-gray-800 mb-5;
+}
+
+.balance-info {
+  @apply text-sm text-gray-800;
+}
+
+.receive-tokens-container {
+  @apply bg-white rounded-lg mt-6 p-6 w-full max-w-md mx-auto text-center border-2 border-blue-500;
+}
+
+.receive-title {
+  @apply text-3xl text-[#222222] font-semibold mb-2;
+}
+
+.receive-info-text {
+  @apply text-xs text-gray-800;
+}
+
+.receive-username {
+  @apply text-2xl text-[#222222] font-semibold py-6;
+}
+
+.need-tokens-button {
+  @apply border-2 border-[#00A1ED] font-medium text-[#00A1ED] py-2 px-6 rounded-lg w-full hover:bg-blue-100 transition duration-300;
 }

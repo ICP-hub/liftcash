@@ -1,0 +1,43 @@
+.info-main-div {
+  @apply min-h-screen p-6 bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center justify-center;
+}
+.info-secondary-div {
+  @apply max-w-lg bg-white shadow-lg rounded-lg overflow-hidden;
+}
+.info-card-top-div {
+  @apply bg-primary text-white text-center p-6;
+}
+
+.info-card-title {
+  @apply text-2xl font-bold;
+}
+.info-card-sub-title {
+  @apply text-sm;
+}
+
+.info-card-ques-ans-section {
+  @apply p-6;
+}
+
+.info-card-ques {
+  @apply text-lg font-semibold mb-2;
+}
+
+.info-card-ans {
+  @apply text-gray-700;
+}
+
+.info-feature {
+  @apply mt-4;
+}
+
+.info-feature-title {
+  @apply text-base font-semibold;
+}
+.info-feature-ul {
+  @apply list-disc list-inside text-gray-600 mt-2;
+}
+
+info-link {
+  @apply mt-6 bg-primary text-white px-4 py-2 rounded hover:bg-indigo-600;
+}

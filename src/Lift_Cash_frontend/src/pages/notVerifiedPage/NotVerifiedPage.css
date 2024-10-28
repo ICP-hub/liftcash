@@ -1,0 +1,33 @@
+
+.container {
+    /* @apply mx-4 max-w-md; */
+  }
+  
+  .card {
+    @apply w-full max-w-md mx-auto bg-white rounded-lg border border-[#00A1ED] shadow-md text-center;
+  }
+  
+  .title {
+    @apply text-3xl p-6 font-medium mb-6;
+  }
+  
+  .notice {
+    @apply bg-[#00A1ED] text-center text-white py-4 font-medium text-[22px] mt-2;
+  }
+  
+  .verify-text {
+    @apply  p-6;
+  }
+  
+  .verify-link {
+    @apply text-xl font-medium mb-4;
+  }
+  
+  .link {
+    @apply text-[#0000EE] line-clamp-1 break-all underline;
+  }
+  
+  .how-to-verify {
+    @apply my-4;
+  }
+  
