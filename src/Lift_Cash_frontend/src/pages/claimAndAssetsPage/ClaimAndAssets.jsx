@@ -8,7 +8,7 @@
 
 //   return (
 //     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center">
-      
+
 //       <DashBoardHead />
 
 //       <div className="mt-6 pt-6 w-full  max-w-md mx-auto  bg-white rounded-lg  border-2 border-[#00A1ED]">
@@ -91,7 +91,6 @@
 
 // export default ClaimAndAssets;
 
-
 import "./ClaimAndAssets.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import { SlArrowRightCircle } from "react-icons/sl";
@@ -130,10 +129,7 @@ const ClaimAndAssets = () => {
         </div> */}
 
         <div className="claim-box">
-          <button
-            disabled
-            className="disabled-claim-button"
-          >
+          <button disabled className="disabled-claim-button">
             <span>
               <CiWarning style={{ fontSize: "28px", color: "white" }} />
             </span>
