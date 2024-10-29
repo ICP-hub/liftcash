@@ -15,7 +15,7 @@
   @apply flex flex-col md:flex-row md:flex-wrap lg:flex-wrap lg:justify-evenly lg:mt-10  lg:gap-0 gap-20   ml-4  md:ml-20;
 }
 .footer-logo-description {
-  @apply w-56 text-[#CED4DA];
+  @apply w-56 text-[#CED4DA] font-inter;
 }
 
 .footer-logo {
@@ -32,13 +32,13 @@
   @apply col-span-1;
 }
 .footer-container-h5 {
-  @apply font-bold mb-4;
+  @apply font-bold mb-4 font-inter;
 }
 .footer-container-ul {
   @apply space-y-2;
 }
 .footer-container-li {
-  @apply hover:text-blue-400 text-[#CED4DA];
+  @apply hover:text-blue-400 text-[#CED4DA] font-inter;
 }
 
 .footer-container-a {
@@ -52,7 +52,7 @@
 }
 
 .footer-bottom-container {
-  @apply mt-12 text-[#CED4DA] font-inter font-medium  border-t border-[#3B4261]  text-xs md:text-sm  flex justify-between p-4 bg-[#090E34]
+  @apply mt-12 text-[#CED4DA] font-inter font-medium  border-t border-[#3B4261]  text-xs md:text-sm  flex justify-between p-4 bg-[#090E34];
 }
 .footer-bottom-items {
   @apply md:pt-4  lg:ml-36 lg:mr-20 md:ml-10 md:mr-10;

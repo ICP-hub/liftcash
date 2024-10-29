@@ -147,7 +147,7 @@ const Footer = () => {
                 className="footer-container-img"
               />
 
-              <h6 className="w-52">Lift Cash Unchained</h6>
+              <h6 className="w-52 font-inter">Lift Cash Unchained</h6>
             </a>
             <a
               href="/blog/revolutionising-dao-governance"
@@ -159,7 +159,9 @@ const Footer = () => {
                 className="footer-container-img"
               />
 
-              <h6 className="w-52 truncate">Revolutionising DAO Governance</h6>
+              <h6 className="w-52 truncate font-inter">
+                Revolutionising DAO Governance
+              </h6>
             </a>
           </div>
         </div>

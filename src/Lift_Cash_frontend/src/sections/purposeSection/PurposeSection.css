@@ -36,5 +36,5 @@
 }
 
 .purpose-learn-more {
-  @apply text-blue-400 font-semibold hover:underline;
+  @apply text-blue-400 font-semibold font-inter hover:underline;
 }
