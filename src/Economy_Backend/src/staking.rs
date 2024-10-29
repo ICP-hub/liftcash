@@ -34,7 +34,7 @@ pub fn calculate_rewards(user: &Principal, dao_state: &DAOState) -> u64 {
     if let Some(staker_info) = dao_state.stakers.get(user) {
         // Calculate staking duration in nanoseconds
         let staking_duration = time() - staker_info.start_time;
-        let reward_rate = 0.01; // Example reward rate (1% per day).
+        let reward_rate = 0.1; 
         let days_staked = staker_info.days_staked();
         // Calculate rewards using proper type casting
         let rewards = (staker_info.amount as f64 * reward_rate *((1.0 + ((days_staked as f64 / 30.0).floor() * 0.1) + ((staker_info.amount as f64 / 1000.0) * 0.1)).min(3.0))) as u64;

@@ -11,6 +11,7 @@ use std::collections::HashMap;
 use std::sync::RwLock;
 use ic_cdk::api::time;
 use std::collections::HashSet;
+use candid::Principal;
 
 use ic_stable_structures::{StableCell, memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
 use std::borrow::Cow;
@@ -48,11 +49,11 @@ struct VotingSystem {
     iteration_count: u64,
     participation_count: HashMap<u8, u64>,
     last_stage_timestamp: u64,
-    survey_responses: HashMap<String, SurveyData>,
-    voting_responses: HashMap<String, VoteData>,
-    ratification_responses: HashMap<String, bool>,
+    survey_responses: HashMap<Principal, SurveyData>,
+    voting_responses: HashMap<Principal, VoteData>,
+    ratification_responses: HashMap<Principal, bool>,
     ratification_results: HashMap<String, u64>,
-    weekly_participation: HashMap<String, UserClaim>, // Ensure this is defined
+    weekly_participation: HashMap<Principal, UserClaim>, // Ensure this is defined
     weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
     weekly_vote_results: HashMap<u64, HashMap<String, VoteResponse>>, // Store vote results per week
     weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>, 
@@ -146,14 +147,15 @@ impl VotingSystem {
         }
     }
 
-    fn submit_survey(&mut self, user_id: &str, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
+    fn submit_survey(&mut self, user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
         // self.check_and_close_stage();
-        self.survey_responses.insert(user_id.to_string(), answers);
+        // let user_id_str = user_id.to_text(); 
+        self.survey_responses.insert(user_id.clone(), answers);
 
         self.participation_count.entry(0).or_insert(0);
         *self.participation_count.get_mut(&0).unwrap() += 1;
 
-        self.weekly_participation.entry(user_id.to_string()).and_modify(|claim| {
+        self.weekly_participation.entry(user_id).and_modify(|claim| {
             claim.has_surveyed = true;
             claim.claim_percentage+=20;
         }).or_insert(UserClaim {
@@ -166,14 +168,14 @@ impl VotingSystem {
         Ok(())
     }
 
-    fn submit_vote(&mut self, user_id: &str, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
+    fn submit_vote(&mut self, user_id: Principal, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
         // self.check_and_close_stage();
-        self.voting_responses.insert(user_id.to_string(), votes.clone());
+        self.voting_responses.insert(user_id, votes.clone());
 
         self.participation_count.entry(1).or_insert(0);
         *self.participation_count.get_mut(&1).unwrap() += 1;
 
-        self.weekly_participation.entry(user_id.to_string()).and_modify(|claim| {
+        self.weekly_participation.entry(user_id).and_modify(|claim| {
             claim.has_voted = true;
             claim.claim_percentage+=70;
         }).or_insert(UserClaim {
@@ -186,16 +188,16 @@ impl VotingSystem {
         Ok(())
     }
 
-    fn submit_ratification(&mut self, user_id: &str, _approve: bool) -> Result<(), String> {
+    fn submit_ratification(&mut self, user_id: Principal, _approve: bool) -> Result<(), String> {
         // Check if the current week is valid
         if self.current_week == 0 {
             return Err("No current week available".to_string());
         }
     
-        if let Some(claim) = self.weekly_participation.get_mut(user_id) {
+        if let Some(claim) = self.weekly_participation.get_mut(&user_id) {
             // Check if the user has voted in the current week using the mutable reference
             if claim.has_voted {
-                self.ratification_responses.insert(user_id.to_string(), _approve);
+                self.ratification_responses.insert(user_id, _approve);
                 // Update the ratification results count
                 let vote_key = if _approve { "Yes" } else { "No" };
                 *self.ratification_results.entry(vote_key.to_string()).or_insert(0) += 1;
@@ -304,8 +306,8 @@ impl VotingSystem {
     }
     
 
-    fn calculate_total_claim(&self, user_id: &str) -> Option<u8> {
-        if let Some(claim) = self.weekly_participation.get(user_id) {
+    fn calculate_total_claim(&self, user_id: Principal) -> Option<u8> {
+        if let Some(claim) = self.weekly_participation.get(&user_id) {
             let mut total_claim = 0;
 
             if claim.has_surveyed {
@@ -347,30 +349,32 @@ fn start_new_week() {
 }
 
 #[update]
-fn submit_survey(user_id: String, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
+fn submit_survey(user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
+    // let principal_id = Principal::from_text(&user_id)
+    //     .map_err(|e| format!("Invalid Principal format for user_id: {}", e))?;
     mutate_voting_system(|voting_system| {
-        voting_system.submit_survey(&user_id, answers)
+        voting_system.submit_survey(user_id, answers)
     })
 }
 
 #[update]
-fn submit_vote(user_id: String, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
+fn submit_vote(user_id: Principal, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
     mutate_voting_system(|voting_system| {
-        voting_system.submit_vote(&user_id, votes)
+        voting_system.submit_vote(user_id, votes)
     })
 }
 
 #[update]
-fn submit_ratification(user_id: String, ratify: bool) -> Result<(), String> {
+fn submit_ratification(user_id: Principal, ratify: bool) -> Result<(), String> {
     mutate_voting_system(|voting_system| {
-        voting_system.submit_ratification(&user_id, ratify)
+        voting_system.submit_ratification(user_id, ratify)
     })
 }
 
 #[query]
-fn calculate_total_claim(user_id: String) -> Option<u8> {
+fn calculate_total_claim(user_id: Principal) -> Option<u8> {
     read_voting_system(|voting_system| {
-        voting_system.calculate_total_claim(&user_id)
+        voting_system.calculate_total_claim(user_id)
     })
 }
 

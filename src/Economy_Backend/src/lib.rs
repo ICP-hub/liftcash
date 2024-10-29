@@ -8,7 +8,7 @@ pub use types::*;
 use ic_cdk_macros::export_candid;
 use candid::export_service;
 use ic_principal::Principal;
-use candid::CandidType; // Correct import for CandidType
+use candid::{CandidType, Deserialize};
 use std::collections::HashMap;
 use types::{DAOState, StakerInfo};
 use staking::{stake_tokens, calculate_rewards};
@@ -43,7 +43,6 @@ pub fn stake(user: Principal, amount: u64) -> Result<(), String> {
     }
 }
 
-/// Public interface to unstake tokens.
 #[update]
 pub fn unstake(user: Principal) -> Result<u64, String> {
     unsafe {
@@ -55,7 +54,6 @@ pub fn unstake(user: Principal) -> Result<u64, String> {
     }
 }
 
-/// Gets the current reward for a user without altering state.
 #[query]
 pub fn get_rewards(user: Principal) -> u64 {
     unsafe {
@@ -63,6 +61,28 @@ pub fn get_rewards(user: Principal) -> u64 {
             calculate_rewards(&user, dao_state)
         } else {
             0
+        }
+    }
+}
+
+#[query]
+pub fn get_staker_info(user: Principal) -> Option<StakerInfo> {
+    unsafe {
+        if let Some(ref dao_state) = DAO_STATE {
+            dao_state.stakers.get(&user).cloned()
+        } else {
+            None
+        }
+    }
+}
+
+#[query]
+pub fn list_all_stakers() -> Option<HashMap<Principal, StakerInfo>> {
+    unsafe {
+        if let Some(ref dao_state) = DAO_STATE {
+            Some(dao_state.stakers.clone()) // Return a copy of the stakers map
+        } else {
+            None
         }
     }
 }
