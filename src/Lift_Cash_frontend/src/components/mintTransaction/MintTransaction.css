@@ -7,21 +7,21 @@
 }
 
 .mint-transaction-secondary-div {
-  @apply space-y-6 p-4 bg-[#DAECFA] rounded-b-lg;
+  @apply space-y-3 p-4 bg-[#DAECFA] rounded-b-lg;
 }
 
 .mint-transaction-lable {
-  @apply text-gray-800 text-sm text-left font-bold mb-2 w-1/2 pl-2;
+  @apply text-gray-900 text-[12px] text-left font-medium mb-2 w-1/2 pl-2;
 }
 .mint-transaction-option {
-  @apply border p-1 w-1/2 h-11  border-gray-300 cursor-pointer rounded-md bg-transparent focus:outline-none;
+  @apply border text-gray-700 font-light w-1/2 h-10 px-2  border-gray-400 cursor-pointer rounded-md bg-transparent focus:outline-none;
 }
 
 .mint-transaction-option-div {
-  @apply flex justify-between;
+  @apply flex justify-between items-center px-2;
 }
 .mint-transaction-lable-span {
-  @apply text-gray-600 font-normal text-sm bg-transparent;
+  @apply text-gray-600 font-normal text-[11px] bg-transparent;
 }
 .mint-transaction-hr {
   @apply my-4 border-[#9A9A9A];
@@ -30,5 +30,5 @@
   @apply pt-4;
 }
 .mint-transaction-submit-btn {
-  @apply w-full mb-4  bg-primary text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-600;
+  @apply w-full   bg-[#57BFF2] text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-600;
 }

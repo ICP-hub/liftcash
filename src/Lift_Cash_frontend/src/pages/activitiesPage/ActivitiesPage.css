@@ -1,5 +1,5 @@
 .activities-primary-div {
-  @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center p-5;
+  @apply min-h-screen  flex flex-col items-center p-5;
 }
 .activities-primary-container {
   @apply w-full max-w-md mx-auto bg-white  rounded-lg border border-blue-500 shadow-md mt-8;

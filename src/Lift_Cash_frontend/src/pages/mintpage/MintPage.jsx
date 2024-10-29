@@ -50,6 +50,8 @@ import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 // import MintFreebi from "./mintFreebi/MintFreebi";
 import MintFreeos from "./mintFreeos/MintFreeos";
 import "./MintPage.css";
+import bgimg from "../../assets/images/background.svg";
+
 
 // const MintPage = () => {
 //   const [activeTab, setActiveTab] = useState("FREEOS");
@@ -137,7 +139,14 @@ import "./MintPage.css";
 
 const MintPage = () => {
   return (
-    <div className="page-container">
+    <div 
+    style={{
+      backgroundImage: `url(${bgimg})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center center",
+      // backgroundAttachment: "fixed"
+    }}
+     className="page-container">
       <DashBoardHead />
       <div className="card-container">
         <h1 className="heading-title">Mint</h1>

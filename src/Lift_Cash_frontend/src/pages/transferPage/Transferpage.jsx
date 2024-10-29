@@ -88,12 +88,21 @@
 import "./TransferPage.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 // import React, { useState } from "react";
+import bgimg from "../../assets/images/background.svg";
 
 const Transferpage = () => {
   // const [activeTab, setActiveTab] = useState("LIFT");
 
   return (
-    <div className="page-container">
+    <div
+      style={{
+        backgroundImage: `url(${bgimg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        // backgroundAttachment: "fixed"
+      }}
+      className="page-container"
+    >
       <DashBoardHead className="border-red-900" />
 
       <div className="card-container border-blue-500">
