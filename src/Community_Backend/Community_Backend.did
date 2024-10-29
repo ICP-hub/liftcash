@@ -6,7 +6,7 @@ type SurveyResponse = variant {
 };
 type VoteResponse = variant { PercentageVote : nat8 };
 service : () -> {
-  calculate_total_claim : (text) -> (opt nat8) query;
+  calculate_total_claim : (principal) -> (opt nat8) query;
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
   get_ratification_results : () -> (vec record { text; nat64 }) query;
   get_survey_results : () -> (vec record { text; text }) query;
@@ -20,7 +20,7 @@ service : () -> {
       vec record { nat64; vec record { text; VoteResponse } },
     ) query;
   start_new_week : () -> ();
-  submit_ratification : (text, bool) -> (Result);
-  submit_survey : (text, vec record { text; SurveyResponse }) -> (Result);
-  submit_vote : (text, vec record { text; VoteResponse }) -> (Result);
+  submit_ratification : (principal, bool) -> (Result);
+  submit_survey : (principal, vec record { text; SurveyResponse }) -> (Result);
+  submit_vote : (principal, vec record { text; VoteResponse }) -> (Result);
 }
