@@ -1,21 +1,21 @@
 .footer-main-conatiner {
-  @apply bg-[#090E34] py-10 text-white  z-10 relative h-[43vh];
+  @apply bg-[#090E34] py-10 text-white  z-10 relative;
 }
 .footer-shape-image-top {
-  @apply absolute top-0 left-0 lg:h-[32vh] object-cover z-[-1];
+  @apply absolute top-0 left-0  md:h-[42vh] object-cover z-[-1];
 }
 .footer-shape-image-bottom {
-  @apply absolute  bottom-0 right-0   z-[-1] h-[25vh];
+  @apply absolute  bottom-0 right-0  z-[-1];
 }
 .footer-shape-image-top-left {
   @apply absolute top-0 z-[-1] right-1;
 }
 
 .footer-first-container {
-  @apply flex flex-col md:flex-row md:flex-wrap lg:flex-wrap lg:justify-evenly lg:mt-10  lg:gap-0 gap-20   ml-4  md:ml-20;
+  @apply flex flex-col md:flex-row md:flex-wrap lg:flex-wrap lg:justify-evenly lg:mt-10 gap-20   lg:gap-0 md:gap-20   ml-4  md:ml-20 bg-transparent;
 }
 .footer-logo-description {
-  @apply w-56 text-[#CED4DA] font-inter;
+  @apply w-56 text-[#CED4DA];
 }
 
 .footer-logo {
@@ -32,13 +32,13 @@
   @apply col-span-1;
 }
 .footer-container-h5 {
-  @apply font-bold mb-4 font-inter;
+  @apply font-bold mb-4;
 }
 .footer-container-ul {
   @apply space-y-2;
 }
 .footer-container-li {
-  @apply hover:text-blue-400 text-[#CED4DA] font-inter;
+  @apply hover:text-blue-400 text-[#CED4DA];
 }
 
 .footer-container-a {
@@ -52,8 +52,8 @@
 }
 
 .footer-bottom-container {
-  @apply mt-12 text-[#CED4DA] font-inter font-medium  border-t border-[#3B4261]  text-xs md:text-sm  flex justify-between p-4 bg-[#090E34];
+  @apply lg:mt-10  text-[#CED4DA] font-inter font-medium  border-t border-[#3B4261]  text-xs md:text-sm  flex justify-between p-4 bg-transparent;
 }
 .footer-bottom-items {
-  @apply md:pt-4  lg:ml-36 lg:mr-20 md:ml-10 md:mr-10;
+  @apply lg:pt-4  lg:ml-36 lg:mr-20 md:ml-10 md:mr-10 md:bg-transparent;
 }
