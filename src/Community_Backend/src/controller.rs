@@ -91,7 +91,7 @@ pub fn get_average_votes() -> HashMap<String, VoteResponse> {
 #[query]
 pub fn get_ratification_results() -> HashMap<String, u64> {
     read_voting_system(|voting_system| {
-        voting_system.calculate_ratification_results(voting_system.last_week)
+        voting_system.calculate_ratification_results(voting_system.current_week)
     })
 }
 

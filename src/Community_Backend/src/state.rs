@@ -82,20 +82,21 @@ impl VotingSystem {
         self.iteration_count += 1;
         self.survey_responses.clear();
         self.voting_responses.clear(); 
-        self.ratification_responses.clear(); 
-        for (_user_id, claim) in self.weekly_participation.iter_mut() {
-        claim.has_voted = false;       // Reset voting status
-        claim.has_ratified = false;    // Reset ratification status
-        claim.claim_percentage = 0;    // Reset claim percentage if necessary
-        }
+        self.ratification_responses.clear();
+        self.weekly_participation.clear();
+        // for (_user_id, claim) in self.weekly_participation.iter_mut() {
+        // claim.has_voted = false;       
+        // claim.has_ratified = false;    
+        // claim.claim_percentage = 0;    
+        // }
     }
     
-    pub fn check_and_close_stage(&mut self) {
-        let current_time = time();
-        if current_time >= self.last_stage_timestamp + STAGE_DURATION {
-            self.start_new_week();
-        }
-    }
+    // pub fn check_and_close_stage(&mut self) {
+    //     let current_time = time();
+    //     if current_time >= self.last_stage_timestamp + STAGE_DURATION {
+    //         self.start_new_week();
+    //     }
+    // }
 
     pub fn submit_survey(&mut self, user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
         // self.check_and_close_stage();
@@ -154,7 +155,9 @@ impl VotingSystem {
     
                 let week_counts = self.weekly_ratification_counts.entry(self.current_week).or_insert_with(HashMap::new);
                 *week_counts.entry(vote_key.to_string()).or_insert(0) += 1;
-    
+                
+                // let _ = self.calculate_ratification_results(self.current_week);
+
                 claim.has_ratified = true;
                 claim.claim_percentage += 10;
     
