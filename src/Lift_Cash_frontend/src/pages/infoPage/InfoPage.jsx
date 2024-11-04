@@ -1,8 +1,17 @@
 import "./InfoPage.css";
+import bgimg from "../../assets/images/background.svg";
 
 const InfoPage = () => {
   return (
-    <div className="info-main-div">
+    <div
+      style={{
+        backgroundImage: `url(${bgimg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        //  backgroundAttachment: "fixed"
+      }}
+      className="info-main-div"
+    >
       <div className="info-secondary-div">
         <div className="info-card-top-div">
           <h1 className="info-card-title">Lift Cash</h1>

@@ -1,29 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@font-face {
+  font-family: "inter";
+  src: url("src/Lift_Cash_frontend/src/assets/fonts/Inter-VariableFont_opsz,wght.ttf")
+      format("truetype"),
+    url("src/Lift_Cash_frontend/src/assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.inter-light {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 100;
-  font-style: normal;
-}
-
-.inter-bold {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.inter-extra-bold {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 900;
-  font-style: normal;
-}
-
-html {
-  scroll-behavior:smooth;
-}

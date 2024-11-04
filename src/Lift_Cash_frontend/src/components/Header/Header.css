@@ -1,9 +1,9 @@
 .header-main {
-  @apply bg-primary max-h-[65px] p-4 flex items-center justify-around w-full overflow-hidden fixed left-0 top-0 z-10
+  @apply bg-primary max-h-[65px] p-4 flex items-center justify-around w-full overflow-hidden fixed left-0 top-0 z-10;
 }
 
-.header-main-active{
-  @apply fixed left-0 top-0 w-full max-h-[65px] p-4 flex items-center justify-around bg-[#111928cc] backdrop-blur-sm
+.header-main-active {
+  @apply fixed left-0 top-0 w-full max-h-[65px] p-4 flex items-center justify-around bg-[#111928cc] backdrop-blur-sm;
 }
 
 .header-logo {
@@ -15,7 +15,7 @@
 }
 
 .header-navigation-link-nav {
-  @apply hidden md:flex space-x-6 text-white font-bold
+  @apply hidden md:flex space-x-6 text-white font-bold font-inter;
 }
 
 .header-navigation-link {
@@ -31,13 +31,12 @@
 }
 
 .header-signUp-btn {
-  @apply hidden md:block bg-[#6cb2eb] text-white font-medium py-2 px-5 rounded-md hover:bg-white hover:text-black;
+  @apply hidden md:block bg-[#6cb2eb] text-white  font-inter font-medium py-2 px-5 rounded-md hover:bg-white hover:text-black;
 }
 
 .header-signUp-btn-active {
   @apply hidden md:block bg-[#479fe6] text-white font-medium py-2 px-5 rounded-md hover:bg-[#1b26c8] hover:text-white;
 }
-
 
 .header-hamburger-icon {
   @apply text-white text-3xl;

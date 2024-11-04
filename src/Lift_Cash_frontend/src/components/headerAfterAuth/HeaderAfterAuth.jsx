@@ -7,6 +7,10 @@ import {
   FaInfoCircle,
   FaBars,
 } from "react-icons/fa";
+import { HiOutlineCurrencyDollar } from "react-icons/hi2";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { SlArrowRightCircle } from "react-icons/sl";
+import { GoArrowSwitch } from "react-icons/go";
 import { FiActivity } from "react-icons/fi";
 import AnimationBtn from "../animationBtn/AnimationBtn";
 import { Link } from "react-router-dom";
@@ -55,31 +59,31 @@ const HeaderAfterAuth = () => {
         <ul className="sidebar-menu">
           <Link to="/activities">
             <li className="sidebar-menu-item">
-              <FiActivity size={24} className="sidebar-icon" />
+              <FiActivity style={{marginRight:"5px",marginLeft:"5px"}} size={24} className="sidebar-icon" />
               <span>Activities</span>
             </li>
           </Link>
           <Link to="/claim">
             <li className="sidebar-menu-item">
-              <FaDollarSign size={24} className="sidebar-icon" />
+              <HiOutlineCurrencyDollar size={36} className="sidebar-icon" />
               <span>Claim / Assets</span>
             </li>
           </Link>
           <Link to="/transfer">
             <li className="sidebar-menu-item">
-              <FaArrowRight size={24} className="sidebar-icon" />
+              <GoArrowSwitch style={{marginRight:"5px"}} size={32} className="sidebar-icon" />
               <span>Transfer</span>
             </li>
           </Link>
           <Link to="/mint">
             <li className="sidebar-menu-item">
-              <FaArrowRight size={24} className="sidebar-icon" />
+              <SlArrowRightCircle style={{marginRight:"5px"}} size={32} className="sidebar-icon" />
               <span>Mint</span>
             </li>
           </Link>
           <Link to="/info">
             <li className="sidebar-menu-item">
-              <FaInfoCircle size={24} className="sidebar-icon" />
+              <IoIosInformationCircleOutline size={38} className="sidebar-icon" />
               <span>Info</span>
             </li>
           </Link>

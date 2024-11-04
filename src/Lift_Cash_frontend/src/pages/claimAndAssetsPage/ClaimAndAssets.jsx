@@ -96,10 +96,19 @@ import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import { SlArrowRightCircle } from "react-icons/sl";
 import { CiWarning } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import bgimg from "../../assets/images/background.svg";
 
 const ClaimAndAssets = () => {
   return (
-    <div className="claim-assets-container">
+    <div
+      style={{
+        backgroundImage: `url(${bgimg})`,
+        backgroundRepeat:"no-repeat",
+        backgroundPosition: 'center center',
+        //  backgroundAttachment: "fixed"
+      }}
+      className="claim-assets-container "
+    >
       <DashBoardHead />
 
       <div className="card-container">

@@ -3,25 +3,37 @@
 }
 
 .slider-container {
-  @apply relative w-14 h-8 rounded-full cursor-pointer transition-colors duration-300;
+  @apply relative w-12 h-4 rounded-full cursor-pointer transition-colors duration-300;
 }
 
 .enabled {
-  @apply bg-green-500;
+  @apply bg-[#75CCF5];
 }
 
 .disabled {
   @apply bg-gray-300;
 }
 
+.bgcolor {
+  @apply absolute -top-2 left-0 w-8 h-8 rounded-full bg-gray-200 transition-transform duration-300
+}
+
 .slider-knob {
-  @apply absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform duration-300;
+  @apply absolute top-2 left-2 w-4 h-4  rounded-full transition-transform duration-300;
 }
 
 .knob-enabled {
-  @apply translate-x-6;
+  @apply bg-[#00A1ED] ;
 }
 
 .knob-disabled {
-  @apply translate-x-0;
+  @apply bg-white translate-x-0;
+}
+
+.bgknob-enabled {
+  @apply bg-[#E0F4FD] translate-x-6;
+}
+
+.bgknob-disabled {
+  @apply bg-[#E4E4E4] translate-x-0;
 }

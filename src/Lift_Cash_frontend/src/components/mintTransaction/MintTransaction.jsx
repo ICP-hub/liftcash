@@ -46,9 +46,9 @@ const MintTransaction = () => {
         <div className="mint-transaction-option-div">
           <label className="mint-transaction-lable ">
             2. Amount to Mint:{" "}
-            <span className="mint-transaction-lable-span">
+            <p className="mint-transaction-lable-span">
               from account 'shadabquad'
-            </span>
+            </p>
           </label>
 
           <input

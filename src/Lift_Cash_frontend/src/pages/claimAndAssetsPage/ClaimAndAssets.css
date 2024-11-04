@@ -1,5 +1,5 @@
 .claim-assets-container {
-  @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center;
+  @apply min-h-screen flex flex-col items-center p-5;
 }
 
 .card-container {

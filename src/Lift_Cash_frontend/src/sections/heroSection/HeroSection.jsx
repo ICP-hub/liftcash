@@ -1,5 +1,7 @@
 import "./HeroSection.css";
 import { useNavigate } from "react-router-dom";
+import shape7 from "../../assets/images/shape-7.svg";
+import shape8 from "../../assets/images/shape-8.svg";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -39,12 +41,20 @@ const HeroSection = () => {
       </div>
 
       {/* Bottom Image */}
+
       <div className="hero-section-bottom-img-div">
+        {/* Top-right Image */}
+        <img src={shape7} alt="svg" className="hero-section-bottom-svg-right" />
+
+        {/* Main Image (will sit below the overlapping images) */}
         <img
           src="https://freeos.io/assets/hero/hero-image.jpg"
           alt="screenshot"
-          className="hero-section-bottom-img"
+          className="hero-section-bottom-img mx-auto"
         />
+
+        {/* Bottom-left Image */}
+        <img src={shape8} alt="svg" className="hero-section-bottom-svg-left" />
       </div>
     </div>
   );

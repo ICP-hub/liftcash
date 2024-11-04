@@ -6,6 +6,7 @@ import SliderBtn from "../../components/sliderBtn/SliderBtn";
 import RadioBtn from "../../components/radioBtn/RadioBtn";
 import DropdownBtn from "../../components/dropdownBtn/DropdownBtn";
 import ThankYouCard from "../../components/thankYouCard/ThankYouCard";
+import bgimg from "../../assets/images/background.svg";
 
 const ActivitiesPage = () => {
   const [timeLeft, setTimeLeft] = useState(0); // minutes
@@ -42,7 +43,15 @@ const ActivitiesPage = () => {
   };
 
   return (
-    <div className="activities-primary-div ">
+    <div
+      style={{
+        backgroundImage: `url(${bgimg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        //  backgroundAttachment: "fixed"
+      }}
+      className="activities-primary-div "
+    >
       <DashBoardHead />
 
       {/* Conditional rendering based on survey completion */}
