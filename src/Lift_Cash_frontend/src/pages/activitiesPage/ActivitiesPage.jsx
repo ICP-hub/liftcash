@@ -44,12 +44,7 @@ const ActivitiesPage = () => {
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgimg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        //  backgroundAttachment: "fixed"
-      }}
+     
       className="activities-primary-div "
     >
       <DashBoardHead />

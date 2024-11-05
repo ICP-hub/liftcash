@@ -95,12 +95,7 @@ const Transferpage = () => {
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgimg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        // backgroundAttachment: "fixed"
-      }}
+      
       className="page-container"
     >
       <DashBoardHead className="border-red-900" />

@@ -83,7 +83,7 @@ const HeaderAfterAuth = () => {
           </Link>
           <Link to="/info">
             <li className="sidebar-menu-item">
-              <IoIosInformationCircleOutline size={38} className="sidebar-icon" />
+              <IoIosInformationCircleOutline size={40} style={{marginLeft:"-4px"}} className="sidebar-icon" />
               <span>Info</span>
             </li>
           </Link>

@@ -26,7 +26,7 @@
 }
 
 .hero-section-bottom-img-div {
-  @apply relative flex;
+  @apply relative z-10 flex;
 }
 .hero-section-bottom-svg-right {
   @apply absolute -top-2 lg:-top-6 md:-top-4  -right-3 md:-right-5 lg:-right-7 lg:h-28 md:h-20 h-10;
