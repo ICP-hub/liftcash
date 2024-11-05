@@ -163,7 +163,7 @@ const Transferpage = () => {
           </a>
           .
         </p>
-        <p className="receive-username">@vikashvijay</p>
+        <p className="receive-username">@{localStorage.getItem("username")}</p>
         <button className="need-tokens-button">Need Tokens? </button>
       </div>
     </div>
