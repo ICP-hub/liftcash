@@ -1,5 +1,5 @@
 .info-main-div {
-  @apply min-h-screen p-6 bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center justify-center;
+  @apply min-h-screen p-6 flex flex-col items-center justify-center;
 }
 .info-secondary-div {
   @apply max-w-lg bg-white shadow-lg rounded-lg overflow-hidden;

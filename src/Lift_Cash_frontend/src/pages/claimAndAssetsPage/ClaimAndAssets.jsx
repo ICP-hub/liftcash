@@ -101,12 +101,7 @@ import bgimg from "../../assets/images/background.svg";
 const ClaimAndAssets = () => {
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgimg})`,
-        backgroundRepeat:"no-repeat",
-        backgroundPosition: 'center center',
-        //  backgroundAttachment: "fixed"
-      }}
+      
       className="claim-assets-container "
     >
       <DashBoardHead />

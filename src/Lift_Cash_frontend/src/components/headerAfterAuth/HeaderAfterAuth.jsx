@@ -17,17 +17,15 @@ import { Link } from "react-router-dom";
 import { useAuthClient } from "../../utils/useAuthClient";
 import { useNavigate } from "react-router-dom";
 
-
 const HeaderAfterAuth = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { logout } = useAuthClient();
   const navigate = useNavigate();
 
-
-  const Logout =()=>{
+  const Logout = () => {
     logout();
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <div className="header">
@@ -39,8 +37,10 @@ const HeaderAfterAuth = () => {
       {/* Right Side - Web version, username, and logout */}
       <div className="right-content">
         <span>v0.6.6</span>
-        <span>shadabquad</span>
-        <button className="logout-button" onClick={Logout}>Logout</button>
+        <span>{localStorage.getItem("username")}</span>
+        <button className="logout-button" onClick={Logout}>
+          Logout
+        </button>
       </div>
 
       <div
@@ -59,7 +59,11 @@ const HeaderAfterAuth = () => {
         <ul className="sidebar-menu">
           <Link to="/activities">
             <li className="sidebar-menu-item">
-              <FiActivity style={{marginRight:"5px",marginLeft:"5px"}} size={24} className="sidebar-icon" />
+              <FiActivity
+                style={{ marginRight: "5px", marginLeft: "5px" }}
+                size={24}
+                className="sidebar-icon"
+              />
               <span>Activities</span>
             </li>
           </Link>
@@ -71,19 +75,31 @@ const HeaderAfterAuth = () => {
           </Link>
           <Link to="/transfer">
             <li className="sidebar-menu-item">
-              <GoArrowSwitch style={{marginRight:"5px"}} size={32} className="sidebar-icon" />
+              <GoArrowSwitch
+                style={{ marginRight: "5px" }}
+                size={32}
+                className="sidebar-icon"
+              />
               <span>Transfer</span>
             </li>
           </Link>
           <Link to="/mint">
             <li className="sidebar-menu-item">
-              <SlArrowRightCircle style={{marginRight:"5px"}} size={32} className="sidebar-icon" />
+              <SlArrowRightCircle
+                style={{ marginRight: "5px" }}
+                size={32}
+                className="sidebar-icon"
+              />
               <span>Mint</span>
             </li>
           </Link>
           <Link to="/info">
             <li className="sidebar-menu-item">
-              <IoIosInformationCircleOutline size={38} className="sidebar-icon" />
+              <IoIosInformationCircleOutline
+                size={40}
+                style={{ marginLeft: "-4px" }}
+                className="sidebar-icon"
+              />
               <span>Info</span>
             </li>
           </Link>

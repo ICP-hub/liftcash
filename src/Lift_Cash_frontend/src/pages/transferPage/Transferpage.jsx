@@ -95,12 +95,7 @@ const Transferpage = () => {
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgimg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        // backgroundAttachment: "fixed"
-      }}
+      
       className="page-container"
     >
       <DashBoardHead className="border-red-900" />
@@ -168,7 +163,7 @@ const Transferpage = () => {
           </a>
           .
         </p>
-        <p className="receive-username">@vikashvijay</p>
+        <p className="receive-username">@{localStorage.getItem("username")}</p>
         <button className="need-tokens-button">Need Tokens? </button>
       </div>
     </div>

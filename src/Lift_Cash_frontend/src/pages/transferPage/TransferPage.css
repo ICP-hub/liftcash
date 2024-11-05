@@ -1,7 +1,7 @@
 /* TransferPage.css */
 
 .page-container {
-  @apply min-h-screen   bg-gradient-to-b from-blue-200 to-blue-500 flex flex-col items-center p-5;
+  @apply min-h-screen    flex flex-col items-center p-5;
 }
 
 .card-container {
@@ -9,7 +9,7 @@
 }
 
 .balance-title {
-  @apply text-base font-bold text-[#00A1ED] my-10;
+  @apply text-base font-bold text-[#00A1ED] my-5;
 }
 
 .balanceContainer {
