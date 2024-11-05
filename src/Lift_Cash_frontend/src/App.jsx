@@ -1,18 +1,18 @@
 import { Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/loginPage/LoginPage";
-import LandingPage from "./pages/landingPage/LandingPage";
-import AfterAuthPage from "./pages/afterAuthPage/AfterAuthPage";
-import ClaimAndAssets from "./pages/claimAndAssetsPage/ClaimAndAssets";
-import ActivitiesPage from "./pages/activitiesPage/ActivitiesPage";
-import Transferpage from "./pages/transferPage/Transferpage";
 import InfoPage from "./pages/infoPage/InfoPage";
-import { useAuthClient } from "./utils/useAuthClient";
 import MintPage from "./pages/mintpage/MintPage";
+import LoginPage from "./pages/loginPage/LoginPage";
+import { useAuthClient } from "./utils/useAuthClient";
+import LandingPage from "./pages/landingPage/LandingPage";
+import Transferpage from "./pages/transferPage/Transferpage";
+import AfterAuthPage from "./pages/afterAuthPage/AfterAuthPage";
+import ActivitiesPage from "./pages/activitiesPage/ActivitiesPage";
+import ClaimAndAssets from "./pages/claimAndAssetsPage/ClaimAndAssets";
+
 
 function App() {
 
   const { isAuthenticated } = useAuthClient();
-
 
   return (
     <Routes>
@@ -47,7 +47,7 @@ function App() {
       <Route path="/mint"
         element={
           <AfterAuthPage>
-            <MintPage/>
+            <MintPage />
           </AfterAuthPage>
         }
       />

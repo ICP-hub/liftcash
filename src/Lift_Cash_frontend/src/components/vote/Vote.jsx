@@ -1,10 +1,21 @@
-import React, { useEffect, useState } from "react";
 import "./Vote.css";
-import { voteQuestions } from "../../pages/activitiesPage/constants/Vote";
-import SurveyResult from "../surveyResult/SurveyResult";
 import RatifyCard from "../ratify/RatifyCard";
+import React, { useEffect, useState } from "react";
+import SurveyResult from "../surveyResult/SurveyResult";
+import { useAuthClient } from "../../utils/useAuthClient";
+import { voteQuestions } from "../../pages/activitiesPage/constants/Vote";
+
+
 
 const Vote = () => {
+
+  const { actors } = useAuthClient();
+
+  const callFunction = async () => {
+    const result = await actors?.communityActor?.get_weekly_vote_results();
+    console.log("Total Claim:", result);
+  }
+
   const [percent, setPercent] = useState({});
   const [timeLeft, setTimeLeft] = useState({
     hours: 14,
@@ -53,6 +64,7 @@ const Vote = () => {
       return;
     }
     console.log("Selected Vote Data:", percent);
+    callFunction();
     setISRatify(true);
   };
   if (isRatify) {

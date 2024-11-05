@@ -1,5 +1,5 @@
 use candid::{CandidType, Decode, Encode, Principal};
-use ic_cdk::api::time;
+use ic_cdk::{api::time, caller};
 use ic_stable_structures::{StableCell, memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
 use serde::Deserialize;
 use std::{borrow::Cow, cell::RefCell, collections::HashMap};
@@ -98,7 +98,7 @@ impl VotingSystem {
     }
 
     pub fn submit_survey(&mut self, user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
-        // self.check_and_close_stage();
+        self.check_and_close_stage();
         // let user_id_str = user_id.to_text(); 
         self.survey_responses.insert(user_id.clone(), answers);
 
@@ -276,6 +276,9 @@ impl VotingSystem {
         }
     } 
 
+    pub fn whoiam(&self) -> Principal{
+        return caller();
+    }
 
     pub fn return_self(&self) -> Self{
         return  self.clone();

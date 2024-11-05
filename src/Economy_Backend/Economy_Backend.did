@@ -1,9 +1,11 @@
+type Icrc28TrustedOriginsResponse = record { trusted_origins : vec text };
 type Result = variant { Ok; Err : text };
 type Result_1 = variant { Ok : nat64; Err : text };
 type StakerInfo = record { start_time : nat64; amount : nat64 };
 service : {
   get_rewards : (principal) -> (nat64) query;
   get_staker_info : (principal) -> (opt StakerInfo) query;
+  icrc28_trusted_origins : () -> (Icrc28TrustedOriginsResponse);
   initialize_dao : (nat64, nat64) -> ();
   list_all_stakers : () -> (opt vec record { principal; StakerInfo }) query;
   stake : (principal, nat64) -> (Result);
