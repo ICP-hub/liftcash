@@ -1,5 +1,6 @@
 use std::collections::HashMap;
-use ic_cdk::{caller, init, query, update};
+use candid::Principal;
+use ic_cdk::{api, caller, init, query, update};
 use crate::{SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_SYSTEM_CELL, VOTING_SYSTEM_MEMORY_ID};
 use ic_stable_structures::StableCell;
 
@@ -132,5 +133,10 @@ pub fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
     })
 }
 
-
-
+#[query]
+pub fn whoiam() -> Principal {
+    // read_voting_system(|voting_system| {
+    //     voting_system.whoiam()
+    // })
+    api::caller()
+}
