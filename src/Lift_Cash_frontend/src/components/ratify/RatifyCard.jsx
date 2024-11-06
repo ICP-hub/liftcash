@@ -63,7 +63,7 @@ const RatifyCard = () => {
         ))}
       </div>
 
-      <p className="ratify-note">{voteData.important_note.text}</p>
+      {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
     </div>
   ) : (
     <RatifyResult />

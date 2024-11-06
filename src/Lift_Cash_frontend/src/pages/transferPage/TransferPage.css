@@ -9,7 +9,7 @@
 }
 
 .balance-title {
-  @apply text-base font-bold text-[#00A1ED] my-5;
+  @apply text-base font-bold text-[#00A1ED] mt-5 mb-2;
 }
 
 .balanceContainer {
