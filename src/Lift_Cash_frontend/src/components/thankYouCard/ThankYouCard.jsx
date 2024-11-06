@@ -1,47 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./ThankYouCard.css";
 import shape6 from "../../assets/images/shape-6.svg";
 import SurveyResult from "../surveyResult/SurveyResult";
 import { useNavigate } from "react-router-dom";
+import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
+import useConvertToMinutes from "../../hooks/ useConvertToMinutes";
 
-const ThankYouCard = () => {
-  const [timeLeft, setTimeLeft] = useState(0); // Change this value as needed for testing
-  const [formattedTime, setFormattedTime] = useState("");
-
+const ThankYouCard = ({ remainingTime }) => {
   const navigate = useNavigate();
+  const convertToMinute = useConvertToMinutes(remainingTime); //remaining time (string) convert into minutes (decimal)
 
-  // Function to format time based on remaining hours
-  const formatTime = (time) => {
-    const days = Math.floor(time / 24);
-    const hours = time % 24; // Get the remaining hours after calculating days
-    const formattedDays =
-      days > 0 ? `${days} ${days === 1 ? "day" : "days"}` : "";
-    const formattedHours =
-      hours > 0 ? `${hours} ${hours === 1 ? "hour" : "hours"}` : "";
+  //initial time in minutes
+  const manualTime = 1;
 
-    // Combine days and hours, ensuring proper spacing
-    return `${formattedDays}${
-      formattedDays && formattedHours ? " , " : ""
-    }${formattedHours}`.trim();
-  };
+  //Add converted time to manual input
+  const initialTime = convertToMinute + manualTime;
 
-  // Update the formatted time whenever timeLeft changes
-  useEffect(() => {
-    setFormattedTime(formatTime(timeLeft));
-  }, [timeLeft]);
+  const formattedTime = useFormattedTimeLeft(initialTime);
 
-  // Countdown effect to decrease time left
-  useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 3600000); // Decrease every hour (3600000 milliseconds)
-
-      return () => clearInterval(timer); // Cleanup on component unmount
-    }
-  }, [timeLeft]);
-
-  return timeLeft === 0 ? (
+  return formattedTime == "0 mins" ? (
     <SurveyResult />
   ) : (
     <div className="thank-you-main-card-div">
@@ -54,10 +31,13 @@ const ThankYouCard = () => {
         <img src={shape6} alt="Thank You" className="thank-you-card-image" />
         <div className="thank-you-card-btn-container">
           <button
-            className="thank-you-card-btn"
+            className="thank-you-card-btn "
             onClick={() => navigate("/claim")}
           >
-            Claim
+            Go to the <br />
+            <span className="thank-you-card-btn-span">
+              CLAIM <br /> PAGE
+            </span>
           </button>
         </div>
       </div>
@@ -67,7 +47,7 @@ const ThankYouCard = () => {
       </h2>
       <h2 className="thank-you-card-h2-time">Starts In {formattedTime}</h2>
       <p className="thank-you-card-p-bottom">
-        Completing the vote enables you to claim an additional 50% of your
+        Completing the vote enables you to claim an additional 70% of your
         weekly claim potential
       </p>
       <h1 className="thank-you-card-last-h1">See you soon for the VOTE</h1>

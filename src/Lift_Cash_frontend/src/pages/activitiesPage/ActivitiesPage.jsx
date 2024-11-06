@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import "./ActivitiesPage.css";
 import { survey } from "./constants/Survey";
@@ -6,20 +6,13 @@ import SliderBtn from "../../components/sliderBtn/SliderBtn";
 import RadioBtn from "../../components/radioBtn/RadioBtn";
 import DropdownBtn from "../../components/dropdownBtn/DropdownBtn";
 import ThankYouCard from "../../components/thankYouCard/ThankYouCard";
-import bgimg from "../../assets/images/background.svg";
+import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
 const ActivitiesPage = () => {
-  const [timeLeft, setTimeLeft] = useState(0); // minutes
   const [selectedData, setSelectedData] = useState({});
   const [isSurveyCompleted, setIsSurveyCompleted] = useState(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 60000); // decrease every 1 minute
-
-    return () => clearInterval(timer); // cleanup on component unmount
-  }, []);
+  const formattedTimeLeft = useFormattedTimeLeft(1); // initial time in minutes
+  const [remainingTime, setRemainingTime] = useState(null); //  state for remaining time
 
   // Handler to update selected data based on question id
   const handleSelect = (id, value) => {
@@ -40,17 +33,15 @@ const ActivitiesPage = () => {
     }
     console.log("Selected Survey Data:", selectedData);
     setIsSurveyCompleted(true);
+    setRemainingTime(formattedTimeLeft);
   };
 
   return (
-    <div
-     
-      className="activities-primary-div "
-    >
+    <div className="activities-primary-div ">
       <DashBoardHead />
 
       {/* Conditional rendering based on survey completion */}
-      {!isSurveyCompleted && timeLeft > 0 ? (
+      {!isSurveyCompleted && formattedTimeLeft != "0 mins" ? (
         <div className="activities-primary-container">
           <h2 className="container-title">Welcome to the Survey </h2>
           <p className="container-description">
@@ -58,7 +49,9 @@ const ActivitiesPage = () => {
           </p>
           <div className="container-survey-time">
             Survey Closes in:{" "}
-            <span className="container-survey-timeleft">{timeLeft} mins</span>
+            <span className="container-survey-timeleft">
+              {formattedTimeLeft}
+            </span>
           </div>
           <p className="container-survey-secondary-description">
             This Survey helps the community of Lift Cash participants know what
@@ -106,7 +99,7 @@ const ActivitiesPage = () => {
         </div>
       ) : (
         // Show this message when the survey is completed
-        <ThankYouCard />
+        <ThankYouCard remainingTime={remainingTime} />
       )}
     </div>
   );

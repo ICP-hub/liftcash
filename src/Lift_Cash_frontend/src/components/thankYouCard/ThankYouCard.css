@@ -18,10 +18,13 @@
   @apply w-28 mt-5 mb-5;
 }
 .thank-you-card-btn-container {
-  @apply bg-[#00A1ED] w-32 h-32 rounded-full flex justify-center items-center;
+  @apply bg-[#00A1ED] w-40 h-40 rounded-full flex justify-center items-center hover:bg-slate-400;
 }
 .thank-you-card-btn {
-  @apply bg-[#00A1ED] w-28 h-28  border border-white rounded-full;
+  @apply bg-[#00A1ED] w-36 h-36  border border-white  text-white rounded-full;
+}
+.thank-you-card-btn-span {
+  @apply font-semibold  text-center text-2xl;
 }
 
 .thank-you-card-h2-bottom {
