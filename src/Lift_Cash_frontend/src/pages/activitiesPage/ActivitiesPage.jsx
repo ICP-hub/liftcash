@@ -99,7 +99,7 @@ const ActivitiesPage = () => {
         </div>
       ) : (
         // Show this message when the survey is completed
-        <ThankYouCard remainingTime={remainingTime} />
+        <ThankYouCard remainingTime={remainingTime} type={"survey"} />
       )}
     </div>
   );
