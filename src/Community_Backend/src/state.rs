@@ -99,7 +99,7 @@ impl VotingSystem {
     // }
 
     pub fn submit_survey(&mut self, user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
-        self.check_and_close_stage();
+        // self.check_and_close_stage();
         // let user_id_str = user_id.to_text(); 
         self.survey_responses.insert(user_id.clone(), answers);
 

@@ -4,17 +4,18 @@ import React, { useEffect, useState } from "react";
 import SurveyResult from "../surveyResult/SurveyResult";
 import { useAuthClient } from "../../utils/useAuthClient";
 import { voteQuestions } from "../../pages/activitiesPage/constants/Vote";
+import { useSelector } from "react-redux";
 
 
 
 const Vote = () => {
 
-  const { actors } = useAuthClient();
+  const communityActor = useSelector(state => state?.actors?.actors?.communityActor);
 
-  const callFunction = async () => {
-    const result = await actors?.communityActor?.get_weekly_vote_results();
-    console.log("Total Claim:", result);
-  }
+  useEffect(() => {
+    console.log("actor on vote page : ", communityActor);
+  }, [communityActor]);
+
 
   const [percent, setPercent] = useState({});
   const [timeLeft, setTimeLeft] = useState({
@@ -54,19 +55,66 @@ const Vote = () => {
   const handlePercentChange = (id, value) => {
     setPercent((prevPercent) => ({
       ...prevPercent,
-      [id]: value, // Update only the relevant id's value
+      [`${id}`]: value, // Update only the relevant id's value
     }));
   };
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (Object.keys(percent).length < voteQuestions.length) {
       alert("Please complete the Vote before submitting.");
       return;
     }
     console.log("Selected Vote Data:", percent);
-    callFunction();
+  
+    // Integration starts here
+    let keys = Object.keys(percent);
+    let values = Object.values(percent);
+  
+    let voteMap = [];
+  
+    for (let i = 0; i < keys.length; i++) {
+      let percentageVote = values[i];
+  
+      // Special handling for the 5th question (index 4) with small floating-point range
+      if (i === 4) {  // Assuming the 5th question is at index 4
+        const minSliderValue = 0.0167;
+        const maxSliderValue = 0.04;
+        
+        // Rescale the slider value (0.0167 to 0.04) into the nat8 range (0 to 255)
+        percentageVote = ((percentageVote - minSliderValue) / (maxSliderValue - minSliderValue)) * 255;
+  
+        // Ensure the value is an integer and clamp it to 0-255 range
+        percentageVote = Math.round(percentageVote);
+      } else {
+        // For other questions, simply round percentageVote to an integer between 0 and 255
+        percentageVote = Math.round(percentageVote);
+      }
+  
+      // Ensure the value is within the nat8 range of 0 to 255
+      percentageVote = Math.max(0, Math.min(255, percentageVote));
+  
+      console.log("ss : ", percentageVote);
+  
+      voteMap.push([
+        String(keys[i]),
+        { PercentageVote: percentageVote }
+      ]);
+    }
+  
+    console.log("voteMap", voteMap);
+  
+    // Now submit the voteMap to the communityActor
+    await communityActor
+      .submit_vote(voteMap)
+      .then((response) => {
+        console.log("Vote Submitted Successfully:", response);
+      })
+      .catch((error) => {
+        console.error("Error submitting Vote:", error);
+      });
+  
     setISRatify(true);
   };
+  
   if (isRatify) {
     return <RatifyCard />;
   }

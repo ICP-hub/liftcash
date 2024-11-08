@@ -4,8 +4,8 @@ const initialState = {
     actors: {
         communityActor: null,
         economyActor: null,
-        liftLedgerActor: null,
-        promoLedgerActor: null,
+        // liftLedgerActor: null,
+        // promoLedgerActor: null,
     },
 };
 
