@@ -1,6 +1,6 @@
 
 .page-container {
-    @apply min-h-screen bg-gradient-to-b from-blue-200 to-blue-500 pb-8 flex flex-col items-center;
+    @apply min-h-screen  pb-8 flex flex-col items-center;
   }
   
   .card-container {

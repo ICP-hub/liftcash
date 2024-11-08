@@ -29,11 +29,11 @@
 }
 
 .ratify-vote-btn-container {
-  @apply flex space-x-4 mt-4 justify-center;
+  @apply flex space-x-4 my-4 justify-center;
 }
 
 .ratify-vote-btn {
-  @apply text-white bg-[#00A1ED]  py-3 px-14 rounded-lg hover:bg-blue-500;
+  @apply text-white bg-[#00A1ED] mb-2 py-3 px-14 rounded-lg hover:bg-blue-500;
 }
 
 .ratify-note {

@@ -1,6 +1,5 @@
 use candid::{CandidType, Decode, Encode, Principal};
-use ic_cdk::api::time;
-use ic_cdk::api::caller;
+use ic_cdk::{api::time, caller};
 use ic_stable_structures::{StableCell, memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
 use serde::Deserialize;
 use std::{borrow::Cow, cell::RefCell, collections::HashMap};
@@ -121,6 +120,7 @@ impl VotingSystem {
         // self.check_and_close_stage();
         // let user_id_str = user_id.to_text();
         self.register_user(user_id.to_text())?; 
+
         self.survey_responses.insert(user_id.clone(), answers);
 
         self.participation_count.entry(0).or_insert(0);
@@ -301,6 +301,9 @@ impl VotingSystem {
         }
     } 
 
+    pub fn whoiam(&self) -> Principal{
+        return caller();
+    }
 
     pub fn return_self(&self) -> Self{
         return  self.clone();

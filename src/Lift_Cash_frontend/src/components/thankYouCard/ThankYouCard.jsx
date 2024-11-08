@@ -1,76 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./ThankYouCard.css";
 import shape6 from "../../assets/images/shape-6.svg";
 import SurveyResult from "../surveyResult/SurveyResult";
+import RatifyCard from "../ratify/RatifyCard";
 import { useNavigate } from "react-router-dom";
+import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
+import useConvertToMinutes from "../../hooks/ useConvertToMinutes";
 
-const ThankYouCard = () => {
-  const [timeLeft, setTimeLeft] = useState(0); // Change this value as needed for testing
-  const [formattedTime, setFormattedTime] = useState("");
-
+const ThankYouCard = ({ remainingTime, type }) => {
   const navigate = useNavigate();
+  const convertToMinute = useConvertToMinutes(remainingTime) || 0; //remaining time (string) convert into minutes (decimal)
 
-  // Function to format time based on remaining hours
-  const formatTime = (time) => {
-    const days = Math.floor(time / 24);
-    const hours = time % 24; // Get the remaining hours after calculating days
-    const formattedDays =
-      days > 0 ? `${days} ${days === 1 ? "day" : "days"}` : "";
-    const formattedHours =
-      hours > 0 ? `${hours} ${hours === 1 ? "hour" : "hours"}` : "";
+  //initial time (manual) in minutes
+  const manualTime = 1;
 
-    // Combine days and hours, ensuring proper spacing
-    return `${formattedDays}${
-      formattedDays && formattedHours ? " , " : ""
-    }${formattedHours}`.trim();
+  //Add converted time to manual input
+  const initialTime = convertToMinute + manualTime;
+
+  const formattedTime = useFormattedTimeLeft(initialTime);
+
+  // Define texts conditionally based on the type prop
+  const texts = {
+    header: type === "survey" ? "Woohoo!" : "Yay , you did it",
+    participation: `Thanks for participating in this week's ${
+      type === "survey" ? "survey" : "vote"
+    }`,
+    nextStep: type === "survey" ? "The Weekly Vote" : "The Ratification Vote",
+    completion: `Completing the ${
+      type === "survey" ? "vote" : "Ratification Vote"
+    } enables you to claim an additional ${
+      type === "survey" ? "70" : "10"
+    }% of your weekly claim potential`,
+    farewell: `See you soon for the ${
+      type === "survey" ? "Vote" : "Ratification Vote"
+    }`,
   };
 
-  // Update the formatted time whenever timeLeft changes
-  useEffect(() => {
-    setFormattedTime(formatTime(timeLeft));
-  }, [timeLeft]);
-
-  // Countdown effect to decrease time left
-  useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 3600000); // Decrease every hour (3600000 milliseconds)
-
-      return () => clearInterval(timer); // Cleanup on component unmount
-    }
-  }, [timeLeft]);
-
-  return timeLeft === 0 ? (
-    <SurveyResult />
+  return formattedTime === "0 mins" ? (
+    type === "survey" ? (
+      <SurveyResult />
+    ) : (
+      <RatifyCard />
+    )
   ) : (
     <div className="thank-you-main-card-div">
-      <h1 className="thank-you-card-h1">Woohoo!</h1>
-      <p className="thank-you-card-p-top">
-        Thanks for participating in this week's survey
-      </p>
+      <h1 className="thank-you-card-h1">{texts.header}</h1>
+      <p className="thank-you-card-p-top">{texts.participation}</p>
       <h2 className="thank-you-card-h2">You have a 'CLAIM' waiting</h2>
       <div className="thank-you-card-image-container">
         <img src={shape6} alt="Thank You" className="thank-you-card-image" />
         <div className="thank-you-card-btn-container">
           <button
-            className="thank-you-card-btn"
+            className="thank-you-card-btn "
             onClick={() => navigate("/claim")}
           >
-            Claim
+            Go to the <br />
+            <span className="thank-you-card-btn-span">
+              CLAIM <br /> PAGE
+            </span>
           </button>
         </div>
       </div>
 
       <h2 className="thank-you-card-h2 thank-you-card-h2-bottom">
-        Next: The Weekly Vote
+        Next: {texts.nextStep}
       </h2>
       <h2 className="thank-you-card-h2-time">Starts In {formattedTime}</h2>
-      <p className="thank-you-card-p-bottom">
-        Completing the vote enables you to claim an additional 50% of your
-        weekly claim potential
-      </p>
-      <h1 className="thank-you-card-last-h1">See you soon for the VOTE</h1>
+      <p className="thank-you-card-p-bottom">{texts.completion}</p>
+      <h1 className="thank-you-card-last-h1">{texts.farewell}</h1>
     </div>
   );
 };

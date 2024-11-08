@@ -140,12 +140,7 @@ import bgimg from "../../assets/images/background.svg";
 const MintPage = () => {
   return (
     <div 
-    style={{
-      backgroundImage: `url(${bgimg})`,
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center center",
-      // backgroundAttachment: "fixed"
-    }}
+    
      className="page-container">
       <DashBoardHead />
       <div className="card-container">
