@@ -3,15 +3,36 @@ import "./Ratifycard.css";
 import { voteData } from "../../pages/activitiesPage/constants/Ratify";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import RatifyResult from "../ratifyResult/RatifyResult";
+import { useSelector } from "react-redux";
 
 const RatifyCard = () => {
   const [vote, setVote] = useState(null);
   const [isRetifyResult, setIsRetifyResult] = useState(false);
+  const communityActor = useSelector(
+    (currState) => currState?.actors?.actors?.communityActor
+  );
+  console.log("actor in ratify card =>", communityActor);
 
-  const handleVote = (action) => {
-    setVote(action);
-    console.log(`You voted: ${action === "agree" ? "Yes" : "No"}`);
-    setIsRetifyResult(true);
+  const handleVote = async (action) => {
+    console.log("action: ", action);
+
+    const passData = action === "agree";
+
+    if (!communityActor || !communityActor.submit_ratification) {
+      console.error(
+        "submit_ratification method not found on communityActor object."
+      );
+      return;
+    }
+    console.log("passData ->", passData);
+    try {
+      const result = await communityActor.submit_ratification(passData);
+      console.log("result =>", result);
+      setVote(action);
+      setIsRetifyResult(true);
+    } catch (error) {
+      console.error("Error submitting vote:", error);
+    }
   };
 
   return !isRetifyResult ? (

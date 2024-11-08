@@ -1,4 +1,3 @@
-type Icrc28TrustedOriginsResponse = record { trusted_origins : vec text };
 type Result = variant { Ok; Err : text };
 type SurveyResponse = variant {
   PercentageSlider : nat8;
@@ -20,10 +19,8 @@ service : () -> {
   get_weekly_vote_results : () -> (
       vec record { nat64; vec record { text; VoteResponse } },
     ) query;
-  icrc28_trusted_origins : () -> (Icrc28TrustedOriginsResponse);
   start_new_week : () -> ();
   submit_ratification : (bool) -> (Result);
   submit_survey : (vec record { text; SurveyResponse }) -> (Result);
   submit_vote : (vec record { text; VoteResponse }) -> (Result);
-  whoiam : () -> (principal) query;
 }
