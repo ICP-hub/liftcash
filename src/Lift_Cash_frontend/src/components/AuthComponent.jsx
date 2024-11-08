@@ -25,17 +25,10 @@ export default function AuthComponent({ closeModal }) {
         }
       }
     } catch (error) {
-      console.error("Error : ", error);
+      console.log("Error : ", error);
     }
   }
-  // Load username from localStorage on mount
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-      setIsRegistered(true);
-    }
-  }, []);
+
   const handleUsernameSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("username", username); // Store username locally

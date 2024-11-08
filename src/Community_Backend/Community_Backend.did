@@ -23,4 +23,5 @@ service : () -> {
   submit_ratification : (bool) -> (Result);
   submit_survey : (vec record { text; SurveyResponse }) -> (Result);
   submit_vote : (vec record { text; VoteResponse }) -> (Result);
+  whoiam : () -> (principal) query;
 }
