@@ -23,7 +23,6 @@ const Vote = () => {
   const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
   const formattedTimeLeft = useFormattedTimeLeft(1);
   const [remainingTime, setRemainingTime] = useState(null);
-  const [isRatify, setISRatify] = useState(false);
 
   useEffect(() => {
     // Initialize percent state with default values
