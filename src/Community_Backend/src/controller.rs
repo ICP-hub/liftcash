@@ -3,6 +3,7 @@ use candid::Principal;
 use ic_cdk::{api, caller, init, query, update};
 use crate::{SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_SYSTEM_CELL, VOTING_SYSTEM_MEMORY_ID};
 use ic_stable_structures::StableCell;
+use candid::Principal;
 
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
@@ -11,6 +12,11 @@ pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
         f(voting_system.get()) // Directly use the reference to VotingSystem
     })
 }
+
+// #[query]
+// pub fn tsts(){
+//     read_voting_system(|state| state.)
+// }
 
 pub fn mutate_voting_system<R>(f: impl FnOnce(&mut VotingSystem) -> R) -> R {
     VOTING_SYSTEM_CELL.with(|cell| {
@@ -132,6 +138,16 @@ pub fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
         voting_system.weekly_ratification_counts.clone()
     })
 }
+
+
+#[query] // Mark this method as a query
+pub fn get_user_id_mapping() -> Vec<(String, Principal)> {
+    read_voting_system(|voting_system| {
+        voting_system.get_user_id_mapping()
+    })
+    // Voting_system.get_user_id_mapping() // Call the method on the VotingSystem instance
+}
+
 
 #[query]
 pub fn whoiam() -> Principal {
