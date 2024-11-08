@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import "./ActivitiesPage.css";
 import { survey } from "./constants/Survey";
