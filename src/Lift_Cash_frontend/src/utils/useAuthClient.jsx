@@ -14,8 +14,10 @@ export const useAuthClient = () => {
 
   const dispatch = useDispatch();
 
+
   // const actor = useSelector(state => state?.actors?.actors);
   // console.log("actor : ", actor);
+
 
   const [authClient, setAuthClient] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,6 +56,7 @@ export const useAuthClient = () => {
           agent: agent,
         }
       );
+
       // let liftLedgerActor = createLiftActor(
       //   process.env.CANISTER_ID_LIFT_LEDGER_CANISTER,
       //   {

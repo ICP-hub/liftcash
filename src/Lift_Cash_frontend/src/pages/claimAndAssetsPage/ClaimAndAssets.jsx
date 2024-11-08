@@ -93,7 +93,7 @@
 
 import "./ClaimAndAssets.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
-import { SlArrowRightCircle } from "react-icons/sl";
+import { RiLoginCircleLine } from "react-icons/ri";
 import { CiWarning } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import bgimg from "../../assets/images/background.svg";
@@ -116,7 +116,7 @@ const ClaimAndAssets = () => {
             <p className="text-xs text-gray-600">Mint</p>
             <div className="mint-button-container">
               <Link to={"/mint"}>
-                <SlArrowRightCircle style={{ fontSize: "32px" }} />{" "}
+                <RiLoginCircleLine style={{ fontSize: "32px" }} />{" "}
               </Link>
             </div>
           </div>

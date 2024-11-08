@@ -48,8 +48,8 @@ export const voteData = {
   vote: {
     question: "Do you agree that this week's VOTE is appropriate today?",
     options: [
-      { text: "Yes", action: "agree" },
-      { text: "No", action: "disagree" },
+      { text: "Agree", action: "agree" },
+      { text: "Disagree", action: "disagree" },
     ],
   },
   important_note: {

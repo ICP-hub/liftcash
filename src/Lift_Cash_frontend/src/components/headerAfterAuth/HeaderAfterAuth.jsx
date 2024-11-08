@@ -1,17 +1,16 @@
-import "./HeaderAfterAuth.css"; // Import the CSS file
+import "./HeaderAfterAuth.css";
 import { useState } from "react";
-import {
-  FaTimes,
-  FaDollarSign,
-  FaArrowRight,
-  FaInfoCircle,
-  FaBars,
-} from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { SlArrowRightCircle } from "react-icons/sl";
+import { IoMdClose } from "react-icons/io";
+import { MdOutlinePoll } from "react-icons/md";
+import { MdPoll } from "react-icons/md";
+import { RiLoginCircleFill } from "react-icons/ri";
+import { IoIosInformationCircle } from "react-icons/io";
+import { HiCurrencyDollar } from "react-icons/hi2";
 import { GoArrowSwitch } from "react-icons/go";
-import { FiActivity } from "react-icons/fi";
+import { RiLoginCircleLine } from "react-icons/ri";
 import AnimationBtn from "../animationBtn/AnimationBtn";
 import { Link } from "react-router-dom";
 import { useAuthClient } from "../../utils/useAuthClient";
@@ -21,6 +20,7 @@ const HeaderAfterAuth = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { logout } = useAuthClient();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("activity");
 
   const Logout = () => {
     logout();
@@ -51,30 +51,50 @@ const HeaderAfterAuth = () => {
         {/* Close Button */}
         <div className="sidebar-close-btn">
           <button onClick={() => setIsOpen(false)}>
-            <FaTimes size={24} />
+            <IoMdClose size={30} color="black" />
           </button>
         </div>
 
         {/* Menu Items */}
+
         <ul className="sidebar-menu">
-          <Link to="/activities">
-            <li className="sidebar-menu-item">
-              <FiActivity
-                style={{ marginRight: "5px", marginLeft: "5px" }}
-                size={24}
-                className="sidebar-icon"
-              />
+          <Link onClick={() => setActiveTab("activity")} to="/activities">
+            <li
+              className={`sidebar-menu-item ${
+                activeTab === "activity" ? "active" : ""
+              }`}
+            >
+              {activeTab === "activity" ? (
+                <MdPoll size={36} className="sidebar-icon" />
+              ) : (
+                <MdOutlinePoll size={36} className="sidebar-icon" />
+              )}
               <span>Activities</span>
             </li>
           </Link>
-          <Link to="/claim">
-            <li className="sidebar-menu-item">
-              <HiOutlineCurrencyDollar size={36} className="sidebar-icon" />
+          <Link onClick={() => setActiveTab("claim")} to="/claim">
+            <li
+              className={`sidebar-menu-item ${
+                activeTab === "claim" ? "active" : ""
+              }`}
+            >
+              {activeTab === "claim" ? (
+                <HiCurrencyDollar
+                  size={36}
+                  className="sidebar-icon"
+                />
+              ) : (
+                <HiOutlineCurrencyDollar size={36} className="sidebar-icon" />
+              )}
               <span>Claim / Assets</span>
             </li>
           </Link>
-          <Link to="/transfer">
-            <li className="sidebar-menu-item">
+          <Link onClick={() => setActiveTab("transfer")} to="/transfer">
+            <li
+              className={`sidebar-menu-item ${
+                activeTab === "transfer" ? "active" : ""
+              }`}
+            >
               <GoArrowSwitch
                 style={{ marginRight: "5px" }}
                 size={32}
@@ -83,23 +103,47 @@ const HeaderAfterAuth = () => {
               <span>Transfer</span>
             </li>
           </Link>
-          <Link to="/mint">
-            <li className="sidebar-menu-item">
-              <SlArrowRightCircle
-                style={{ marginRight: "5px" }}
-                size={32}
-                className="sidebar-icon"
-              />
+          <Link onClick={() => setActiveTab("mint")} to="/mint">
+            <li
+              className={`sidebar-menu-item ${
+                activeTab === "mint" ? "active" : ""
+              }`}
+            >
+              {activeTab === "mint" ? (
+                <RiLoginCircleFill
+                  size={40}
+                  className="sidebar-icon"
+                />
+              ) : (
+                <RiLoginCircleLine
+                  size={38}
+                  className="sidebar-icon"
+                />
+              )}
+
               <span>Mint</span>
             </li>
           </Link>
-          <Link to="/info">
-            <li className="sidebar-menu-item">
-              <IoIosInformationCircleOutline
-                size={40}
-                style={{ marginLeft: "-4px" }}
-                className="sidebar-icon"
-              />
+          <Link onClick={() => setActiveTab("info")} to="/info">
+            <li
+              className={`sidebar-menu-item ${
+                activeTab === "info" ? "active" : ""
+              }`}
+            >
+              {activeTab === "info" ? (
+                <IoIosInformationCircle
+                  size={40}
+                  style={{ marginLeft: "-4px" }}
+                  className="sidebar-icon"
+                />
+              ) : (
+                <IoIosInformationCircleOutline
+                  size={40}
+                  style={{ marginLeft: "-4px" }}
+                  className="sidebar-icon"
+                />
+              )}
+
               <span>Info</span>
             </li>
           </Link>

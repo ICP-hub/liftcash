@@ -72,6 +72,4 @@ npm start
 ### 9. Access the Frontend
 Open your web browser and navigate to `http://localhost:3000` to view the application.
 
----
 
-This updated version should provide a clearer step-by-step guide for installation and deployment.
