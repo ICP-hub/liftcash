@@ -4,8 +4,15 @@ use ic_cdk::api::caller;
 use ic_stable_structures::{StableCell, memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
 use serde::Deserialize;
 use std::{borrow::Cow, cell::RefCell, collections::HashMap};
+use std::collections::HashSet;
+use ic_cdk_timers::set_timer;
+use std::time::Duration;
+use std::rc::Rc;
 
-use crate::{SurveyData, SurveyResponse, UserClaim, VoteData, VoteResponse, STAGE_DURATION};
+
+use crate::{SurveyData, SurveyResponse, UserClaim, VoteData, VoteResponse};
+// use crate::constants::{SURVEY_SUBMISSION_DURATION, SURVEY_RESULTS_INTERVAL,VOTING_SUBMISSION_DURATION,RATIFICATION_SUBMISSION_DURATION,RATIFICATION_RESULTS_INTERVAL};
+
 
 pub type VMem = VirtualMemory<DefaultMemoryImpl>;
 pub const VOTING_SYSTEM_MEMORY_ID: MemoryId = MemoryId::new(1);
@@ -14,7 +21,8 @@ thread_local! {
     pub static MEMORY_MANAGER: RefCell<MemoryManager<DefaultMemoryImpl>> = RefCell::new(
         MemoryManager::init(DefaultMemoryImpl::default())
     );
-    
+    pub static USER_MAP: RefCell<HashMap<Principal, String>> = RefCell::new(HashMap::new());
+    pub static USERNAME_SET: RefCell<HashSet<String>> = RefCell::new(HashSet::new());
     pub static VOTING_SYSTEM_CELL: RefCell<StableCell<VotingSystem, VMem>> = RefCell::new({
         let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(VOTING_SYSTEM_MEMORY_ID));
         StableCell::init(memory, VotingSystem::new()).expect("Failed to initialize VotingSystem")
@@ -36,7 +44,6 @@ pub struct VotingSystem {
     pub weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
     pub weekly_vote_results: HashMap<u64, HashMap<String, VoteResponse>>, // Store vote results per week
     pub weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>, 
-    pub principal_to_user_id: HashMap<Principal, String>,
 }
 
 
@@ -64,35 +71,25 @@ impl VotingSystem {
             voting_responses: HashMap::new(),
             ratification_responses: HashMap::new(),
             ratification_results: HashMap::new(),
-            weekly_participation: HashMap::new(), // Initialize to match type
-            weekly_survey_results: HashMap::new(), // Initialize to match type
-            weekly_vote_results: HashMap::new(), // Store vote results per week
+            weekly_participation: HashMap::new(), 
+            weekly_survey_results: HashMap::new(), 
+            weekly_vote_results: HashMap::new(), 
             weekly_ratification_counts: HashMap::new(),
-            principal_to_user_id : HashMap::new(),
         };
         instance
     }
 
-    fn register_user(&mut self, user_id: String) -> Result<(), String> {
-        let principal = caller(); // Automatically get the caller's Principal
-        self.principal_to_user_id.insert(principal.clone(), user_id); // Store the mapping
-        Ok(())
-    }
-
-    pub fn fetch_user_id(&self, principal: Principal) -> Option<String> {
-        self.principal_to_user_id.get(&principal).cloned() // Fetch the user ID for the given Principal
-    }
-
-    pub fn get_user_id_mapping(&self) -> Vec<(String, Principal)> {
-        self.principal_to_user_id.iter()
-            .map(|(principal, user_id)| (user_id.clone(), *principal))
-            .collect()
-    }
-
     pub fn start_new_week(&mut self) {
-        self.last_week = self.current_week;
+        // self.last_week = self.current_week;
+        // let current_time = time();
+        // if current_time > self.last_stage_timestamp + SURVEY_SUBMISSION_DURATION &&
+        //    current_time <= self.last_stage_timestamp + SURVEY_RESULTS_INTERVAL {
+        //     let survey_results = self.calculate_survey_results(self.current_week);
+        //     self.weekly_survey_results.insert(self.current_week, survey_results);
+        // }
         let results = self.calculate_survey_results(self.last_week);
-        self.weekly_survey_results.insert(self.last_week, results);// Ensure this function is defined and returns the expected type
+        self.weekly_survey_results.insert(self.last_week, results);
+        self.last_week = self.current_week;
         let vote_results = self.calculate_average_votes(self.last_week);
         self.weekly_vote_results.insert(self.last_week, vote_results);
         let ratification_results = self.calculate_ratification_results(self.last_week);
@@ -103,29 +100,18 @@ impl VotingSystem {
         self.voting_responses.clear(); 
         self.ratification_responses.clear();
         self.weekly_participation.clear();
-        // for (_user_id, claim) in self.weekly_participation.iter_mut() {
-        // claim.has_voted = false;       
-        // claim.has_ratified = false;    
-        // claim.claim_percentage = 0;    
-        // }
+        // self.last_stage_timestamp = current_time;
     }
-    
-    // pub fn check_and_close_stage(&mut self) {
-    //     let current_time = time();
-    //     if current_time >= self.last_stage_timestamp + STAGE_DURATION {
-    //         self.start_new_week();
-    //     }
-    // }
-
+  
     pub fn submit_survey(&mut self, user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
-        // self.check_and_close_stage();
-        // let user_id_str = user_id.to_text();
-        self.register_user(user_id.to_text())?; 
+        // let current_time =time();
+        // if current_time >= self.last_stage_timestamp + SURVEY_SUBMISSION_DURATION {
+        //     return Err("Survey submission period has ended".to_string());
+        // }
         self.survey_responses.insert(user_id.clone(), answers);
 
         self.participation_count.entry(0).or_insert(0);
         *self.participation_count.get_mut(&0).unwrap() += 1;
-
         self.weekly_participation.entry(user_id).and_modify(|claim| {
             claim.has_surveyed = true;
             claim.claim_percentage+=20;
@@ -135,13 +121,14 @@ impl VotingSystem {
             has_ratified: false,
             claim_percentage: 20,
         });
-
         Ok(())
     }
 
     pub fn submit_vote(&mut self, user_id: Principal, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
-        // self.check_and_close_stage();
-        self.register_user(user_id.to_text())?;
+        // let current_time = time();
+        // if current_time >=self.last_stage_timestamp + VOTING_SUBMISSION_DURATION || current_time<=self.last_stage_timestamp + SURVEY_RESULTS_INTERVAL {
+        //     return Err("Not within the voting period".to_string());
+        // }
         self.voting_responses.insert(user_id, votes.clone());
 
         self.participation_count.entry(1).or_insert(0);
@@ -160,25 +147,37 @@ impl VotingSystem {
         Ok(())
     }
 
+    pub fn has_voted_in_current_week(&self, user_id: Principal) -> bool {
+        if let Some(claim) = self.weekly_participation.get(&user_id) {
+            claim.has_voted
+        } else {
+            false
+        }
+    }
+
     pub fn submit_ratification(&mut self, user_id: Principal, _approve: bool) -> Result<(), String> {
-        // Check if the current week is valid
-        self.register_user(user_id.to_text())?;
+        // let current_time = time();
+
+        // let ratification_submission_start = self.last_stage_timestamp + VOTING_SUBMISSION_DURATION;
+        // let ratification_submission_end = ratification_submission_start + RATIFICATION_SUBMISSION_DURATION;
+        // let ratification_results_end = ratification_submission_end + RATIFICATION_RESULTS_INTERVAL;
+
+        // if current_time < ratification_submission_start || current_time >= ratification_submission_end {
+        //     return Err("Not within the ratification submission period.".to_string());
+        // }
+
         if self.current_week == 0 {
             return Err("No current week available".to_string());
         }
     
         if let Some(claim) = self.weekly_participation.get_mut(&user_id) {
-            // Check if the user has voted in the current week using the mutable reference
             if claim.has_voted {
                 self.ratification_responses.insert(user_id, _approve);
-                // Update the ratification results count
                 let vote_key = if _approve { "Yes" } else { "No" };
                 *self.ratification_results.entry(vote_key.to_string()).or_insert(0) += 1;
-    
+                
                 let week_counts = self.weekly_ratification_counts.entry(self.current_week).or_insert_with(HashMap::new);
                 *week_counts.entry(vote_key.to_string()).or_insert(0) += 1;
-                
-                // let _ = self.calculate_ratification_results(self.current_week);
 
                 claim.has_ratified = true;
                 claim.claim_percentage += 10;
@@ -193,20 +192,22 @@ impl VotingSystem {
     }
     
 
-    pub fn calculate_survey_results(&self, current_week: u64) -> Vec<(String, String)> {
-        let mut results = Vec::new(); // Store results as tuples of (question_id, result)
-    
-        let mut average_data: HashMap<String, (u32, u32)> = HashMap::new(); // (total, count)
-        let mut majority_data: HashMap<String, HashMap<String, usize>> = HashMap::new(); // Counts for choices
-    
-        // Iterate through all survey responses
+    pub fn calculate_survey_results(&mut self, current_week: u64) -> Vec<(String, String)> {
+        // let current_time=time();
+        // if current_time <= self.last_stage_timestamp + SURVEY_RESULTS_INTERVAL &&
+        // current_time > self.last_stage_timestamp + SURVEY_SUBMISSION_DURATION{
+        let mut results = Vec::new(); 
+        
+        let mut average_data: HashMap<String, (u32, u32)> = HashMap::new(); 
+        let mut majority_data: HashMap<String, HashMap<String, usize>> = HashMap::new(); 
+        
         for (_user_id, answers) in &self.survey_responses {
             for (question_id, response) in answers {
                 match response {
                     SurveyResponse::PercentageSlider(value) => {
                         let entry = average_data.entry(question_id.clone()).or_insert((0, 0));
-                        entry.0 += *value as u32; // Increment total
-                        entry.1 += 1; // Increment count
+                        entry.0 += *value as u32; 
+                        entry.1 += 1; 
                     }
                     SurveyResponse::MultipleChoice(ref choice) => {
                         let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
@@ -221,8 +222,7 @@ impl VotingSystem {
                 }
             }
         }
-    
-        // Process average data
+        
         for (question_id, (total, count)) in average_data {
             if count > 0 {
                 let average = total as u32 / count as u32; // Calculate average
@@ -231,8 +231,7 @@ impl VotingSystem {
                 results.push((question_id, format!("Average: N/A")));
             }
         }
-    
-        // Process majority data for MultipleChoice and Dropdown questions
+        
         for (question_id, counts) in majority_data {
             if let Some((majority_response, _)) = counts.iter().max_by_key(|entry| entry.1) {
                 results.push((question_id, format!("Majority: {}", majority_response)));
@@ -240,29 +239,36 @@ impl VotingSystem {
                 results.push((question_id, format!("Majority: N/A")));
             }
         }
-    
-        results // Return results without modifying state
-    }
+    results   
+}
     
     
     pub fn calculate_average_votes(&self, current_week: u64) -> HashMap<String, VoteResponse> {
+        // let current_time = time();
+        // // Define voting results period boundaries
+        // let voting_results_start = self.last_stage_timestamp + VOTING_SUBMISSION_DURATION;
+        // let voting_results_end = voting_results_start + VOTING_RESULTS_INTERVAL;
+
+        // if current_time < voting_results_start || current_time > voting_results_end {
+        //     let mut error_map = HashMap::new();
+        //     error_map.insert("Error".to_string(), VoteResponse::PercentageVote(0)); // Placeholder for error
+        //     return error_map;
+        // }
+
         let mut result: HashMap<String, VoteResponse> = HashMap::new(); 
         let mut average_responses: HashMap<String, (u32, u32)> = HashMap::new();
     
-        // Iterate through all voting responses
         for (_user_id, user_votes) in &self.voting_responses {
             for (question_id, vote) in user_votes {
                 match vote {
                     VoteResponse::PercentageVote(value) => {
                         let entry = average_responses.entry(question_id.clone()).or_insert((0, 0));
                         entry.0 += *value as u32; // Add vote value to total
-                        entry.1 += 1; // Increment count
+                        entry.1 += 1; 
                     }
                 }
             }
         }
-    
-        // Compute average votes
         for (question_id, (total, count)) in average_responses {
             let average = total as u8 / count as u8; // Calculate average
             let average_vote = VoteResponse::PercentageVote(average);
@@ -273,6 +279,14 @@ impl VotingSystem {
     }
 
     pub fn calculate_ratification_results(&self, week: u64) -> HashMap<String, u64> {
+        // let current_time = time();
+        // let ratification_submission_end = self.last_stage_timestamp + RATIFICATION_SUBMISSION_DURATION;
+        // let ratification_results_end = ratification_submission_end + RATIFICATION_RESULTS_INTERVAL;
+        // if current_time < ratification_submission_end || current_time > ratification_results_end {
+        //     let mut error_map = HashMap::new();
+        //     error_map.insert("Error".to_string(), 0); // Placeholder entry for error
+        //     return error_map;
+        // }
         if let Some(week_results) = self.weekly_ratification_counts.get(&week) {
             week_results.clone()
         } else {
