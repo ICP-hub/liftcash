@@ -22,6 +22,7 @@ const Footer = () => {
           {/* Social Icons */}
           <div className="footer-social-icons">
             <a
+              target="_blank"
               href="https://facebook.com"
               aria-label="Facebook"
               className="social-icon"
@@ -29,20 +30,23 @@ const Footer = () => {
               <FaFacebookF />
             </a>
             <a
-              href="https://twitter.com"
+              target="_blank"
+              href="https://x.com/lift_cash"
               aria-label="X (formerly Twitter)"
               className="social-icon"
             >
               <FaXTwitter />
             </a>
             <a
-              href="https://telegram.org"
+              target="_blank"
+              href="https://t.me/+vDcmQ6tRdINkNDJh"
               aria-label="Telegram"
               className="social-icon"
             >
               <FaTelegram />
             </a>
             <a
+              target="_blank"
               href="https://linkedin.com"
               aria-label="LinkedIn"
               className="social-icon"
@@ -57,22 +61,22 @@ const Footer = () => {
           <h5 className="footer-container-h5">About Lift Cash</h5>
           <ul className="footer-container-ul">
             <li>
-              <a href="/" className="footer-container-li">
+              <a href="#home" className="footer-container-li">
                 Home
               </a>
             </li>
             <li>
-              <a href="/about" className="footer-container-li">
+              <a href="#about" className="footer-container-li">
                 About
               </a>
             </li>
             <li>
-              <a href="/dao" className="footer-container-li">
+              <a href="#dao" className="footer-container-li">
                 DAO
               </a>
             </li>
             <li>
-              <a href="/purpose" className="footer-container-li">
+              <a href="#purpose" className="footer-container-li">
                 Purpose
               </a>
             </li>
@@ -84,17 +88,17 @@ const Footer = () => {
           <h5 className="footer-container-h5">Information</h5>
           <ul className="footer-container-ul">
             <li>
-              <a href="#" className="footer-container-li">
+              <a href="#faq" className="footer-container-li">
                 FAQ
               </a>
             </li>
             <li>
-              <a href="#" className="footer-container-li">
+              <a href="#blog" className="footer-container-li">
                 Blog
               </a>
             </li>
             <li>
-              <a href="#" className="footer-container-li">
+              <a href="#document" className="footer-container-li">
                 Documents
               </a>
             </li>
@@ -110,11 +114,11 @@ const Footer = () => {
         <div className="footer-container">
           <h5 className="footer-container-h5">Built On</h5>
           <ul className="footer-container-ul">
-            <li>
+            {/* <li>
               <a href="https://xprnetwork.com" className="footer-container-li">
                 XPR Network
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="https://internetcomputer.org"
@@ -123,16 +127,16 @@ const Footer = () => {
                 Internet Computer
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="https://antelope.io" className="footer-container-li">
                 Antelope
               </a>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <a href="https://junonetwork.io" className="footer-container-li">
                 Juno
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -171,10 +175,10 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className=" footer-bottom-container">
-        <p className="footer-bottom-items">© 2024 Lift Cash</p>
         <p className="footer-bottom-items">
-          Website Hosted on ICP, powered by Juno
+          © 2024 FreeDAO. All rights reserved.
         </p>
+        <p className="footer-bottom-items">Website Hosted on ICP</p>
       </div>
       <img src={shape2} alt="shape2" className="footer-shape-image-top-left" />
     </footer>

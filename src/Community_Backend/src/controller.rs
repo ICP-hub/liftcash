@@ -3,7 +3,7 @@ use candid::Principal;
 use ic_cdk::{api, caller, init, query, update};
 use crate::{SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_SYSTEM_CELL, VOTING_SYSTEM_MEMORY_ID};
 use ic_stable_structures::StableCell;
-use candid::Principal;
+// use candid::Principal;
 
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
