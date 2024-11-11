@@ -4,12 +4,7 @@ import bgimg from "../../assets/images/background.svg";
 const InfoPage = () => {
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgimg})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        //  backgroundAttachment: "fixed"
-      }}
+      
       className="info-main-div"
     >
       <div className="info-secondary-div">

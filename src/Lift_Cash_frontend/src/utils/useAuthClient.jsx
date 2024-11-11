@@ -1,22 +1,32 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { clearActors, setActors } from "./redux/actorsSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent } from "@dfinity/agent";
 import { createActor as createCommunityActor } from "../../../declarations/Community_Backend";
 import { createActor as createEconomyActor } from "../../../declarations/Economy_Backend";
-import { createActor as createLiftActor } from "../../../declarations/LedgerDid/lift";
-import { createActor as createPromoActor } from "../../../declarations/LedgerDid/promo";
+// import { createActor as createLiftActor } from "../../../declarations/LedgerDid/lift";
+// import { createActor as createPromoActor } from "../../../declarations/LedgerDid/promo";
 
 const AuthContext = createContext();
 
 export const useAuthClient = () => {
+
+  const dispatch = useDispatch();
+
+
+  // const actor = useSelector(state => state?.actors?.actors);
+  // console.log("actor : ", actor);
+
+
   const [authClient, setAuthClient] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [identity, setIdentity] = useState(null);
   const [principal, setPrincipal] = useState(null);
-  const [actors, setActors] = useState(null);
 
   const clientInfo = async (client) => {
     console.log("client auth status : ", await client.isAuthenticated());
+    console.log("client : ", await client);
     const authStatus = await client.isAuthenticated();
     const identity = client.getIdentity();
     const principal = identity.getPrincipal();
@@ -46,24 +56,26 @@ export const useAuthClient = () => {
           agent: agent,
         }
       );
-      let liftLedgerActor = createLiftActor(
-        process.env.CANISTER_ID_LIFT_LEDGER_CANISTER,
-        {
-          agent: agent,
-        }
-      );
-      let promoLedgerActor = createPromoActor(
-        process.env.CANISTER_ID_PROMO_LEDGER_CANISTER,
-        {
-          agent: agent,
-        }
-      );
-      setActors({
-        communityActor,
-        economoyActor,
-        liftLedgerActor,
-        promoLedgerActor,
-      });
+
+      // let liftLedgerActor = createLiftActor(
+      //   process.env.CANISTER_ID_LIFT_LEDGER_CANISTER,
+      //   {
+      //     agent: agent,
+      //   }
+      // );
+      // let promoLedgerActor = createPromoActor(
+      //   process.env.CANISTER_ID_PROMO_LEDGER_CANISTER,
+      //   {
+      //     agent: agent,
+      //   }
+      // );
+
+      dispatch(setActors({
+        communityActor: communityActor,
+        economyActor: economoyActor,
+        // liftLedgerActor: liftLedgerActor,
+        // promoLedgerActor: promoLedgerActor
+      }))
     }
     return true;
   };
@@ -81,7 +93,7 @@ export const useAuthClient = () => {
         if (
           authClient.isAuthenticated() &&
           (await authClient.getIdentity().getPrincipal().isAnonymous()) ===
-            false
+          false
         ) {
           resolve(clientInfo(authClient));
         } else {
@@ -102,6 +114,7 @@ export const useAuthClient = () => {
 
   const logout = async () => {
     await authClient?.logout();
+    dispatch(clearActors());
     setIsAuthenticated(false);
   };
 
@@ -112,7 +125,6 @@ export const useAuthClient = () => {
     isAuthenticated,
     identity,
     principal,
-    actors,
   };
 };
 

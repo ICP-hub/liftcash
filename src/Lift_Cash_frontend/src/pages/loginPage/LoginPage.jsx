@@ -53,7 +53,7 @@ const LoginPage = () => {
 
       {
         isAuthenticated ?
-          <button onClick={()=>{
+          <button onClick={() => {
             logout();
             navigate("/")
           }} className="login-btn">

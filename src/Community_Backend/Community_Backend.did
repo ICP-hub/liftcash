@@ -25,7 +25,8 @@ service : () -> {
     ) query;
   set_user : (text) -> (Result);
   start_new_week : () -> ();
-  submit_ratification : (bool) -> (Result_1);
-  submit_survey : (vec record { text; SurveyResponse }) -> (Result_1);
-  submit_vote : (vec record { text; VoteResponse }) -> (Result_1);
+  submit_ratification : (bool) -> (Result);
+  submit_survey : (vec record { text; SurveyResponse }) -> (Result);
+  submit_vote : (vec record { text; VoteResponse }) -> (Result);
+  whoiam : () -> (principal) query;
 }

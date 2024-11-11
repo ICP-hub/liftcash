@@ -8,5 +8,10 @@ candid-extractor target/wasm32-unknown-unknown/release/Economy_Backend.wasm >src
 # ./LIFT_DEPLOY.sh
 # ./PROMO_DEPLOY.sh
 
-dfx deploy Community_Backend
+dfx identity use Rajnish
 
+dfx deploy 
+
+dfx deps pull
+
+dfx deps deploy

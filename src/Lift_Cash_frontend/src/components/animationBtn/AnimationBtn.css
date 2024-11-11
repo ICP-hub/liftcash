@@ -1,9 +1,11 @@
+
+
 .container {
   @apply flex items-center gap-4;
 }
 
 .slider-container {
-  @apply relative w-12 h-4 rounded-full cursor-pointer transition-colors duration-300;
+  @apply relative w-11 h-4 rounded-full cursor-pointer transition-colors duration-300;
 }
 
 .enabled {
@@ -14,16 +16,12 @@
   @apply bg-gray-300;
 }
 
-.bgcolor {
-  @apply absolute -top-2 left-0 w-8 h-8 rounded-full bg-gray-200 transition-transform duration-300
-}
-
 .slider-knob {
-  @apply absolute top-2 left-2 w-4 h-4  rounded-full transition-transform duration-300;
+  @apply absolute shadow-md -top-0.5 w-5 h-5 rounded-full transition-transform duration-300;
 }
 
 .knob-enabled {
-  @apply bg-[#00A1ED] ;
+  @apply bg-[#00A1ED];
 }
 
 .knob-disabled {
@@ -36,4 +34,14 @@
 
 .bgknob-disabled {
   @apply bg-[#E4E4E4] translate-x-0;
+}
+
+.knob-disabled:hover::before {
+  content: "";
+  @apply absolute -top-2 -left-2 w-9 h-9 rounded-full bg-[#E4E4E4] opacity-50 transition-opacity duration-300;
+}
+
+.knob-enabled:hover::before {
+  content: "";
+  @apply absolute -top-2 -left-2 w-9 h-9 rounded-full bg-[#E0F4FD] opacity-50 transition-opacity duration-300;
 }
