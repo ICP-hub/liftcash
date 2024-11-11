@@ -1,10 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RatifyResult.css";
+import { useSelector } from "react-redux";
 
 const RatifyResult = () => {
   // const ratifyResult = { Yes: 20, No: 10 };
   const [agree, setAgree] = useState(30);
-  const [disagree,setDisagree]=useState(20)
+  const [disagree, setDisagree] = useState(20);
+
+
+  const communityActor = useSelector(
+    (currState) => currState?.actors?.actors?.communityActor
+  );
+
+  useEffect(() => {
+    console.log("actor in ratify result card =>", communityActor);
+  }, [communityActor])
+
+
+  const fetchRatifyResult = async () => {
+    try {
+      await communityActor.get_ratification_results()
+      .then((response) => {
+        console.log("Ratify Result: ", response[1][1], response[0][1]);
+        setAgree(Number(response[1][1]));
+        setDisagree(Number(response[0][1]));
+      })
+      .catch((error) => {
+        console.error("Error while fetching ratify result : ", error);
+      });
+
+    } catch (error) {
+      console.error("Error fetching ratify result : ", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchRatifyResult();
+  }, []);
+
+
   return (
     <div className="ratify-result-main-card-div">
       <h1 className="ratify-result-card-h1">Woohoo!</h1>

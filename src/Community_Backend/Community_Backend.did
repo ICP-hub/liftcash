@@ -10,7 +10,6 @@ service : () -> {
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
   get_ratification_results : () -> (vec record { text; nat64 }) query;
   get_survey_results : () -> (vec record { text; text }) query;
-  get_user_id_mapping : () -> (vec record { text; principal }) query;
   get_weekly_ratification_counts : () -> (
       vec record { nat64; vec record { text; nat64 } },
     ) query;

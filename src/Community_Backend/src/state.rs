@@ -34,8 +34,7 @@ pub struct VotingSystem {
     pub weekly_participation: HashMap<Principal, UserClaim>, // Ensure this is defined
     pub weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
     pub weekly_vote_results: HashMap<u64, HashMap<String, VoteResponse>>, // Store vote results per week
-    pub weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>, 
-    pub principal_to_user_id: HashMap<Principal, String>,
+    pub weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>,
 }
 
 
@@ -67,25 +66,8 @@ impl VotingSystem {
             weekly_survey_results: HashMap::new(), // Initialize to match type
             weekly_vote_results: HashMap::new(), // Store vote results per week
             weekly_ratification_counts: HashMap::new(),
-            principal_to_user_id : HashMap::new(),
         };
         instance
-    }
-
-    fn register_user(&mut self, user_id: String) -> Result<(), String> {
-        let principal = caller(); // Automatically get the caller's Principal
-        self.principal_to_user_id.insert(principal.clone(), user_id); // Store the mapping
-        Ok(())
-    }
-
-    pub fn fetch_user_id(&self, principal: Principal) -> Option<String> {
-        self.principal_to_user_id.get(&principal).cloned() // Fetch the user ID for the given Principal
-    }
-
-    pub fn get_user_id_mapping(&self) -> Vec<(String, Principal)> {
-        self.principal_to_user_id.iter()
-            .map(|(principal, user_id)| (user_id.clone(), *principal))
-            .collect()
     }
 
     pub fn start_new_week(&mut self) {
@@ -119,7 +101,7 @@ impl VotingSystem {
     pub fn submit_survey(&mut self, user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
         // self.check_and_close_stage();
         // let user_id_str = user_id.to_text();
-        self.register_user(user_id.to_text())?; 
+        // self.register_user(user_id.to_text())?; 
 
         self.survey_responses.insert(user_id.clone(), answers);
 
@@ -141,7 +123,7 @@ impl VotingSystem {
 
     pub fn submit_vote(&mut self, user_id: Principal, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
         // self.check_and_close_stage();
-        self.register_user(user_id.to_text())?;
+        // self.register_user(user_id.to_text())?;
         self.voting_responses.insert(user_id, votes.clone());
 
         self.participation_count.entry(1).or_insert(0);
@@ -162,7 +144,7 @@ impl VotingSystem {
 
     pub fn submit_ratification(&mut self, user_id: Principal, _approve: bool) -> Result<(), String> {
         // Check if the current week is valid
-        self.register_user(user_id.to_text())?;
+        // self.register_user(user_id.to_text())?;
         if self.current_week == 0 {
             return Err("No current week available".to_string());
         }
