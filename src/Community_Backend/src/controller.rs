@@ -3,6 +3,9 @@ use candid::Principal;
 use ic_cdk::{api, caller, init, query, update};
 use crate::{SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_SYSTEM_CELL, VOTING_SYSTEM_MEMORY_ID};
 use ic_stable_structures::StableCell;
+use candid::Principal;
+use crate::USER_MAP;
+use crate::USERNAME_SET;
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
     VOTING_SYSTEM_CELL.with(|cell| {
@@ -29,6 +32,7 @@ pub fn mutate_voting_system<R>(f: impl FnOnce(&mut VotingSystem) -> R) -> R {
 
 #[init]
 pub fn init() {
+
     VOTING_SYSTEM_CELL.with(|cell| {
         *cell.borrow_mut() = StableCell::init(
             MEMORY_MANAGER.with(|mm| mm.borrow().get(VOTING_SYSTEM_MEMORY_ID)),
@@ -46,10 +50,7 @@ pub fn start_new_week() {
 }
 
 #[update]
-// fn submit_survey(user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
 pub fn submit_survey(answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
-    // let principal_id = Principal::from_text(&user_id)
-    //     .map_err(|e| format!("Invalid Principal format for user_id: {}", e))?;
     mutate_voting_system(|voting_system| {
         voting_system.submit_survey(caller(), answers)
     })
@@ -79,7 +80,7 @@ pub fn calculate_total_claim() -> Option<u8> {
 
 #[query]
 pub fn get_survey_results() -> Vec<(String, String)> {
-    read_voting_system(|voting_system| {
+    mutate_voting_system(|voting_system| {
         let last_week = voting_system.last_week;
         voting_system.calculate_survey_results(last_week)
     })
@@ -102,7 +103,7 @@ pub fn get_ratification_results() -> HashMap<String, u64> {
 
 #[query]
 pub fn get_weekly_survey_results() -> Vec<(u64, Vec<(String, String)>)> {
-    read_voting_system(|voting_system| {
+    mutate_voting_system(|voting_system| {
         let mut results = Vec::new();
         let mut weeks: Vec<u64> = voting_system.weekly_survey_results.keys().cloned().collect();
         weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
@@ -137,6 +138,18 @@ pub fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
     })
 }
 
+#[query]
+pub fn chck_userparticipation_vote() -> &'static str {
+    let principal = caller();
+
+    read_voting_system(|voting_system| {
+        if voting_system.has_voted_in_current_week(principal) {
+            "Yes"
+        } else {
+            "No"
+        }
+    })
+}
 
 #[query]
 pub fn whoiam() -> Principal {

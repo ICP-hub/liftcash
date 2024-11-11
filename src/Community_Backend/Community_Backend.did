@@ -1,4 +1,5 @@
-type Result = variant { Ok; Err : text };
+type Result = variant { Ok : text; Err : text };
+type Result_1 = variant { Ok; Err : text };
 type SurveyResponse = variant {
   PercentageSlider : nat8;
   MultipleChoice : text;
@@ -7,9 +8,12 @@ type SurveyResponse = variant {
 type VoteResponse = variant { PercentageVote : nat8 };
 service : () -> {
   calculate_total_claim : () -> (opt nat8) query;
+  chck_userparticipation_vote : () -> (text) query;
+  get_all_users : () -> (vec record { principal; text });
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
   get_ratification_results : () -> (vec record { text; nat64 }) query;
   get_survey_results : () -> (vec record { text; text }) query;
+  get_user : () -> (opt record { principal; text });
   get_weekly_ratification_counts : () -> (
       vec record { nat64; vec record { text; nat64 } },
     ) query;
@@ -19,6 +23,7 @@ service : () -> {
   get_weekly_vote_results : () -> (
       vec record { nat64; vec record { text; VoteResponse } },
     ) query;
+  set_user : (text) -> (Result);
   start_new_week : () -> ();
   submit_ratification : (bool) -> (Result);
   submit_survey : (vec record { text; SurveyResponse }) -> (Result);
