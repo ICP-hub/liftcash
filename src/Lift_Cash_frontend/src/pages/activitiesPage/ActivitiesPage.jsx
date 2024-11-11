@@ -20,7 +20,7 @@ const ActivitiesPage = () => {
   const [remainingTime, setRemainingTime] = useState(null); //  state for remaining time
   const communityActor = useSelector(state => state?.actors?.actors?.communityActor);
 
-  // const [timeLeft, setTimeLeft] = useState(0); // initial time in minutes
+  const [timeLeft, setTimeLeft] = useState(0); // initial time in minutes
 
   useEffect(() => {
     console.log("actor on survey page : ", communityActor);

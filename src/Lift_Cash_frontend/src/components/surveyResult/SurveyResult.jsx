@@ -122,7 +122,7 @@ const SurveyResult = () => {
 
       <div className="survey-result-btn-div">
         <button className="survey-result-btn" onClick={() => setVote(true)}>
-          Start this week's vote
+          Start this week's vote (RM after testing)
         </button>
       </div>
     </div>
