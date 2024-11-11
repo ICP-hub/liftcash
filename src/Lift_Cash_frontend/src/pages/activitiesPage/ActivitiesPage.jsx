@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import "./ActivitiesPage.css";
 import { survey } from "./constants/Survey";
@@ -19,6 +19,8 @@ const ActivitiesPage = () => {
   const formattedTimeLeft = useFormattedTimeLeft(1); // initial time in minutes
   const [remainingTime, setRemainingTime] = useState(null); //  state for remaining time
   const communityActor = useSelector(state => state?.actors?.actors?.communityActor);
+
+  // const [timeLeft, setTimeLeft] = useState(0); // initial time in minutes
 
   useEffect(() => {
     console.log("actor on survey page : ", communityActor);

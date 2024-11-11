@@ -151,8 +151,6 @@ pub fn chck_userparticipation_vote() -> &'static str {
     })
 }
 
-
-
 #[query]
 pub fn whoiam() -> Principal {
     // read_voting_system(|voting_system| {

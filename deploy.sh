@@ -11,7 +11,3 @@ candid-extractor target/wasm32-unknown-unknown/release/Economy_Backend.wasm >src
 dfx identity use Rajnish
 
 dfx deploy 
-
-dfx deps pull
-
-dfx deps deploy
