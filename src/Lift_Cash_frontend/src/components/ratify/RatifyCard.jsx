@@ -36,9 +36,19 @@ const RatifyCard = () => {
           // console.log("Sorted Vote Result: ", sortedVoteResult[0][1].PercentageVote);
           let temp = [];
           for (let i = 0; i < sortedVoteResult.length; i++) {
-            temp.push(sortedVoteResult[i][1].PercentageVote);
+            if (i === 3) {
+              const minSliderValue = 0.0167;
+              const maxSliderValue = 0.04;
+
+              const currentValue = ((sortedVoteResult[i][1].PercentageVote) / 255) * (maxSliderValue - minSliderValue) + minSliderValue;
+
+              temp.push(currentValue);
+
+            } else {
+              temp.push(sortedVoteResult[i][1].PercentageVote);
+            }
           }
-          // console.log("finalResults :", temp);
+          console.log("finalResults :", temp);
           setVoteResult(temp);
         })
         .catch((error) => {
@@ -109,37 +119,6 @@ const RatifyCard = () => {
   return !isRetifyResult ? (
     <div className="ratify-main-div">
       <h1 className="ratify-title">Welcome to the Ratify</h1>
-
-      {/* {voteQuestion.map((item, index) => (
-        <div key={index} className="mb-6">
-          <h2 className="ratify-vote-title">{item.title}</h2>
-          {item.details.map((detail, index) => (
-            <div
-              key={index}
-              className={
-                index % 2 === 0
-                  ? "ratify-vote-lable-even"
-                  : "ratify-vote-lable-odd"
-              }
-            >
-              <p className="">
-                {detail.label}:{" "}
-                <span className="ratify-vote-value">{detail.value}</span>
-              </p>
-              {detail.change === "down" && (
-                <span className="ratify-indicator">
-                  <FaArrowDown />
-                </span>
-              )}
-              {detail.change === "up" && (
-                <span className="ratify-indicator">
-                  <FaArrowUp />
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      ))} */}
 
       {voteData?.questions?.map((item, index) => (
         <div key={index} className="mb-6">

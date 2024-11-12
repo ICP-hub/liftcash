@@ -21,7 +21,7 @@ const Vote = () => {
 
   const [isVote, setIsVote] = useState(true);
   const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
-  const formattedTimeLeft = useFormattedTimeLeft(0);
+  const formattedTimeLeft = useFormattedTimeLeft(1);
   const [remainingTime, setRemainingTime] = useState(null);
   const [isRatify, setISRatify] = useState(false);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
