@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import "./ActivitiesPage.css";
 import { survey } from "./constants/Survey";
@@ -9,31 +10,23 @@ import ThankYouCard from "../../components/thankYouCard/ThankYouCard";
 
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
-import bgimg from "../../assets/images/background.svg";
+// import bgimg from "../../assets/images/background.svg";
 import { useSelector } from "react-redux";
-
 
 const ActivitiesPage = () => {
   const [selectedData, setSelectedData] = useState({});
   const [isSurveyCompleted, setIsSurveyCompleted] = useState(false);
   const formattedTimeLeft = useFormattedTimeLeft(1); // initial time in minutes
   const [remainingTime, setRemainingTime] = useState(null); //  state for remaining time
-  const communityActor = useSelector(state => state?.actors?.actors?.communityActor);
+  const communityActor = useSelector(
+    (state) => state?.actors?.actors?.communityActor
+  );
 
   const [timeLeft, setTimeLeft] = useState(0); // initial time in minutes
 
   useEffect(() => {
     console.log("actor on survey page : ", communityActor);
   }, [communityActor]);
-  
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 60000); // decrease every 1 minute
-
-    return () => clearInterval(timer); // cleanup on component unmount
-  }, []);
 
   // Handler to update selected data based on question id
   const handleSelect = (id, value, type) => {
@@ -47,7 +40,7 @@ const ActivitiesPage = () => {
   };
 
   // Handle form submission
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     if (Object.keys(selectedData).length < survey.length) {
       alert("Please complete the survey before submitting.");
       return;
@@ -55,24 +48,24 @@ const ActivitiesPage = () => {
     console.log("Selected Survey Data:", selectedData);
 
     // Integration starts here
-    let keys=Object.keys(selectedData);
-    let values=Object.values(selectedData);
-    console.log("keys : ", keys,values);
+    let keys = Object.keys(selectedData);
+    let values = Object.values(selectedData);
+    console.log("keys : ", keys, values);
 
-    let map=[]
+    let map = [];
 
-    for(let i=0;i<keys.length;i++){
+    for (let i = 0; i < keys.length; i++) {
       // map.push([keys[i]])
-      if(values[i][1]==="slider"){
-        map.push([keys[i],{PercentageSlider:Number(values[i][0])}])
-      }else if(values[i][1]==="radiobutton"){
-        map.push([keys[i],{MultipleChoice:values[i][0]}])
-      }else if(values[i][1]==="dropdown"){
-        let arr=Object.values(values[i][0])
-        map.push([keys[i],{Dropdown:arr}])
+      if (values[i][1] === "slider") {
+        map.push([keys[i], { PercentageSlider: Number(values[i][0]) }]);
+      } else if (values[i][1] === "radiobutton") {
+        map.push([keys[i], { MultipleChoice: values[i][0] }]);
+      } else if (values[i][1] === "dropdown") {
+        let arr = Object.values(values[i][0]);
+        map.push([keys[i], { Dropdown: arr }]);
       }
     }
-    console.log("map",map)
+    console.log("map", map);
 
     await communityActor
       .submit_survey(map)

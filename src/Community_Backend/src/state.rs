@@ -43,6 +43,7 @@ pub struct VotingSystem {
     pub weekly_survey_results: HashMap<u64, Vec<(String, String)>>,
     pub weekly_vote_results: HashMap<u64, HashMap<String, VoteResponse>>, // Store vote results per week
     pub weekly_ratification_counts: HashMap<u64, HashMap<String, u64>>, 
+    pub principal_to_user_id: HashMap<Principal, String>,
 }
 
 
@@ -74,8 +75,25 @@ impl VotingSystem {
             weekly_survey_results: HashMap::new(), 
             weekly_vote_results: HashMap::new(), 
             weekly_ratification_counts: HashMap::new(),
+            principal_to_user_id : HashMap::new(),
         };
         instance
+    }
+
+    fn register_user(&mut self, user_id: String) -> Result<(), String> {
+        let principal = caller(); // Automatically get the caller's Principal
+        self.principal_to_user_id.insert(principal.clone(), user_id); // Store the mapping
+        Ok(())
+    }
+
+    pub fn fetch_user_id(&self, principal: Principal) -> Option<String> {
+        self.principal_to_user_id.get(&principal).cloned() // Fetch the user ID for the given Principal
+    }
+
+    pub fn get_user_id_mapping(&self) -> Vec<(String, Principal)> {
+        self.principal_to_user_id.iter()
+            .map(|(principal, user_id)| (user_id.clone(), *principal))
+            .collect()
     }
 
     pub fn start_new_week(&mut self) {
@@ -103,6 +121,7 @@ impl VotingSystem {
     }
   
     pub fn submit_survey(&mut self, user_id: Principal, answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
+
         // let current_time =time();
         // if current_time >= self.last_stage_timestamp + SURVEY_SUBMISSION_DURATION {
         //     return Err("Survey submission period has ended".to_string());
@@ -124,6 +143,7 @@ impl VotingSystem {
     }
 
     pub fn submit_vote(&mut self, user_id: Principal, votes: HashMap<String, VoteResponse>) -> Result<(), String> {
+
         // let current_time = time();
         // if current_time >=self.last_stage_timestamp + VOTING_SUBMISSION_DURATION || current_time<=self.last_stage_timestamp + SURVEY_RESULTS_INTERVAL {
         //     return Err("Not within the voting period".to_string());
@@ -155,6 +175,7 @@ impl VotingSystem {
     }
 
     pub fn submit_ratification(&mut self, user_id: Principal, _approve: bool) -> Result<(), String> {
+
         // let current_time = time();
 
         // let ratification_submission_start = self.last_stage_timestamp + VOTING_SUBMISSION_DURATION;

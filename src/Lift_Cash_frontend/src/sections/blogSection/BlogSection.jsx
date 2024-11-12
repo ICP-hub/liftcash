@@ -14,12 +14,14 @@ const BlogSection = () => {
       <div className="blog-grid">
         {blogs.map((blog, index) => (
           <div key={index} className="blog-card">
-            <img src={blog.image} alt={blog.title} className="blog-image" />
-            <div className="blog-content">
-              <span className="blog-date">{blog.date}</span>
-              <h3 className="blog-title">{blog.title}</h3>
-              <p className="blog-description">{blog.description}</p>
-            </div>
+            <a href={blog.link} target="_blank">
+              <img src={blog.image} alt={blog.title} className="blog-image" />
+              <div className="blog-content">
+                <span className="blog-date">{blog.date}</span>
+                <h3 className="blog-title">{blog.title}</h3>
+                <p className="blog-description">{blog.description}</p>
+              </div>
+            </a>
           </div>
         ))}
       </div>
