@@ -1,16 +1,16 @@
 .faq-container {
-  @apply bg-[#111928] text-white py-16;
+  @apply bg-[#111928] px-4 text-white py-16;
 }
 
 .faq-title {
-  @apply text-sm md:text-2xl font-inter  font-bold  text-center text-blue-400 mb-2;
+  @apply text-xl md:text-3xl font-inter  font-bold  text-center text-blue-400 mb-2;
 }
 
 .faq-subtitle {
   @apply text-center font-inter  text-2xl md:text-3xl lg:text-4xl font-bold;
 }
 .faq-description {
-  @apply text-center mt-2 font-inter text-xs md:text-xl;
+  @apply text-center mt-2 font-inter text-base md:text-xl;
 }
 
 .faq-grid {
