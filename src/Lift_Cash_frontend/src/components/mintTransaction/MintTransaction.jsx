@@ -47,7 +47,7 @@ const MintTransaction = () => {
           <label className="mint-transaction-lable ">
             2. Amount to Mint:{" "}
             <p className="mint-transaction-lable-span">
-              from account 'shadabquad'
+              from account '@{localStorage.getItem("username")}'
             </p>
           </label>
 

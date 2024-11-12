@@ -50,24 +50,24 @@
   @apply flex justify-center;
 }
 .vote-slider {
-  @apply w-[85%];
+  @apply w-[80%] md:w-[85%];
 }
 .vote-display-percent {
-  @apply flex justify-center w-[85%] mx-[8%] ;
+  @apply flex justify-center  w-[80%] md:w-[85%] mx-[10%] md:mx-[8%];
 }
 .sliderunitfirst {
-  @apply w-1/2 flex justify-start ;
+  @apply w-1/2 flex justify-start;
 }
 .sliderunitsecond {
-  @apply w-1/2 flex justify-end ;
+  @apply w-1/2 flex justify-end;
 }
 
 .vote-manual-input-container {
-  @apply mb-6 flex md:space-x-28 space-x-4;
+  @apply mb-6 flex  md:space-x-28  space-x-6;
 }
 
 .vote-manual-input-p {
-  @apply text-sm font-semibold flex items-center md:mx-10 mx-6;
+  @apply text-sm font-semibold flex items-center md:mx-9 ml-8;
 }
 
 .vote-input-container {
@@ -78,7 +78,7 @@
   @apply border rounded p-2 w-20 text-center;
 }
 .vote-percent-sign {
-  @apply hidden md:block font-bold;
+  @apply hidden md:block font-bold pl-2;
 }
 
 .vote-bottom-instruction {

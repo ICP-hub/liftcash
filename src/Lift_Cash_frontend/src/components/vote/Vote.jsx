@@ -1,5 +1,5 @@
 import "./Vote.css";
-import RatifyCard from "../ratify/RatifyCard";
+// import RatifyCard from "../ratify/RatifyCard";
 import React, { useEffect, useState } from "react";
 import SurveyResult from "../surveyResult/SurveyResult";
 // import { useAuthClient } from "../../utils/useAuthClient";
@@ -21,7 +21,7 @@ const Vote = () => {
 
   const [isVote, setIsVote] = useState(true);
   const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
-  const formattedTimeLeft = useFormattedTimeLeft(1);
+  const formattedTimeLeft = useFormattedTimeLeft(5);
   const [remainingTime, setRemainingTime] = useState(null);
   const [isRatify, setISRatify] = useState(false);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
@@ -171,7 +171,7 @@ const Vote = () => {
             </p>
             <h1 className="vote-title">Welcome to the Vote</h1>
             <p className="vote-sub-title">
-              Complete for 50% of your weekly Claim
+              Complete for 70% of your weekly Claim
             </p>
           </div>
 
@@ -229,6 +229,13 @@ const Vote = () => {
                 </div>
 
                 {/* Manual Input */}
+                {/* <div
+                  className={`vote-manual-input-container ${
+                    data.slider.unit === "USD"
+                      ? "md:space-x-28"
+                      : "md:space-x-32"
+                  }`}
+                > */}
                 <div className="vote-manual-input-container">
                   <p className="vote-manual-input-p">
                     Or manually enter amount:
@@ -245,7 +252,11 @@ const Vote = () => {
                         handlePercentChange(data.id, event.target.value)
                       }
                     />
-                    <span className="vote-percent-sign">
+                    <span
+                      className={`vote-percent-sign ${
+                        data.slider.unit !== "USD" ? "pl-5" : " pl-0 "
+                      }`}
+                    >
                       {data.slider.unit}
                     </span>
                   </div>

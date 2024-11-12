@@ -47,12 +47,12 @@
 }
 
 .mint-fee-title {
-  @apply text-sm text-blue-500 font-bold mb-2;
+  @apply text-sm text-[#00A1ED] font-bold mb-2;
 }
 
 .mint-fee-values {
-  @apply text-sm font-semibold text-gray-900;
+  @apply text-sm text-center font-semibold text-gray-900;
 }
 .mint-container {
-  @apply flex justify-center;
+  @apply mx-2;
 }
