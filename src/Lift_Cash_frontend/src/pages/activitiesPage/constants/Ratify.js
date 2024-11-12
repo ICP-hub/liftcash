@@ -1,48 +1,29 @@
 export const voteData = {
-  sections: [
+
+  questions: [
     {
-      title: "Mint Fee, paid in XUSDC",
-      details: [
-        { label: "Current Mint Fee, paid in XUSDC", value: "14.82%" },
-        {
-          label: "The Voted Mint Fee, paid in XUSDC",
-          value: "13.48%",
-          change: "down",
-        },
-      ],
+      id: 1,
+      question : "Issuance",
+      label1 : "Current Issuance",
+      label2 : "The Voted Issuance", 
     },
     {
-      title: "Locking Threshold",
-      details: [
-        { label: "Current Locking Threshold", value: "0.036059 USD" },
-        {
-          label: "The Voted Locking Threshold",
-          value: "0.03 USD",
-          change: "down",
-        },
-      ],
+      id: 2,
+      question : "Lift Cash Mint Fee",
+      label1 : "Current Lift Cash Mint Fee",
+      label2 : "The Voted Lift Cash Mint Fee", 
     },
     {
-      title: "Staking Reward",
-      details: [
-        { label: "Current Staking Reward", value: "5.50%" },
-        {
-          label: "The Voted Staking Reward",
-          value: "6.00%",
-          change: "up",
-        },
-      ],
+      id: 3,
+      question : "ICP Mint Fee",
+      label1 : "Current ICP Mint Fee",
+      label2 : "The Voted ICP Mint Fee", 
     },
     {
-      title: "Liquidity Provision Fee",
-      details: [
-        { label: "Current Liquidity Provision Fee", value: "0.10%" },
-        {
-          label: "The Voted Liquidity Provision Fee",
-          value: "0.12%",
-          change: "up",
-        },
-      ],
+      id: 4,
+      question : "Locking Threshold",
+      label1 : "Current Locking Threshold",
+      label2 : "The Voted Locking Threshold", 
     },
   ],
   vote: {

@@ -12,10 +12,11 @@ const ThankYouCard = ({ remainingTime, type }) => {
   const convertToMinute = useConvertToMinutes(remainingTime) || 0; //remaining time (string) convert into minutes (decimal)
 
   //initial time (manual) in minutes
-  const manualTime = 1;
+  // const manualTime = 1;
 
   //Add converted time to manual input
-  const initialTime = convertToMinute + manualTime;
+  // const initialTime = convertToMinute + manualTime;
+  const initialTime = convertToMinute;
 
   const formattedTime = useFormattedTimeLeft(initialTime);
 
