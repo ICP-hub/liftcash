@@ -23,6 +23,8 @@ const Vote = () => {
   const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
   const formattedTimeLeft = useFormattedTimeLeft(1);
   const [remainingTime, setRemainingTime] = useState(null);
+  const [isRatify, setISRatify] = useState(false);
+  const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
 
   useEffect(() => {
     // Initialize percent state with default values
@@ -58,8 +60,8 @@ const Vote = () => {
       let percentageVote = values[i];
 
       // Special handling for the 5th question (index 4) with small floating-point range
-      if (i === 4) {
-        // Assuming the 5th question is at index 4
+
+      if (i === 3) {  // Assuming the 5th question is at index 4
         const minSliderValue = 0.0167;
         const maxSliderValue = 0.04;
 
@@ -78,10 +80,14 @@ const Vote = () => {
 
       // Ensure the value is within the nat8 range of 0 to 255
       percentageVote = Math.max(0, Math.min(255, percentageVote));
+  
+      // console.log("ss : ", percentageVote);
+  
+      voteMap.push([
+        String(keys[i]),
+        { PercentageVote: percentageVote }
+      ]);
 
-      console.log("ss : ", percentageVote);
-
-      voteMap.push([String(keys[i]), { PercentageVote: percentageVote }]);
     }
 
     console.log("voteMap", voteMap);
@@ -98,6 +104,57 @@ const Vote = () => {
     setIsVote(false);
   };
 
+  const sortDataById = (data) => {
+    return data.sort((a, b) => {
+      // Parse the question ID from the first element and sort numerically
+      const idA = parseInt(a[0], 10);  // Convert question ID to a number (e.g., "4" -> 4)
+      const idB = parseInt(b[0], 10);  // Convert question ID to a number (e.g., "2" -> 2)
+
+      return idA - idB;  // Sort in ascending order
+    });
+  };
+
+
+  // Get weekly Vote result
+  const getWeeklyVoteResult = async () => {
+    try {
+      await communityActor.get_weekly_vote_results()
+        .then((response) => {
+          // console.log("Weekly Vote Result:", response[response.length-1][1]);
+          const sortedData = sortDataById(response[response.length - 1][1]);
+          // console.log("Sorted Weekly Vote  :::", sortedData);
+          let temp = [];
+          for (let i = 0; i < sortedData.length; i++) {
+            let scaled = sortedData[i][1].PercentageVote;
+            if (i === 3) {
+              const minSliderValue = 0.0167;
+              const maxSliderValue = 0.04;
+              const currentValue = ((scaled / 255) * (maxSliderValue - minSliderValue)) + minSliderValue;
+              temp.push(currentValue)
+            }
+            else {
+              temp.push(scaled);
+            }
+          };
+          // console.log("Temp :::", temp);
+          setWeeklyVoteResult(temp);
+        })
+        .catch((error) => {
+          console.error("Error getting Weekly Vote Result:", error);
+        });
+    } catch (error) {
+      console.error("Error getting Weekly Vote Result:", error);
+    }
+  };
+
+  useEffect(() => {
+    getWeeklyVoteResult();
+  }, []);
+  
+  if (isRatify) {
+    return <RatifyCard />;
+  }
+  
   // Conditional rendering
   return isVote && formattedTimeLeft !== "0 mins" ? (
     isBackToSurveyResult ? (
@@ -135,12 +192,12 @@ const Vote = () => {
             <h1 className="vote-title bg-blue-200 py-5">
               Ready to Vote? Let's start.
             </h1>
-            {voteQuestions.map((data) => (
+            {voteQuestions.map((data, index) => (
               <div key={data.id}>
                 <div className="vote-card-container">
-                  <h2 className="vote-card-title ">{data.title}</h2>
+                  <h2 className="vote-card-title ">"{data.title}"</h2>
                   <p className="vote-card-sub-title">
-                    {data.issuance.title}: {data.issuance.amount}
+                    {data.issuance.title}: {weeklyVoteResult[index]} {index === 3 ? "USD" : "%"}
                   </p>
                   <p className="vote-card-question">{data.question}</p>
                   <p className="vote-card-question-description">

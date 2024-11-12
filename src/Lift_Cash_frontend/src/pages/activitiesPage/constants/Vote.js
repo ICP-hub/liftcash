@@ -19,8 +19,8 @@ export const voteQuestions = [
   },
   {
     id: 2,
-    title: "Lift Cash Fee",
-    question: "What percentage of revenue should be reinvested?",
+    title: "Lift Cash Mint Fee",
+    question: "What should the mint fee be for Lift Cash this week?",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
     issuance: {
@@ -38,8 +38,7 @@ export const voteQuestions = [
   {
     id: 3,
     title: "ICP Mint Fee",
-    question:
-      "What percentage of tokens should be allocated to community projects?",
+    question:"what should the mint fee be for ICP this week?",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
     issuance: {
@@ -56,27 +55,8 @@ export const voteQuestions = [
   },
   {
     id: 4,
-    title: "XUSDC Mint Fee",
-    question: "What percentage of profits should be used for development?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
-    issuance: {
-      title: "Current Mint Fee",
-      amount: "18%",
-    },
-    slider: {
-      min: 6,
-      max: 30,
-      default: 18,
-      unit: "%",
-    },
-    manualInput: true,
-  },
-  {
-    id: 5,
     title: "Locking Threshold",
-    question:
-      "What percentage of the marketing budget should be spent this quarter?",
+    question:"What should the locking threshold be for this week?",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
     issuance: {
