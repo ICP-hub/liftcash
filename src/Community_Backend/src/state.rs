@@ -110,8 +110,10 @@ impl VotingSystem {
         // if current_time >= self.last_stage_timestamp + SURVEY_SUBMISSION_DURATION {
         //     return Err("Survey submission period has ended".to_string());
         // }
+        if self.current_week==0{
+            return Err("No current week available".to_string());
+        }
         self.survey_responses.insert(user_id.clone(), answers);
-
         self.participation_count.entry(0).or_insert(0);
         *self.participation_count.get_mut(&0).unwrap() += 1;
         self.weekly_participation.entry(user_id).and_modify(|claim| {
@@ -132,6 +134,9 @@ impl VotingSystem {
         // if current_time >=self.last_stage_timestamp + VOTING_SUBMISSION_DURATION || current_time<=self.last_stage_timestamp + SURVEY_RESULTS_INTERVAL {
         //     return Err("Not within the voting period".to_string());
         // }
+        if self.current_week==0{
+            return Err("No current week available".to_string());
+        }
         self.voting_responses.insert(user_id, votes.clone());
 
         self.participation_count.entry(1).or_insert(0);
