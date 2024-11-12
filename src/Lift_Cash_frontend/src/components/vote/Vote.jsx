@@ -130,7 +130,7 @@ const Vote = () => {
               const minSliderValue = 0.0167;
               const maxSliderValue = 0.04;
               const currentValue = ((scaled / 255) * (maxSliderValue - minSliderValue)) + minSliderValue;
-              temp.push(currentValue)
+              temp.push(currentValue.toFixed(4))
             }
             else {
               temp.push(scaled);
