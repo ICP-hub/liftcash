@@ -4,6 +4,7 @@ use crate::{SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_S
 use ic_stable_structures::StableCell;
 use crate::USER_MAP;
 use crate::USERNAME_SET;
+use candid::Principal;
 
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
@@ -137,16 +138,6 @@ pub fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
     })
 }
 
-
-#[query] // Mark this method as a query
-pub fn get_user_id_mapping() -> Vec<(String, Principal)> {
-    read_voting_system(|voting_system| {
-        voting_system.get_user_id_mapping()
-    })
-    // Voting_system.get_user_id_mapping() // Call the method on the VotingSystem instance
-}
-
-
 #[query]
 pub fn chck_userparticipation_vote() -> &'static str {
     let principal = caller();
@@ -159,6 +150,7 @@ pub fn chck_userparticipation_vote() -> &'static str {
         }
     })
 }
+
 #[update]
 fn set_user(username: String) -> Result<String, String> {
     let principal = caller();
@@ -191,7 +183,6 @@ fn set_user(username: String) -> Result<String, String> {
     })
 }
 
-
 #[update]
 fn get_user() -> Option<(Principal, String)> {
     let principal = caller();
@@ -206,7 +197,6 @@ fn get_all_users() -> Vec<(Principal, String)> {
         user_map.borrow().iter().map(|(principal, username)| (*principal, username.clone())).collect()
     })
 } 
-
 
 #[query]
 pub fn whoiam() -> Principal {

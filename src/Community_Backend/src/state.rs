@@ -79,23 +79,7 @@ impl VotingSystem {
         };
         instance
     }
-
-    fn register_user(&mut self, user_id: String) -> Result<(), String> {
-        let principal = caller(); // Automatically get the caller's Principal
-        self.principal_to_user_id.insert(principal.clone(), user_id); // Store the mapping
-        Ok(())
-    }
-
-    pub fn fetch_user_id(&self, principal: Principal) -> Option<String> {
-        self.principal_to_user_id.get(&principal).cloned() // Fetch the user ID for the given Principal
-    }
-
-    pub fn get_user_id_mapping(&self) -> Vec<(String, Principal)> {
-        self.principal_to_user_id.iter()
-            .map(|(principal, user_id)| (user_id.clone(), *principal))
-            .collect()
-    }
-
+    
     pub fn start_new_week(&mut self) {
         // self.last_week = self.current_week;
         // let current_time = time();
