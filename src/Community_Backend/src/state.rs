@@ -204,6 +204,7 @@ impl VotingSystem {
         
         let mut average_data: HashMap<String, (u32, u32)> = HashMap::new(); 
         let mut majority_data: HashMap<String, HashMap<String, usize>> = HashMap::new(); 
+        let mut dropdown_order: HashMap<String, Vec<String>> = HashMap::new();
         
         for (_user_id, answers) in &self.survey_responses {
             for (question_id, response) in answers {
@@ -219,8 +220,13 @@ impl VotingSystem {
                     }
                     SurveyResponse::Dropdown(ref options) => {
                         let entry = majority_data.entry(question_id.clone()).or_insert(HashMap::new());
+                        let order_entry = dropdown_order.entry(question_id.clone()).or_insert_with(Vec::new);
+                    
                         for option in options {
-                            *entry.entry(option.clone()).or_insert(0) += 1; // Count each selected option
+                            if !order_entry.contains(option) {
+                                order_entry.push(option.clone()); // Record insertion order
+                            }
+                            *entry.entry(option.clone()).or_insert(0) += 1;
                         }
                     }
                 }
@@ -237,11 +243,26 @@ impl VotingSystem {
         }
         
         for (question_id, counts) in majority_data {
-            if let Some((majority_response, _)) = counts.iter().max_by_key(|entry| entry.1) {
-                results.push((question_id, format!("Majority: {}", majority_response)));
-            } else {
-                results.push((question_id, format!("Majority: N/A")));
-            }
+            // let mut majority_response = None;
+
+            if let Some(order) = dropdown_order.get(&question_id) {
+                let majority_response = order.iter()
+                    .filter(|option| counts.contains_key(*option))
+                    .max_by_key(|option| (counts[*option], -(order.iter().position(|x| x == *option).unwrap() as isize)))
+                    .cloned();
+            
+                if let Some(response) = majority_response {
+                    results.push((question_id, format!("Majority: {}", response)));
+                } else {
+                    results.push((question_id, format!("Majority: N/A")));
+                }
+            }else{
+                if let Some((majority_response, _)) = counts.iter().max_by_key(|entry| entry.1) {
+                    results.push((question_id, format!("Majority: {}", majority_response)));
+                } else {
+                    results.push((question_id, "Majority: N/A".to_string()));
+                }
+            }           
         }
     results   
 }
