@@ -105,17 +105,17 @@ const MintFreeos = () => {
             <p className="balance-text">0</p>
             <p>ICP</p>
           </div>
-          <div className="balance-card   ">
+          {/* <div className="balance-card   ">
             <p className="balance-text">0</p>
             <p>XUSDC</p>
-          </div>
+          </div> */}
         </div>
       </div>
 
       <div className="fee-container">
         <h3 className="fee-heading">Mint Fee Details:</h3>
         <p className="fee-details">
-          LIFT = 9.0588% | ICP = 13.8529% | XUSDC = 14.0441%
+          LIFT = 9.0588% | ICP = 13.8529% {/*| XUSDC = 14.0441% */}
         </p>
         <div className="mint-fee-section">
           <p className="mint-fee-title">Minimum Mint Fee</p>
@@ -123,8 +123,8 @@ const MintFreeos = () => {
             3000 LIFT
             <br />
             or 4139.5982 ICP
-            <br />
-            or 10.20099 XUSDC
+            {/* <br />
+            or 10.20099 XUSDC */}
           </p>
         </div>
       </div>

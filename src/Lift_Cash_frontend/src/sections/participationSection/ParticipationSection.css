@@ -1,6 +1,6 @@
 /* Tailwind CSS classes with @apply */
 .participation-section {
-  @apply bg-primary text-white py-16 px-8;
+  @apply bg-[#479FE6] text-white py-16 px-8;
 }
 
 .content {
@@ -12,7 +12,7 @@
 }
 
 .sub-heading {
-  @apply text-4xl font-inter mt-4;
+  @apply text-3xl sm:text-4xl font-medium  font-inter mt-4;
 }
 
 .description {

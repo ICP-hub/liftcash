@@ -1,12 +1,12 @@
 .slider-main-div {
-  @apply md:pl-2;
+  @apply pl-2;
 }
 .slider {
-  @apply w-[85%] ml-8 m-2  h-2 bg-[#00A1ED] rounded-lg  cursor-pointer;
+  @apply w-[90%] md:w-[85%]  ml-4 md:ml-8 md:m-2  h-2 bg-[#00A1ED] rounded-lg  cursor-pointer;
 }
 
 .container-silder-months {
-  @apply ml-8 flex  font-bold space-x-36 md:space-x-56 mb-6;
+  @apply ml-4 md:ml-8 flex  font-bold space-x-40 md:space-x-56 mb-6;
 }
 .slider-months-show {
   @apply text-xl  px-16 md:px-32 py-2 font-semibold  border border-[#00A1ED] rounded-lg mb-6;

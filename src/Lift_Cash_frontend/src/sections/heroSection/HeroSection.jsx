@@ -50,7 +50,7 @@ const HeroSection = () => {
         <img
           src="https://freeos.io/assets/hero/hero-image.jpg"
           alt="screenshot"
-          className="hero-section-bottom-img mx-auto"
+          className="hero-section-bottom-img"
         />
 
         {/* Bottom-left Image */}

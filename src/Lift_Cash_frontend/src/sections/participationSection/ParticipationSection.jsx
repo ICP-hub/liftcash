@@ -16,8 +16,9 @@ const ParticipationSection = () => {
         <section className="list-section">
           <ul className="list">
             <li>
+              Download the{" "}
               <a href="" className="link">
-                Download the WebAuth
+                WebAuth
               </a>{" "}
               wallet and setup your Proton account.
             </li>
