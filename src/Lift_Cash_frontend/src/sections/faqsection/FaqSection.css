@@ -1,5 +1,5 @@
 .faq-container {
-  @apply bg-[#111928] px-4 text-white py-16;
+  @apply bg-[#111928] dark:bg-white px-4 text-white py-16;
 }
 
 .faq-title {
@@ -7,10 +7,10 @@
 }
 
 .faq-subtitle {
-  @apply text-center font-inter  text-2xl md:text-3xl lg:text-4xl font-bold;
+  @apply text-center font-inter  text-2xl md:text-3xl lg:text-4xl font-bold dark:text-black;
 }
 .faq-description {
-  @apply text-center mt-2 font-inter text-base md:text-xl;
+  @apply text-center mt-2 font-inter text-base md:text-xl dark:text-primary;
 }
 
 .faq-grid {
@@ -24,9 +24,9 @@
 }
 
 .faq-question {
-  @apply text-xl  font-inter font-bold text-blue-400 mb-4;
+  @apply text-xl  font-inter font-bold text-primary dark:text-black mb-4;
 }
 
 .faq-answer {
-  @apply text-base font-inter text-[#9CA3AF];
+  @apply text-base font-inter text-[#9CA3AF] dark:text-primary;
 }

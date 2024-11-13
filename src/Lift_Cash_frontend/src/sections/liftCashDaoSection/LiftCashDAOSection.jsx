@@ -41,7 +41,7 @@ const LiftCashDAOSection = () => {
           <p className="dao-description">
             Join the revolution! Visit{" "}
             <a
-              className="text-[#67E8F9] font-semibold"
+              className="text-[#67E8F9] font-semibold dark:text-black"
               href="https://liftcash.com"
             >
               www.lift.cash

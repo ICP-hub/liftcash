@@ -146,7 +146,7 @@ const Footer = () => {
           <div className="footer-container-ul">
             <a href="/blog/freeos-unchained" className="footer-container-a">
               <img
-                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*t7wM5PqOGrxJSPLw9t2GRw.png"
                 alt="Blog 1"
                 className="footer-container-img"
               />
@@ -158,7 +158,7 @@ const Footer = () => {
               className="footer-container-a"
             >
               <img
-                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*xD7fnBxITIn_A9FVhFf4gw.png"
                 alt="Blog 2"
                 className="footer-container-img"
               />
