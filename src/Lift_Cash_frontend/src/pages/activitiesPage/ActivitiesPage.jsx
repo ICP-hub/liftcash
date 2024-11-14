@@ -12,6 +12,8 @@ import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
 // import bgimg from "../../assets/images/background.svg";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { ThreeDots } from "react-loader-spinner";
 
 const ActivitiesPage = () => {
   const [selectedData, setSelectedData] = useState({});
@@ -23,6 +25,7 @@ const ActivitiesPage = () => {
   );
 
   const [timeLeft, setTimeLeft] = useState(0); // initial time in minutes
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     console.log("actor on survey page : ", communityActor);
@@ -42,9 +45,11 @@ const ActivitiesPage = () => {
   // Handle form submission
   const handleSubmit = async () => {
     if (Object.keys(selectedData).length < survey.length) {
+      setIsSubmitting(false);
       alert("Please complete the survey before submitting.");
       return;
     }
+    setIsSubmitting(true);
     console.log("Selected Survey Data:", selectedData);
 
     // Integration starts here
@@ -71,13 +76,15 @@ const ActivitiesPage = () => {
       .submit_survey(map)
       .then((res) => {
         console.log("Survey Data Submitted Successfully:", res);
+        toast.success("Survey Submitted Successfully!");
+        setIsSubmitting(false);
+        setIsSurveyCompleted(true);
+        setRemainingTime(formattedTimeLeft);
       })
       .catch((err) => {
         console.log("Error submitting survey data:", err);
+        toast.error("Error submitting survey ");
       });
-
-    setIsSurveyCompleted(true);
-    setRemainingTime(formattedTimeLeft);
   };
 
   return (
@@ -136,8 +143,23 @@ const ActivitiesPage = () => {
           ))}
 
           <div className="activities-container-btn-div">
-            <button className="activities-container-btn" onClick={handleSubmit}>
-              Submit Survey
+            <button
+              disabled={isSubmitting}
+              className="activities-container-btn"
+              onClick={handleSubmit}
+            >
+              {isSubmitting ? (
+                <ThreeDots
+                  visible={true}
+                  height="30"
+                  width="30"
+                  color="white"
+                  radius="9"
+                  ariaLabel="three-dots-loading"
+                />
+              ) : (
+                "Submit Survey"
+              )}
             </button>
           </div>
         </div>
