@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import HeaderAfterAuth from "../../components/headerAfterAuth/HeaderAfterAuth";
 import bgimg from "../../assets/images/background.svg";
-import Waveform from "../../components/Waveform";
+// import Waveform from "../../components/threejs/Waveform";
+import FloatingDustWave from "../../components/threejs/FloatingDustWave";
 
 const AfterAuthPage = ({ children }) => {
   const [isAnimationActive, setIsAnimationActive] = useState(false);
@@ -25,7 +26,8 @@ const AfterAuthPage = ({ children }) => {
         {/* Conditionally render Waveform animation */}
         {isAnimationActive && (
           <div className="absolute  ">
-            <Waveform />
+            {/* <Waveform /> */}
+            <FloatingDustWave />
           </div>
         )}
         <main className="relative ">{children}</main>

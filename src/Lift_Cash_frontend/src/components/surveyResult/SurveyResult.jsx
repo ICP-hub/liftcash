@@ -3,6 +3,7 @@ import "./SurveyResult.css";
 // import { surveyResults } from "../../pages/activitiesPage/constants/SurveyResult";
 import Vote from "../vote/Vote";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const SurveyResult = () => {
   const [vote, setVote] = useState(false);
@@ -14,8 +15,10 @@ const SurveyResult = () => {
     "How long before the FREEOS market changes direction?",
     "What are the  priorities for voting this week ?",
   ]);
-  
-  const communityActor = useSelector(state => state?.actors?.actors?.communityActor);
+
+  const communityActor = useSelector(
+    (state) => state?.actors?.actors?.communityActor
+  );
 
   useEffect(() => {
     console.log("actor on survey result page : ", communityActor);
@@ -31,7 +34,8 @@ const SurveyResult = () => {
 
   const fetchSurveyResults = async () => {
     try {
-      await communityActor?.get_survey_results()
+      await communityActor
+        ?.get_survey_results()
         .then((response) => {
           console.log("Survey Results: ", response);
 
@@ -54,30 +58,33 @@ const SurveyResult = () => {
           console.log("finalResults :", finalResults);
 
           setSurveyResults(finalResults);
-
         })
         .catch((error) => {
           console.error("Error fetching survey results", error);
+          toast.error("Error fetching survey results");
         });
     } catch (error) {
       console.error("Error fetching survey results", error);
+      // toast.error("Error fetching survey results");
     }
   };
 
   const fetchWeeklySurvey = async () => {
     try {
-      await communityActor?.get_weekly_survey_results()
+      await communityActor
+        ?.get_weekly_survey_results()
         .then((response) => {
-          console.log("Weekly Survey: ",  response[0]);
+          console.log("Weekly Survey: ", response[0]);
         })
         .catch((error) => {
           console.error("Error fetching weekly survey", error);
+          toast.error("Error fetching weekly survey");
         });
     } catch (error) {
       console.error("Error fetching weekly survey", error);
+      // toast.error("Error fetching weekly survey");
     }
   };
-
 
   useEffect(() => {
     fetchSurveyResults();
@@ -95,10 +102,11 @@ const SurveyResult = () => {
       {surveyResults.map((data, index) => (
         <div
           key={data.id}
-          className={` ${index % 2 === 0
-            ? "survey-result-container"
-            : `bg-blue-100  survey-result-container`
-            }`} // Alternate colors
+          className={` ${
+            index % 2 === 0
+              ? "survey-result-container"
+              : `bg-blue-100  survey-result-container`
+          }`} // Alternate colors
         >
           <h2 className="survey-result-question">{`Q${data.id}: ${data.question}`}</h2>
           <div className="survey-result-options-container">
