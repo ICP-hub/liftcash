@@ -2,9 +2,9 @@ use std::collections::HashMap;
 use ic_cdk::{api, caller, init, query, update};
 use crate::{SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_SYSTEM_CELL, VOTING_SYSTEM_MEMORY_ID};
 use ic_stable_structures::StableCell;
-use candid::Principal;
 use crate::USER_MAP;
 use crate::USERNAME_SET;
+use candid::Principal;
 
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
@@ -138,16 +138,6 @@ pub fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
     })
 }
 
-
-#[query] // Mark this method as a query
-pub fn get_user_id_mapping() -> Vec<(String, Principal)> {
-    read_voting_system(|voting_system| {
-        voting_system.get_user_id_mapping()
-    })
-    // Voting_system.get_user_id_mapping() // Call the method on the VotingSystem instance
-}
-
-
 #[query]
 pub fn chck_userparticipation_vote() -> &'static str {
     let principal = caller();
@@ -160,6 +150,53 @@ pub fn chck_userparticipation_vote() -> &'static str {
         }
     })
 }
+
+#[update]
+fn set_user(username: String) -> Result<String, String> {
+    let principal = caller();
+
+    USER_MAP.with(|user_map| {
+        USERNAME_SET.with(|username_set| {
+            let mut map = user_map.borrow_mut();
+            let mut set = username_set.borrow_mut();
+
+            // Check if the principal already exists in the map
+            if let Some(existing_username) = map.get(&principal) {
+                if existing_username == &username {
+                    return Ok("Username is already set and correct.".to_string());
+                } else {
+                    return Err("Error: The provided username does not match the existing one.".to_string());
+                }
+            }
+
+            // Ensure the username is not already used by another principal
+            if set.contains(&username) {
+                return Err("Error: The username is already taken.".to_string());
+            }
+
+            // If the username and principal are unique, add to both USER_MAP and USERNAME_SET
+            map.insert(principal, username.clone());
+            set.insert(username.clone());
+
+            Ok(format!("Username '{}' set successfully.", username))
+        })
+    })
+}
+
+#[update]
+fn get_user() -> Option<(Principal, String)> {
+    let principal = caller();
+    USER_MAP.with(|user_map| {
+        user_map.borrow().get(&principal).map(|username| (principal, username.clone()))
+    })
+}
+
+#[update]
+fn get_all_users() -> Vec<(Principal, String)> {
+    USER_MAP.with(|user_map| {
+        user_map.borrow().iter().map(|(principal, username)| (*principal, username.clone())).collect()
+    })
+} 
 
 #[query]
 pub fn whoiam() -> Principal {

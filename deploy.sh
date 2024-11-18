@@ -5,9 +5,4 @@ cargo build --release --target wasm32-unknown-unknown --package Economy_Backend
 candid-extractor target/wasm32-unknown-unknown/release/Community_Backend.wasm >src/Community_Backend/Community_Backend.did
 candid-extractor target/wasm32-unknown-unknown/release/Economy_Backend.wasm >src/Economy_Backend/Economy_Backend.did
 
-# ./LIFT_DEPLOY.sh
-# ./PROMO_DEPLOY.sh
-
-dfx identity use Rajnish
-
-dfx deploy 
+dfx deploy

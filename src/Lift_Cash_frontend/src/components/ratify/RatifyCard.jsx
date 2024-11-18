@@ -42,9 +42,10 @@ const RatifyCard = () => {
 
               const currentValue = ((sortedVoteResult[i][1].PercentageVote) / 255) * (maxSliderValue - minSliderValue) + minSliderValue;
 
-              temp.push(currentValue);
+              temp.push(currentValue.toFixed(4));
 
-            } else {
+            }
+            else {
               temp.push(sortedVoteResult[i][1].PercentageVote);
             }
           }
@@ -72,7 +73,19 @@ const RatifyCard = () => {
           let temp = [];
 
           for (let i = 0; i < finalResult.length; i++) {
-            temp.push(finalResult[i][1].PercentageVote);
+
+            if (i === 3) {
+              const minSliderValue = 0.0167;
+              const maxSliderValue = 0.04;
+
+              const currentValue = ((finalResult[i][1].PercentageVote) / 255) * (maxSliderValue - minSliderValue) + minSliderValue;
+
+              temp.push(currentValue.toFixed(4));
+
+            } else {
+
+              temp.push(finalResult[i][1].PercentageVote);
+            }
           }
 
           // console.log("finalResults :", temp);
@@ -128,18 +141,21 @@ const RatifyCard = () => {
               {item.label1} : {" "}
               <span className="ratify-vote-value">{weeklyVoteResult[index]}%</span>
             </p>
-            {/* <span className="ratify-indicator">
-              <FaArrowDown />
-            </span> */}
           </div>
           <div className="ratify-vote-lable-odd">
             <p className="">
               {item.label2}:{" "}
               <span className="ratify-vote-value">{voteResult[index]}%</span>
             </p>
-            <span className="ratify-indicator">
-              <FaArrowUp color="green" />
-            </span>
+            {weeklyVoteResult[index] > voteResult[index] ? (
+              <span className="ratify-indicator">
+                <FaArrowDown color="red" />
+              </span>
+            ) : (
+              <span className="ratify-indicator">
+                <FaArrowUp color="green" />
+              </span>
+            )}
           </div>
         </div>
       ))}
