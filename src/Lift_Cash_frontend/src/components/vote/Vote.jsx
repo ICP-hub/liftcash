@@ -140,7 +140,11 @@ const Vote = () => {
               const currentValue =
                 (scaled / 255) * (maxSliderValue - minSliderValue) +
                 minSliderValue;
+<<<<<<< Updated upstream
               temp.push(currentValue);
+=======
+              temp.push(currentValue.toFixed(4));
+>>>>>>> Stashed changes
             } else {
               temp.push(scaled);
             }
@@ -292,7 +296,7 @@ const Vote = () => {
                 <ThreeDots
                   visible={true}
                   height="30"
-                  width="30"
+                  width="40"
                   color="white"
                   radius="9"
                   ariaLabel="three-dots-loading"
