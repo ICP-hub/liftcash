@@ -11,7 +11,7 @@ use std::rc::Rc;
 
 use crate::{SurveyData, SurveyResponse, UserClaim, VoteData, VoteResponse};
 // use crate::constants::{SURVEY_SUBMISSION_DURATION, SURVEY_RESULTS_INTERVAL,VOTING_SUBMISSION_DURATION,RATIFICATION_SUBMISSION_DURATION,RATIFICATION_RESULTS_INTERVAL};
-
+use crate::types::{State,Phase};
 
 pub type VMem = VirtualMemory<DefaultMemoryImpl>;
 pub const VOTING_SYSTEM_MEMORY_ID: MemoryId = MemoryId::new(1);
@@ -20,6 +20,10 @@ thread_local! {
     pub static MEMORY_MANAGER: RefCell<MemoryManager<DefaultMemoryImpl>> = RefCell::new(
         MemoryManager::init(DefaultMemoryImpl::default())
     );
+    pub static STATE: std::cell::RefCell<State> = std::cell::RefCell::new(State {
+        current_phase: Phase::Survey,
+        phase_start_time: ic_cdk::api::time(),
+    });
     pub static USER_MAP: RefCell<HashMap<Principal, String>> = RefCell::new(HashMap::new());
     pub static USERNAME_SET: RefCell<HashSet<String>> = RefCell::new(HashSet::new());
     pub static VOTING_SYSTEM_CELL: RefCell<StableCell<VotingSystem, VMem>> = RefCell::new({
@@ -35,6 +39,7 @@ pub struct VotingSystem {
     pub iteration_count: u64,
     pub participation_count: HashMap<u8, u64>,
     pub last_stage_timestamp: u64,
+    // pub current_phase: Phase, 
     pub survey_responses: HashMap<Principal, SurveyData>,
     pub voting_responses: HashMap<Principal, VoteData>,
     pub ratification_responses: HashMap<Principal, bool>,
@@ -88,9 +93,9 @@ impl VotingSystem {
         //     let survey_results = self.calculate_survey_results(self.current_week);
         //     self.weekly_survey_results.insert(self.current_week, survey_results);
         // }
+        self.last_week = self.current_week;
         let results = self.calculate_survey_results(self.last_week);
         self.weekly_survey_results.insert(self.last_week, results);
-        self.last_week = self.current_week;
         let vote_results = self.calculate_average_votes(self.last_week);
         self.weekly_vote_results.insert(self.last_week, vote_results);
         let ratification_results = self.calculate_ratification_results(self.last_week);
