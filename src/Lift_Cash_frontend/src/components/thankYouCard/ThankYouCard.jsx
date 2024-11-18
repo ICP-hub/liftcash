@@ -22,18 +22,40 @@ const ThankYouCard = ({ remainingTime, type }) => {
 
   // Define texts conditionally based on the type prop
   const texts = {
-    header: type === "survey" ? "Woohoo!" : "Yay , you did it",
+    header:
+      type === "survey"
+        ? "Woohoo!"
+        : type === "retify"
+        ? "Yay , you did it"
+        : "Yay , you did it",
     participation: `Thanks for participating in this week's ${
-      type === "survey" ? "survey" : "vote"
+      type === "survey"
+        ? "survey"
+        : type === "retify"
+        ? "Ractification "
+        : "vote"
     }`,
-    nextStep: type === "survey" ? "The Weekly Vote" : "The Ratification Vote",
+    nextStep:
+      type === "survey"
+        ? "The Weekly Vote"
+        : type === "retify"
+        ? "The Ractification Result"
+        : "The Ratification Vote",
     completion: `Completing the ${
-      type === "survey" ? "vote" : "Ratification Vote"
+      type === "survey"
+        ? "vote"
+        : type === "retify"
+        ? "Ractification Result"
+        : "Ratification Vote"
     } enables you to claim an additional ${
-      type === "survey" ? "70" : "10"
+      type === "survey" ? "70" : type === "retify" ? "10" : "10"
     }% of your weekly claim potential`,
     farewell: `See you soon for the ${
-      type === "survey" ? "Vote" : "Ratification Vote"
+      type === "survey"
+        ? "Vote"
+        : type === "retify"
+        ? "Ractification Result"
+        : "Ratification Vote"
     }`,
   };
 
