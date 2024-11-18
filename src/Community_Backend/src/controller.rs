@@ -5,12 +5,16 @@ use ic_stable_structures::StableCell;
 use crate::USER_MAP;
 use crate::USERNAME_SET;
 use candid::Principal;
-
+use crate::STATE;
+use crate::Phase;
+use crate::constants::{PHASE_DURATION,RESULTS_DURATION};
+use crate::state;
+// use crate::state::calculate_survey_results;
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
     VOTING_SYSTEM_CELL.with(|cell| {
         let voting_system = cell.borrow();
-        f(voting_system.get()) // Directly use the reference to VotingSystem
+        f(voting_system.get()) 
     })
 }
 
@@ -39,18 +43,35 @@ pub fn init() {
             VotingSystem::default(),
         ).expect("Failed to initialize VotingSystem");
     });
+    mutate_voting_system(|voting_system| {
+        voting_system.start_new_week(); 
+    });
+    STATE.with(|state| {
+        let mut state = state.borrow_mut();
+        state.current_phase = Phase::Survey; 
+        state.phase_start_time = ic_cdk::api::time();
+    });
 }
 
-// #[update (guard = check_anonymous)]
 #[update]
 pub fn start_new_week() {
     mutate_voting_system(|voting_system| {
         voting_system.start_new_week();
     });
+    // STATE.with(|state| {
+    //     let mut state = state.borrow_mut();
+    //     state.current_phase = Phase::Survey;  // Explicitly setting the phase
+    //     state.phase_start_time = ic_cdk::api::time();  // Resetting the phase start time
+    // });
 }
 
 #[update]
 pub fn submit_survey(answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
+    let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+
+    if current_phase != Phase::Survey {
+        return Err("Survey submissions are only allowed during the Survey phase.".to_string());
+    }
     mutate_voting_system(|voting_system| {
         voting_system.submit_survey(caller(), answers)
     })
@@ -58,6 +79,11 @@ pub fn submit_survey(answers: HashMap<String, SurveyResponse>) -> Result<(), Str
 
 #[update]
 pub fn submit_vote(votes: HashMap<String, VoteResponse>) -> Result<(), String> {
+    let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+
+    if current_phase != Phase::Vote {
+        return Err("Vote submissions are only allowed during the vote phase.".to_string());
+    }
     mutate_voting_system(|voting_system| {
         voting_system.submit_vote(caller(), votes)
     })
@@ -65,6 +91,10 @@ pub fn submit_vote(votes: HashMap<String, VoteResponse>) -> Result<(), String> {
 
 #[update]
 pub fn submit_ratification(ratify: bool) -> Result<(), String> {
+    let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+    if current_phase != Phase::Ratify {
+        return Err("Ratify submissions are only allowed during the Ratify phase.".to_string());
+    }
     mutate_voting_system(|voting_system| {
         voting_system.submit_ratification(caller(), ratify)
     })
@@ -81,6 +111,10 @@ pub fn calculate_total_claim() -> Option<u8> {
 #[query]
 pub fn get_survey_results() -> Vec<(String, String)> {
     mutate_voting_system(|voting_system| {
+        let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+        if current_phase != Phase::SurveyResults {
+            return Vec::new();
+        }
         let last_week = voting_system.last_week;
         voting_system.calculate_survey_results(last_week)
     })
@@ -89,6 +123,10 @@ pub fn get_survey_results() -> Vec<(String, String)> {
 #[query]
 pub fn get_average_votes() -> HashMap<String, VoteResponse> {
     read_voting_system(|voting_system| {
+        let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+        if current_phase != Phase::VoteResults {
+            return HashMap::new();
+        }
         let last_week = voting_system.last_week;
         voting_system.calculate_average_votes(last_week)
     })
@@ -97,6 +135,10 @@ pub fn get_average_votes() -> HashMap<String, VoteResponse> {
 #[query]
 pub fn get_ratification_results() -> HashMap<String, u64> {
     read_voting_system(|voting_system| {
+        let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+        if current_phase != Phase::RatifyResults {
+            return HashMap::new();
+        }
         voting_system.calculate_ratification_results(voting_system.current_week)
     })
 }
@@ -150,6 +192,64 @@ pub fn chck_userparticipation_vote() -> &'static str {
         }
     })
 }
+
+#[ic_cdk_macros::heartbeat]
+pub fn heartbeat() {
+    STATE.with(|state| {
+        let mut state = state.borrow_mut();
+        let now = ic_cdk::api::time();
+        if state.current_phase == Phase::Uninitialized {
+            start_new_week();
+            state.current_phase = Phase::Survey; // Set to start at the Survey phase
+            state.phase_start_time = now;
+        }
+
+        let elapsed = now - state.phase_start_time;
+
+           
+        match state.current_phase {
+            Phase::Survey if elapsed >= PHASE_DURATION => {
+                mutate_voting_system(|voting_system| {
+                    let week = voting_system.last_week;
+                    voting_system.calculate_survey_results(week);
+                });
+                state.current_phase = Phase::SurveyResults;
+                state.phase_start_time = now;
+            },
+            Phase::SurveyResults if elapsed >= RESULTS_DURATION => {
+                state.current_phase = Phase::Vote;
+                state.phase_start_time = now;
+            },
+            Phase::Vote if elapsed >= PHASE_DURATION => {
+                mutate_voting_system(|voting_system| {
+                    let week = voting_system.last_week;
+                    voting_system.calculate_average_votes(week);
+                });
+                state.current_phase = Phase::VoteResults;
+                state.phase_start_time = now;
+            },
+            Phase::VoteResults if elapsed >= RESULTS_DURATION => {
+                state.current_phase = Phase::Ratify;
+                state.phase_start_time = now;
+            },
+            Phase::Ratify if elapsed >= PHASE_DURATION => {
+                mutate_voting_system(|voting_system| {
+                    let week = voting_system.last_week;
+                    voting_system.calculate_ratification_results(week);
+                });
+                state.current_phase = Phase::RatifyResults;
+                state.phase_start_time = now;
+            },
+            Phase::RatifyResults if elapsed >= RESULTS_DURATION => {
+                start_new_week();
+                state.current_phase = Phase::Survey;
+                state.phase_start_time = now;
+            },
+            _ => {}
+        }
+    });
+}
+
 
 #[update]
 fn set_user(username: String) -> Result<String, String> {
