@@ -23,7 +23,7 @@ const Vote = () => {
 
   const [isVote, setIsVote] = useState(true);
   const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
-  const formattedTimeLeft = useFormattedTimeLeft(5);
+  const formattedTimeLeft = useFormattedTimeLeft(1);
   const [remainingTime, setRemainingTime] = useState(null);
   const [isRatify, setISRatify] = useState(false);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
@@ -137,10 +137,11 @@ const Vote = () => {
             if (i === 3) {
               const minSliderValue = 0.0167;
               const maxSliderValue = 0.04;
-              const currentValue = ((scaled / 255) * (maxSliderValue - minSliderValue)) + minSliderValue;
-              temp.push(currentValue.toFixed(4))
-            }
-            else {
+              const currentValue =
+                (scaled / 255) * (maxSliderValue - minSliderValue) +
+                minSliderValue;
+              temp.push(currentValue);
+            } else {
               temp.push(scaled);
             }
           }
