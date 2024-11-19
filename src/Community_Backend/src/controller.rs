@@ -205,7 +205,8 @@ pub fn heartbeat() {
         }
 
         let elapsed = now - state.phase_start_time;
-
+        let remaining_time = PHASE_DURATION - elapsed; 
+        state.remaining_time = remaining_time;
            
         match state.current_phase {
             Phase::Survey if elapsed >= PHASE_DURATION => {
@@ -249,6 +250,16 @@ pub fn heartbeat() {
         }
     });
 }
+
+#[query]
+pub fn get_current_phase_info() -> (Phase, u64) {
+    STATE.with(|state| {
+        let state = state.borrow();
+        (state.current_phase.clone(), state.remaining_time)
+    })
+}
+
+
 
 
 #[update]
