@@ -30,9 +30,10 @@ pub enum VoteResponse {
 pub struct State {
     pub current_phase: Phase,
     pub phase_start_time: u64,
+    pub remaining_time:u64,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, PartialEq)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, PartialEq,CandidType)]
 pub enum Phase {
     Uninitialized,
     Survey,

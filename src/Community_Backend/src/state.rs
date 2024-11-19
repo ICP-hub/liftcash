@@ -23,6 +23,7 @@ thread_local! {
     pub static STATE: std::cell::RefCell<State> = std::cell::RefCell::new(State {
         current_phase: Phase::Survey,
         phase_start_time: ic_cdk::api::time(),
+        remaining_time: 0, 
     });
     pub static USER_MAP: RefCell<HashMap<Principal, String>> = RefCell::new(HashMap::new());
     pub static USERNAME_SET: RefCell<HashSet<String>> = RefCell::new(HashSet::new());

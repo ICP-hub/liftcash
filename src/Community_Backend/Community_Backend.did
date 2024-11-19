@@ -1,3 +1,12 @@
+type Phase = variant {
+  VoteResults;
+  SurveyResults;
+  Vote;
+  Uninitialized;
+  RatifyResults;
+  Survey;
+  Ratify;
+};
 type Result = variant { Ok : text; Err : text };
 type Result_1 = variant { Ok; Err : text };
 type SurveyResponse = variant {
@@ -11,6 +20,7 @@ service : () -> {
   chck_userparticipation_vote : () -> (text) query;
   get_all_users : () -> (vec record { principal; text });
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
+  get_current_phase_info : () -> (Phase, nat64) query;
   get_ratification_results : () -> (vec record { text; nat64 }) query;
   get_survey_results : () -> (vec record { text; text }) query;
   get_user : () -> (opt record { principal; text });
