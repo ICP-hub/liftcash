@@ -11,19 +11,17 @@ import ThankYouCard from "../thankYouCard/ThankYouCard";
 import { ThreeDots } from "react-loader-spinner";
 import { toast } from "react-toastify";
 
-
 const RatifyCard = () => {
   const [vote, setVote] = useState(null);
   const [isRetifyResult, setIsRetifyResult] = useState(false);
   const [voteResult, setVoteResult] = useState([]);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
 
-  const formattedTimeLeft = useFormattedTimeLeft(1);
+  const formattedTimeLeft = useFormattedTimeLeft(5);
   const [isRatifyVote, setIsRatifyVote] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const communityActor = useSelector(
     (currState) => currState?.actors?.actors?.communityActor
@@ -33,7 +31,6 @@ const RatifyCard = () => {
     console.log("actor in ratify card =>", communityActor);
 
     setRemainingTime(formattedTimeLeft);
-
   }, [communityActor]);
 
   const sortDataById = (data) => {
@@ -124,7 +121,6 @@ const RatifyCard = () => {
     setIsRatifyVote(true);
     setIsSubmitting(true);
 
-
     const passData = action === "agree";
 
     if (!communityActor || !communityActor.submit_ratification) {
@@ -146,7 +142,6 @@ const RatifyCard = () => {
       toast.error("Something went wrong");
     }
   };
-
 
   return !isRetifyResult && formattedTimeLeft !== "0 mins" ? (
     isRatifyVote ? (
@@ -181,78 +176,34 @@ const RatifyCard = () => {
           </div>
         ))}
 
-  return !isRetifyResult ? (
-    <div className="ratify-main-div">
-      <h1 className="ratify-title">Welcome to the Ratify</h1>
-
-      {voteData?.questions?.map((item, index) => (
-        <div key={index} className="mb-6">
-          <h2 className="ratify-vote-title">{item.question}</h2>
-          <div className="ratify-vote-lable-even">
-            <p className="">
-              {item.label1} :{" "}
-              <span className="ratify-vote-value">
-                {weeklyVoteResult[index]}%
-              </span>
-            </p>
-            {/* <span className="ratify-indicator">
-              <FaArrowDown />
-            </span> */}
-          </div>
-          <div className="ratify-vote-lable-odd">
-            <p className="">
-              {item.label2}:{" "}
-              <span className="ratify-vote-value">{voteResult[index]}%</span>
-            </p>
-            <span className="ratify-indicator">
-              <FaArrowUp color="green" />
-            </span>
-          </div>
-        </div>
-      ))}
-
-      <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
-
-      <div className="ratify-vote-btn-container">
-        {!isSubmitting ? (
-          voteData.vote.options.map((option, index) => (
-            <button
-              key={index}
-              className="ratify-vote-btn"
-              onClick={() => handleVote(option.action)}
-            >
-              {option.text}
-            </button>
-          ))
-        ) : (
-          <button
-            disabled={isSubmitting}
-            className="ratify-vote-btn w-[80%] flex justify-center"
-          >
-            <ThreeDots
-              visible={true}
-              height="30"
-              width="40"
-              color="white"
-              radius="9"
-              ariaLabel="three-dots-loading"
-            />
-          </button>
-        )}
-      </div>
-
         <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
 
         <div className="ratify-vote-btn-container">
-          {voteData.vote.options.map((option, index) => (
+          {!isSubmitting ? (
+            voteData.vote.options.map((option, index) => (
+              <button
+                key={index}
+                className="ratify-vote-btn"
+                onClick={() => handleVote(option.action)}
+              >
+                {option.text}
+              </button>
+            ))
+          ) : (
             <button
-              key={index}
-              className=" ratify-vote-btn"
-              onClick={() => handleVote(option.action)}
+              disabled={isSubmitting}
+              className="ratify-vote-btn w-[80%] flex justify-center"
             >
-              {option.text}
+              <ThreeDots
+                visible={true}
+                height="30"
+                width="40"
+                color="white"
+                radius="9"
+                ariaLabel="three-dots-loading"
+              />
             </button>
-          ))}
+          )}
         </div>
 
         {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
