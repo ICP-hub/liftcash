@@ -180,7 +180,7 @@ const RatifyCard = () => {
             </div>
           </div>
         ))}
-=======
+
   return !isRetifyResult ? (
     <div className="ratify-main-div">
       <h1 className="ratify-title">Welcome to the Ratify</h1>
@@ -240,7 +240,6 @@ const RatifyCard = () => {
           </button>
         )}
       </div>
->>>>>>> Stashed changes
 
         <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
 
