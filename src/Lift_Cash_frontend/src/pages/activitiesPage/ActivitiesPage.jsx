@@ -152,7 +152,7 @@ const ActivitiesPage = () => {
                 <ThreeDots
                   visible={true}
                   height="30"
-                  width="30"
+                  width="40"
                   color="white"
                   radius="9"
                   ariaLabel="three-dots-loading"
