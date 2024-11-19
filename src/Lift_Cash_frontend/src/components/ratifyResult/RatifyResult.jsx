@@ -4,9 +4,8 @@ import { useSelector } from "react-redux";
 
 const RatifyResult = () => {
   // const ratifyResult = { Yes: 20, No: 10 };
-  const [agree, setAgree] = useState(30);
-  const [disagree, setDisagree] = useState(20);
-
+  const [agree, setAgree] = useState(0);
+  const [disagree, setDisagree] = useState(0);
 
   const communityActor = useSelector(
     (currState) => currState?.actors?.actors?.communityActor
@@ -14,31 +13,39 @@ const RatifyResult = () => {
 
   useEffect(() => {
     console.log("actor in ratify result card =>", communityActor);
-  }, [communityActor])
-
+  }, [communityActor]);
 
   const fetchRatifyResult = async () => {
     try {
-      await communityActor.get_ratification_results()
-      .then((response) => {
-        console.log("Ratify Result: ", response[1][1], response[0][1]);
-        setAgree(Number(response[1][1]));
-        setDisagree(Number(response[0][1]));
-      })
-      .catch((error) => {
-        console.error("Error while fetching ratify result : ", error);
-      });
-
+      await communityActor
+        .get_ratification_results()
+        .then((response) => {
+          console.log("Ratify Result: ", response);
+          // if(response[0][1]){
+          //   setDisagree(Number(response[0][1]));
+          // }
+          // if(response[1][1]){
+          //   setAgree(Number(response[1][1]));
+          // }
+          for (let i = 0; i < response.length; i++) {
+            if (response[i][0] === "Yes") {
+              setAgree(Number(response[i][1]));
+            } else if (response[i][0] === "No") {
+              setDisagree(Number(response[i][1]));
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error while fetching ratify result : ", error);
+        });
     } catch (error) {
       console.error("Error fetching ratify result : ", error);
     }
   };
 
-
   useEffect(() => {
     fetchRatifyResult();
   }, []);
-
 
   return (
     <div className="ratify-result-main-card-div">
@@ -63,8 +70,8 @@ const RatifyResult = () => {
       </div>
 
       <p className="ratify-result-card-p-bottom">
-        The vote has been ratification, enabling participants to claim an additional
-        50% of their weekly claim potential.
+        The vote has been ratification, enabling participants to claim an
+        additional 10% of their weekly claim potential.
       </p>
       <h1 className="ratify-result-card-last-h1">
         See you soon for the Survey

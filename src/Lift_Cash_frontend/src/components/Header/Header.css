@@ -1,9 +1,9 @@
 .header-main {
-  @apply bg-primary max-h-[65px] z-50 p-4 flex items-center justify-around w-full overflow-hidden fixed left-0 top-0 ;
+  @apply bg-[#479FE6] max-h-[65px] z-50 p-4 flex items-center justify-between px-[5%] w-full overflow-hidden fixed left-0 top-0 backdrop-blur-md;
 }
 
 .header-main-active {
-  @apply z-50 fixed left-0 top-0 w-full max-h-[65px] p-4 flex items-center justify-around bg-[#111928cc] backdrop-blur-sm;
+  @apply z-50 fixed left-0 top-0 w-full max-h-[65px] p-4 flex items-center justify-between px-[5%] bg-[#111928cc] backdrop-blur-lg  dark:bg-white dark:opacity-95 dark:shadow-md;
 }
 
 .header-logo {
@@ -19,7 +19,10 @@
 }
 
 .header-navigation-link {
-  @apply hover:text-gray-300;
+  @apply text-white hover:text-gray-300;
+}
+.header-navigation-link-dark {
+  @apply dark:text-black dark:hover:text-[#479FE6];
 }
 
 .header-right-side-buttons {

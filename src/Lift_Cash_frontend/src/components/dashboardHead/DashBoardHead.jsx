@@ -11,7 +11,7 @@ const DashBoardHead = () => {
         <img src={logo} alt="" />
       </div>
       <div className="claim-assets-tagline">
-        <p>Weekly Lift Cash price xUSDC $000.456 </p>
+        <p>Weekly Lift Cash price $000.456 </p>
         <span className="claim-assets-tagline-icon">
           <IoIosArrowRoundDown />
         </span>

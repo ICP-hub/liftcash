@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { useAuthClient } from "../../utils/useAuthClient";
 import { useNavigate } from "react-router-dom";
 
-const HeaderAfterAuth = () => {
+const HeaderAfterAuth = ({ onToggleAnimation }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { logout } = useAuthClient();
   const navigate = useNavigate();
@@ -79,10 +79,7 @@ const HeaderAfterAuth = () => {
               }`}
             >
               {activeTab === "claim" ? (
-                <HiCurrencyDollar
-                  size={36}
-                  className="sidebar-icon"
-                />
+                <HiCurrencyDollar size={36} className="sidebar-icon" />
               ) : (
                 <HiOutlineCurrencyDollar size={36} className="sidebar-icon" />
               )}
@@ -110,15 +107,9 @@ const HeaderAfterAuth = () => {
               }`}
             >
               {activeTab === "mint" ? (
-                <RiLoginCircleFill
-                  size={40}
-                  className="sidebar-icon"
-                />
+                <RiLoginCircleFill size={40} className="sidebar-icon" />
               ) : (
-                <RiLoginCircleLine
-                  size={38}
-                  className="sidebar-icon"
-                />
+                <RiLoginCircleLine size={38} className="sidebar-icon" />
               )}
 
               <span>Mint</span>
@@ -151,7 +142,7 @@ const HeaderAfterAuth = () => {
 
         {/* Enable Animation Toggle */}
         <div className="toggle-animation-container">
-          <AnimationBtn />
+          <AnimationBtn onToggleAnimation={onToggleAnimation} />
         </div>
       </div>
     </div>

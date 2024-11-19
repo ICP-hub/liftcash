@@ -1,5 +1,5 @@
 .dao-section {
-  @apply bg-[#1F2A37]  text-white py-16 px-8;
+  @apply bg-[#1F2A37] dark:bg-white   text-white py-16 px-8;
 }
 
 .dao-content {
@@ -11,11 +11,11 @@
 }
 
 .dao-title {
-  @apply text-4xl  text-white font-inter font-bold  mb-4;
+  @apply text-4xl  text-white dark:text-black font-inter font-bold  mb-4;
 }
 
 .dao-description {
-  @apply font-inter text-lg;
+  @apply font-inter text-lg dark:text-[#479FE6];
 }
 
 .dao-button {
