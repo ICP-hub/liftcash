@@ -4,26 +4,26 @@ import { voteData } from "../../pages/activitiesPage/constants/Ratify";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import RatifyResult from "../ratifyResult/RatifyResult";
 import { useSelector } from "react-redux";
-<<<<<<< Updated upstream
+
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 import ThankYouCard from "../thankYouCard/ThankYouCard";
-=======
+
 import { ThreeDots } from "react-loader-spinner";
 import { toast } from "react-toastify";
->>>>>>> Stashed changes
+
 
 const RatifyCard = () => {
   const [vote, setVote] = useState(null);
   const [isRetifyResult, setIsRetifyResult] = useState(false);
   const [voteResult, setVoteResult] = useState([]);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
-<<<<<<< Updated upstream
+
   const formattedTimeLeft = useFormattedTimeLeft(1);
   const [isRatifyVote, setIsRatifyVote] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null);
-=======
+
   const [isSubmitting, setIsSubmitting] = useState(false);
->>>>>>> Stashed changes
+
 
   const communityActor = useSelector(
     (currState) => currState?.actors?.actors?.communityActor
@@ -31,10 +31,9 @@ const RatifyCard = () => {
 
   useEffect(() => {
     console.log("actor in ratify card =>", communityActor);
-<<<<<<< Updated upstream
+
     setRemainingTime(formattedTimeLeft);
-=======
->>>>>>> Stashed changes
+
   }, [communityActor]);
 
   const sortDataById = (data) => {
@@ -121,11 +120,11 @@ const RatifyCard = () => {
 
   const handleVote = async (action) => {
     console.log("action: ", action);
-<<<<<<< Updated upstream
+
     setIsRatifyVote(true);
 =======
     setIsSubmitting(true);
->>>>>>> Stashed changes
+
 
     const passData = action === "agree";
 
@@ -149,7 +148,7 @@ const RatifyCard = () => {
     }
   };
 
-<<<<<<< Updated upstream
+
   return !isRetifyResult && formattedTimeLeft !== "0 mins" ? (
     isRatifyVote ? (
       <ThankYouCard remainingTime={remainingTime} type="retify" />
