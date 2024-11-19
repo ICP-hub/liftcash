@@ -122,7 +122,6 @@ const RatifyCard = () => {
     console.log("action: ", action);
 
     setIsRatifyVote(true);
-=======
     setIsSubmitting(true);
 
 
