@@ -11,17 +11,26 @@ import ThankYouCard from "../thankYouCard/ThankYouCard";
 import { ThreeDots } from "react-loader-spinner";
 import { toast } from "react-toastify";
 
-const RatifyCard = () => {
+const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const [vote, setVote] = useState(null);
   const [isRetifyResult, setIsRetifyResult] = useState(false);
   const [voteResult, setVoteResult] = useState([]);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
 
-  const formattedTimeLeft = useFormattedTimeLeft(5);
   const [isRatifyVote, setIsRatifyVote] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(2880); // initial time in minutes
+  const formattedTimeLeft = propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
+
+
+  useEffect(() => {
+    console.log("Formated time in Ratify Card ::: ", formattedTimeLeft)
+  }, [formattedTimeLeft]);
+
 
   const communityActor = useSelector(
     (currState) => currState?.actors?.actors?.communityActor
@@ -29,8 +38,7 @@ const RatifyCard = () => {
 
   useEffect(() => {
     console.log("actor in ratify card =>", communityActor);
-
-    setRemainingTime(formattedTimeLeft);
+    // setRemainingTime(formattedTimeLeft);
   }, [communityActor]);
 
   const sortDataById = (data) => {
@@ -57,7 +65,7 @@ const RatifyCard = () => {
 
               const currentValue =
                 (sortedVoteResult[i][1].PercentageVote / 255) *
-                  (maxSliderValue - minSliderValue) +
+                (maxSliderValue - minSliderValue) +
                 minSliderValue;
 
               temp.push(currentValue);
@@ -143,75 +151,153 @@ const RatifyCard = () => {
     }
   };
 
-  return !isRetifyResult && formattedTimeLeft !== "0 mins" ? (
-    isRatifyVote ? (
-      <ThankYouCard remainingTime={remainingTime} type="retify" />
-    ) : (
-      <div className="ratify-main-div">
-        <h1 className="ratify-title">Welcome to the Ratify</h1>
+  useEffect(() => {
+    console.log("Formated time in Ratify Card ::: ", formattedTimeLeft)
+  }, [formattedTimeLeft]);
 
-        {voteData?.questions?.map((item, index) => (
-          <div key={index} className="mb-6">
-            <h2 className="ratify-vote-title">{item.question}</h2>
-            <div className="ratify-vote-lable-even">
-              <p className="">
-                {item.label1} :{" "}
-                <span className="ratify-vote-value">
-                  {weeklyVoteResult[index]}%
-                </span>
-              </p>
-              {/* <span className="ratify-indicator">
-              <FaArrowDown />
-            </span> */}
-            </div>
-            <div className="ratify-vote-lable-odd">
-              <p className="">
-                {item.label2}:{" "}
-                <span className="ratify-vote-value">{voteResult[index]}%</span>
-              </p>
-              <span className="ratify-indicator">
-                <FaArrowUp color="green" />
+  // return !isRetifyResult && formattedTimeLeft !== "0 mins" ? (
+  //   isRatifyVote ? (
+  //     <ThankYouCard remainingTime={remainingTime} type="retify" />
+  //   ) : (
+  // <div className="ratify-main-div">
+  //   <h1 className="ratify-title">Welcome to the Ratify</h1>
+
+  //   {voteData?.questions?.map((item, index) => (
+  //     <div key={index} className="mb-6">
+  //       <h2 className="ratify-vote-title">{item.question}</h2>
+  //       <div className="ratify-vote-lable-even">
+  //         <p className="">
+  //           {item.label1} :{" "}
+  //           <span className="ratify-vote-value">
+  //             {weeklyVoteResult[index]}%
+  //           </span>
+  //         </p>
+  //         {/* <span className="ratify-indicator">
+  //             <FaArrowDown />
+  //           </span> */}
+  //       </div>
+  //       <div className="ratify-vote-lable-odd">
+  //         <p className="">
+  //           {item.label2}:{" "}
+  //           <span className="ratify-vote-value">{voteResult[index]}%</span>
+  //         </p>
+  //         <span className="ratify-indicator">
+  //           <FaArrowUp color="green" />
+  //         </span>
+  //       </div>
+  //     </div>
+  //   ))}
+
+  //   <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
+
+  //   <div className="ratify-vote-btn-container">
+  //     {!isSubmitting ? (
+  //       voteData.vote.options.map((option, index) => (
+  //         <button
+  //           key={index}
+  //           className="ratify-vote-btn"
+  //           onClick={() => handleVote(option.action)}
+  //         >
+  //           {option.text}
+  //         </button>
+  //       ))
+  //     ) : (
+  //       <button
+  //         disabled={isSubmitting}
+  //         className="ratify-vote-btn w-[80%] flex justify-center"
+  //       >
+  //         <ThreeDots
+  //           visible={true}
+  //           height="30"
+  //           width="40"
+  //           color="white"
+  //           radius="9"
+  //           ariaLabel="three-dots-loading"
+  //         />
+  //       </button>
+  //     )}
+  //   </div>
+
+  //   {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
+  // </div>
+  //   )
+  // ) : (
+  //   <RatifyResult />
+  // );
+
+  if (!isRetifyResult && formattedTimeLeft != "0 mins") {
+    return <div className="ratify-main-div">
+      <h1 className="ratify-title">Welcome to the Ratify</h1>
+
+      {voteData?.questions?.map((item, index) => (
+        <div key={index} className="mb-6">
+          <h2 className="ratify-vote-title">{item.question}</h2>
+          <div className="ratify-vote-lable-even">
+            <p className="">
+              {item.label1} :{" "}
+              <span className="ratify-vote-value">
+                {weeklyVoteResult[index]}%
               </span>
-            </div>
+            </p>
+            {/* <span className="ratify-indicator">
+          <FaArrowDown />
+        </span> */}
           </div>
-        ))}
-
-        <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
-
-        <div className="ratify-vote-btn-container">
-          {!isSubmitting ? (
-            voteData.vote.options.map((option, index) => (
-              <button
-                key={index}
-                className="ratify-vote-btn"
-                onClick={() => handleVote(option.action)}
-              >
-                {option.text}
-              </button>
-            ))
-          ) : (
-            <button
-              disabled={isSubmitting}
-              className="ratify-vote-btn w-[80%] flex justify-center"
-            >
-              <ThreeDots
-                visible={true}
-                height="30"
-                width="40"
-                color="white"
-                radius="9"
-                ariaLabel="three-dots-loading"
-              />
-            </button>
-          )}
+          <div className="ratify-vote-lable-odd">
+            <p className="">
+              {item.label2}:{" "}
+              <span className="ratify-vote-value">{voteResult[index]}%</span>
+            </p>
+            <span className="ratify-indicator">
+              <FaArrowUp color="green" />
+            </span>
+          </div>
         </div>
+      ))}
 
-        {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
+      <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
+
+      <div className="ratify-vote-btn-container">
+        {!isSubmitting ? (
+          voteData.vote.options.map((option, index) => (
+            <button
+              key={index}
+              className="ratify-vote-btn"
+              onClick={() => handleVote(option.action)}
+            >
+              {option.text}
+            </button>
+          ))
+        ) : (
+          <button
+            disabled={isSubmitting}
+            className="ratify-vote-btn w-[80%] flex justify-center"
+          >
+            <ThreeDots
+              visible={true}
+              height="30"
+              width="40"
+              color="white"
+              radius="9"
+              ariaLabel="three-dots-loading"
+            />
+          </button>
+        )}
       </div>
-    )
-  ) : (
-    <RatifyResult />
-  );
+
+      {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
+    </div>
+  }
+  if (isRetifyResult && formattedTimeLeft != "0 mins") {
+    return <ThankYouCard remainingTime={remainingTime} type="retify" />;
+  }
+  if(!isRetifyResult && formattedTimeLeft === "0 mins"){
+    return <RatifyResult />
+  }
+
+
+
+
 };
 
 export default RatifyCard;

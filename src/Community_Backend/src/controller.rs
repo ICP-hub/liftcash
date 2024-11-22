@@ -123,10 +123,10 @@ pub fn get_survey_results() -> Vec<(String, String)> {
 #[query]
 pub fn get_average_votes() -> HashMap<String, VoteResponse> {
     read_voting_system(|voting_system| {
-        let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
-        if current_phase != Phase::VoteResults {
-            return HashMap::new();
-        }
+        // let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+        // if current_phase != Phase::VoteResults {
+        //     return HashMap::new();
+        // }
         let last_week = voting_system.last_week;
         voting_system.calculate_average_votes(last_week)
     })
@@ -226,13 +226,13 @@ pub fn heartbeat() {
                     let week = voting_system.last_week;
                     voting_system.calculate_average_votes(week);
                 });
-                state.current_phase = Phase::VoteResults;
-                state.phase_start_time = now;
-            },
-            Phase::VoteResults if elapsed >= RESULTS_DURATION => {
                 state.current_phase = Phase::Ratify;
                 state.phase_start_time = now;
             },
+            // Phase::VoteResults if elapsed >= RESULTS_DURATION => {
+            //     state.current_phase = Phase::Ratify;
+            //     state.phase_start_time = now;
+            // },
             Phase::Ratify if elapsed >= PHASE_DURATION => {
                 mutate_voting_system(|voting_system| {
                     let week = voting_system.last_week;

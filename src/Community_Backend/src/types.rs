@@ -39,7 +39,6 @@ pub enum Phase {
     Survey,
     SurveyResults,
     Vote,
-    VoteResults,
     Ratify,
     RatifyResults,
 }

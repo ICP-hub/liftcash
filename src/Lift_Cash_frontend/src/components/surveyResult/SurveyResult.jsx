@@ -4,8 +4,13 @@ import "./SurveyResult.css";
 import Vote from "../vote/Vote";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
-const SurveyResult = () => {
+const SurveyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
+
+  const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(480); // initial time in minutes
+  const formattedTimeLeft = propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
+
   const [vote, setVote] = useState(false);
   const [surveyResults, setSurveyResults] = useState([]);
   const [question, setQuestion] = useState([
@@ -19,10 +24,6 @@ const SurveyResult = () => {
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
   );
-
-  useEffect(() => {
-    console.log("actor on survey result page : ", communityActor);
-  }, [communityActor]);
 
   function sortSurveyResults(results) {
     return results.sort((a, b) => {
@@ -69,29 +70,68 @@ const SurveyResult = () => {
     }
   };
 
-  const fetchWeeklySurvey = async () => {
-    try {
-      await communityActor
-        ?.get_weekly_survey_results()
-        .then((response) => {
-          console.log("Weekly Survey: ", response[0]);
-        })
-        .catch((error) => {
-          console.error("Error fetching weekly survey", error);
-          toast.error("Error fetching weekly survey");
-        });
-    } catch (error) {
-      console.error("Error fetching weekly survey", error);
-      // toast.error("Error fetching weekly survey");
-    }
-  };
+  useEffect(() => {
+    console.log("Formated time in SR ::: ", formattedTimeLeft)
+  }, [formattedTimeLeft]);
+
+  useEffect(() => {
+    console.log("actor on survey result page : ", communityActor);
+  }, [communityActor]);
 
   useEffect(() => {
     fetchSurveyResults();
   }, []);
 
-  return !vote ? (
-    <div className="survey-result-main-div">
+  // return !vote && formattedTimeLeft != "0 mins" ? (
+  //   <div className="survey-result-main-div">
+  //     <h1 className="survey-result-h1"> This Week's Survey Results</h1>
+  //     <p className="survey-result-p">
+  //       {" "}
+  //       Thank you to everyone who participated in the weekly survey. This week's
+  //       survey results are:
+  //     </p>
+
+  //     {surveyResults.map((data, index) => (
+  //       <div
+  //         key={data.id}
+  //         className={` ${index % 2 === 0
+  //           ? "survey-result-container"
+  //           : `bg-blue-100  survey-result-container`
+  //           }`} // Alternate colors
+  //       >
+  //         <h2 className="survey-result-question">{`Q${data.id}: ${data.question}`}</h2>
+  //         <div className="survey-result-options-container">
+  //           {/* {data.results.map((result, index) => (
+  //             <p className={index === 0 ? "font-bold" : ""} key={index}>
+  //               {result.percentage ? (
+  //                 <>
+  //                   {result.percentage} {result.label}
+  //                 </>
+  //               ) : (
+  //                 result.label
+  //               )}
+  //             </p>
+  //           ))} */}
+  //           <p className={"font-bold"} key={index}>
+  //             {data.results}
+  //           </p>
+  //         </div>
+  //       </div>
+  //     ))}
+
+  //     <div className="survey-result-btn-div">
+  //       <p>Next Phase will start in : {formattedTimeLeft}</p>
+  //       <button className="survey-result-btn" onClick={() => setVote(true)}>
+  //         Start this week's vote (RM after testing)
+  //       </button>
+  //     </div>
+  //   </div>
+  // ) : (
+  //   <Vote />
+  // );
+
+  if (!vote && formattedTimeLeft !== "0 mins") {
+    return <div className="survey-result-main-div">
       <h1 className="survey-result-h1"> This Week's Survey Results</h1>
       <p className="survey-result-p">
         {" "}
@@ -102,25 +142,24 @@ const SurveyResult = () => {
       {surveyResults.map((data, index) => (
         <div
           key={data.id}
-          className={` ${
-            index % 2 === 0
-              ? "survey-result-container"
-              : `bg-blue-100  survey-result-container`
-          }`} // Alternate colors
+          className={` ${index % 2 === 0
+            ? "survey-result-container"
+            : `bg-blue-100  survey-result-container`
+            }`} // Alternate colors
         >
           <h2 className="survey-result-question">{`Q${data.id}: ${data.question}`}</h2>
           <div className="survey-result-options-container">
             {/* {data.results.map((result, index) => (
-              <p className={index === 0 ? "font-bold" : ""} key={index}>
-                {result.percentage ? (
-                  <>
-                    {result.percentage} {result.label}
-                  </>
-                ) : (
-                  result.label
-                )}
-              </p>
-            ))} */}
+            <p className={index === 0 ? "font-bold" : ""} key={index}>
+              {result.percentage ? (
+                <>
+                  {result.percentage} {result.label}
+                </>
+              ) : (
+                result.label
+              )}
+            </p>
+          ))} */}
             <p className={"font-bold"} key={index}>
               {data.results}
             </p>
@@ -129,14 +168,16 @@ const SurveyResult = () => {
       ))}
 
       <div className="survey-result-btn-div">
+        <p>Next Phase will start in : {formattedTimeLeft}</p>
         <button className="survey-result-btn" onClick={() => setVote(true)}>
           Start this week's vote (RM after testing)
         </button>
       </div>
     </div>
-  ) : (
-    <Vote />
-  );
+  }
+  if (!vote && formattedTimeLeft === "0 mins") {
+    return <Vote />;
+  }
 };
 
 export default SurveyResult;

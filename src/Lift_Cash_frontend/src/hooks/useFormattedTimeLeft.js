@@ -4,12 +4,16 @@ const useFormattedTimeLeft = (initialMinutes) => {
   const [timeLeft, setTimeLeft] = useState(initialMinutes);
 
   useEffect(() => {
+    setTimeLeft(initialMinutes); // Reset timeLeft whenever initialMinutes changes
+  }, [initialMinutes]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) => (prev > 1 ? prev - 1 : 0));
     }, 60000); // decrease every 1 minute
 
     return () => clearInterval(timer); // cleanup on unmount
-  }, []);
+  }, [timeLeft]);
 
   const formatTimeLeft = () => {
     if (timeLeft >= 1440) {
@@ -25,7 +29,7 @@ const useFormattedTimeLeft = (initialMinutes) => {
         mins !== 1 ? "s" : ""
       }`;
     }
-    return `${timeLeft} min${timeLeft !== 1 ? "s" : ""}`;
+    return `${timeLeft.toFixed(0)} min${timeLeft !== 1 ? "s" : ""}`;
   };
 
   return formatTimeLeft();

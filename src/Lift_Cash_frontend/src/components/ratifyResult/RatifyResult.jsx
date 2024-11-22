@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./RatifyResult.css";
 import { useSelector } from "react-redux";
+import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
+import Survey from "../survey/Survey";
 
-const RatifyResult = () => {
-  // const ratifyResult = { Yes: 20, No: 10 };
+const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const [agree, setAgree] = useState(0);
   const [disagree, setDisagree] = useState(0);
+  const [isSurvey, setIsSurvey] = useState(false);
+  const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(480); // initial time in minutes
+  const formattedTimeLeft = propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
+
+
+
 
   const communityActor = useSelector(
     (currState) => currState?.actors?.actors?.communityActor
@@ -21,12 +28,6 @@ const RatifyResult = () => {
         .get_ratification_results()
         .then((response) => {
           console.log("Ratify Result: ", response);
-          // if(response[0][1]){
-          //   setDisagree(Number(response[0][1]));
-          // }
-          // if(response[1][1]){
-          //   setAgree(Number(response[1][1]));
-          // }
           for (let i = 0; i < response.length; i++) {
             if (response[i][0] === "Yes") {
               setAgree(Number(response[i][1]));
@@ -47,37 +48,47 @@ const RatifyResult = () => {
     fetchRatifyResult();
   }, []);
 
-  return (
-    <div className="ratify-result-main-card-div">
-      <h1 className="ratify-result-card-h1">Woohoo!</h1>
-      <p className="ratify-result-card-p-top">
-        Thanks for participating in this week's Ratification
-      </p>
-      <h2 className="ratify-result-card-h2">Ratification Result</h2>
-      <div className="ratify-result-container">
-        <div className="ratify-result-card-container">
-          <span className="ratify-result-card">
-            <h2>{agree}</h2>
-            Agree
-          </span>
-        </div>
-        <div className="ratify-result-card-container">
-          <span className="ratify-result-card ">
-            <h2>{disagree}</h2>
-            Disagree
-          </span>
-        </div>
-      </div>
+  useEffect(() => {
+    console.log("Formatted time in RR : ", formattedTimeLeft);
+  }, [formattedTimeLeft]);
 
-      <p className="ratify-result-card-p-bottom">
-        The vote has been ratification, enabling participants to claim an
-        additional 10% of their weekly claim potential.
-      </p>
-      <h1 className="ratify-result-card-last-h1">
-        See you soon for the Survey
-      </h1>
-    </div>
-  );
+
+
+  if (!isSurvey && formattedTimeLeft !== "0 min") {
+    return (
+      <div className="ratify-result-main-card-div">
+        <h1 className="ratify-result-card-h1">Woohoo!</h1>
+        <p className="ratify-result-card-p-top">
+          Thanks for participating in this week's Ratification
+        </p>
+        <h2 className="ratify-result-card-h2">Ratification Result</h2>
+        <div className="ratify-result-container">
+          <div className="ratify-result-card-container">
+            <span className="ratify-result-card">
+              <h2>{agree}</h2>
+              Agree
+            </span>
+          </div>
+          <div className="ratify-result-card-container">
+            <span className="ratify-result-card">
+              <h2>{disagree}</h2>
+              Disagree
+            </span>
+          </div>
+        </div>
+        <p className="ratify-result-card-p-bottom">
+          The vote has been ratified, enabling participants to claim an
+          additional 10% of their weekly claim potential.
+        </p>
+        <h1 className="ratify-result-card-last-h1">
+          See you soon for the Survey
+        </h1>
+      </div>
+    );
+  }
+  if (!isSurvey && formattedTimeLeft === "0 min") {
+    return <Survey />;
+  }
 };
 
 export default RatifyResult;
