@@ -10,7 +10,6 @@ use std::rc::Rc;
 
 
 use crate::{SurveyData, SurveyResponse, UserClaim, VoteData, VoteResponse};
-// use crate::constants::{SURVEY_SUBMISSION_DURATION, SURVEY_RESULTS_INTERVAL,VOTING_SUBMISSION_DURATION,RATIFICATION_SUBMISSION_DURATION,RATIFICATION_RESULTS_INTERVAL};
 use crate::types::{State,Phase};
 
 pub type VMem = VirtualMemory<DefaultMemoryImpl>;
@@ -40,7 +39,6 @@ pub struct VotingSystem {
     pub iteration_count: u64,
     pub participation_count: HashMap<u8, u64>,
     pub last_stage_timestamp: u64,
-    // pub current_phase: Phase, 
     pub survey_responses: HashMap<Principal, SurveyData>,
     pub voting_responses: HashMap<Principal, VoteData>,
     pub ratification_responses: HashMap<Principal, bool>,
@@ -98,9 +96,19 @@ impl VotingSystem {
         let results = self.calculate_survey_results(self.last_week);
         self.weekly_survey_results.insert(self.last_week, results);
         let vote_results = self.calculate_average_votes(self.last_week);
-        self.weekly_vote_results.insert(self.last_week, vote_results);
+        // self.weekly_vote_results.insert(self.last_week, vote_results);
         let ratification_results = self.calculate_ratification_results(self.last_week);
         self.weekly_ratification_counts.insert(self.last_week, ratification_results);
+        let ratification_approved = self.check_ratification_approval(self.last_week);
+        if ratification_approved {
+            self.weekly_vote_results.insert(self.last_week, vote_results);
+        } else {
+            if self.last_week > 0 {
+                if let Some(prev_vote_results) = self.weekly_vote_results.get(&(self.last_week - 1)) {
+                    self.weekly_vote_results.insert(self.last_week, prev_vote_results.clone());
+                }
+            }
+        }
         self.current_week += 1;
         self.iteration_count += 1;
         self.survey_responses.clear();
@@ -328,6 +336,18 @@ impl VotingSystem {
         } else {
             HashMap::new()
         }
+    }
+
+    pub fn check_ratification_approval(&self, week: u64) -> bool {
+        self.weekly_ratification_counts.get(&week)
+            .map(|counts| {
+                if let Some(&no_votes) = counts.get("No") {
+                    no_votes < counts.get("Yes").cloned().unwrap_or(0)
+                } else {
+                    true 
+                }
+            })
+            .unwrap_or(true)
     }
     
 
