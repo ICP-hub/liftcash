@@ -125,8 +125,6 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
 
   const handleVote = async (action) => {
     console.log("action: ", action);
-
-    setIsRatifyVote(true);
     setIsSubmitting(true);
 
     const passData = action === "agree";
@@ -144,6 +142,8 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       setVote(action);
       setIsRetifyResult(true);
       setIsSubmitting(false);
+      setIsRatifyVote(true);
+
       toast.success("Submition Successfully");
     } catch (error) {
       console.error("Error submitting vote:", error);
