@@ -22,21 +22,50 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
   const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(2880); // initial time in minutes
-  const formattedTimeLeft = propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
-
-
-  useEffect(() => {
-    console.log("Formated time in Ratify Card ::: ", formattedTimeLeft)
-  }, [formattedTimeLeft]);
-
+  // const formattedTimeLeft =
+  //   propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
 
   const communityActor = useSelector(
     (currState) => currState?.actors?.actors?.communityActor
   );
 
+  const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
   useEffect(() => {
+    console.log("Formated time in Ratify Card ::: ", formattedTimeLeft);
+  }, [formattedTimeLeft]);
+
+  function nanoToMin(nano) {
+    const secondsInMinute = 60;
+    const nanoToSeconds = 1e9; // 1 second = 1 billion nanoseconds
+    const nanoInMinute = nanoToSeconds * secondsInMinute; // 1 minute = 60 billion nanoseconds
+
+    return nano / nanoInMinute;
+  }
+
+  const getPhaseInfo = async () => {
+    try {
+      await communityActor
+        .get_current_phase_info()
+        .then((res) => {
+          console.log("Phase Info:", res[0]);
+          const key = Object.keys(res[0]);
+          console.log("phase =>", key[0]);
+          console.log("Time Left in Nano : ", parseInt(res[1]));
+          const timeLeft = nanoToMin(parseInt(res[1]));
+          setTimeLeftInMinutes(timeLeft);
+          console.log("timeLeft =>", timeLeft);
+        })
+        .catch((err) => {
+          console.log("Error getting phase info:", err);
+        });
+    } catch (error) {
+      console.error("Error getting phase info:", error);
+    }
+  };
+
+  useEffect(() => {
+    getPhaseInfo();
     console.log("actor in ratify card =>", communityActor);
     // setRemainingTime(formattedTimeLeft);
   }, [communityActor]);
@@ -65,7 +94,7 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
 
               const currentValue =
                 (sortedVoteResult[i][1].PercentageVote / 255) *
-                (maxSliderValue - minSliderValue) +
+                  (maxSliderValue - minSliderValue) +
                 minSliderValue;
 
               temp.push(currentValue);
@@ -152,7 +181,7 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   };
 
   useEffect(() => {
-    console.log("Formated time in Ratify Card ::: ", formattedTimeLeft)
+    console.log("Formated time in Ratify Card ::: ", formattedTimeLeft);
   }, [formattedTimeLeft]);
 
   // return !isRetifyResult && formattedTimeLeft !== "0 mins" ? (
@@ -226,78 +255,80 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   // );
 
   if (!isRetifyResult && formattedTimeLeft != "0 mins") {
-    return <div className="ratify-main-div">
-      <h1 className="ratify-title">Welcome to the Ratify</h1>
-
-      {voteData?.questions?.map((item, index) => (
-        <div key={index} className="mb-6">
-          <h2 className="ratify-vote-title">{item.question}</h2>
-          <div className="ratify-vote-lable-even">
-            <p className="">
-              {item.label1} :{" "}
-              <span className="ratify-vote-value">
-                {weeklyVoteResult[index]}%
-              </span>
-            </p>
-            {/* <span className="ratify-indicator">
+    return (
+      <div className="ratify-main-div">
+        <h1 className="ratify-title">Welcome to the Ratify</h1>
+        <div className="container-survey-time">
+          Survey Closes in:{" "}
+          <span className="container-survey-timeleft">{formattedTimeLeft}</span>
+        </div>
+        {voteData?.questions?.map((item, index) => (
+          <div key={index} className="mb-6">
+            <h2 className="ratify-vote-title">{item.question}</h2>
+            <div className="ratify-vote-lable-even">
+              <p className="">
+                {item.label1} :{" "}
+                <span className="ratify-vote-value">
+                  {weeklyVoteResult[index]}%
+                </span>
+              </p>
+              {/* <span className="ratify-indicator">
           <FaArrowDown />
         </span> */}
+            </div>
+            <div className="ratify-vote-lable-odd">
+              <p className="">
+                {item.label2}:{" "}
+                <span className="ratify-vote-value">{voteResult[index]}%</span>
+              </p>
+              <span className="ratify-indicator">
+                <FaArrowUp color="green" />
+              </span>
+            </div>
           </div>
-          <div className="ratify-vote-lable-odd">
-            <p className="">
-              {item.label2}:{" "}
-              <span className="ratify-vote-value">{voteResult[index]}%</span>
-            </p>
-            <span className="ratify-indicator">
-              <FaArrowUp color="green" />
-            </span>
-          </div>
-        </div>
-      ))}
+        ))}
 
-      <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
+        <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
 
-      <div className="ratify-vote-btn-container">
-        {!isSubmitting ? (
-          voteData.vote.options.map((option, index) => (
+        <div className="ratify-vote-btn-container">
+          {!isSubmitting ? (
+            voteData.vote.options.map((option, index) => (
+              <button
+                key={index}
+                className="ratify-vote-btn"
+                onClick={() => handleVote(option.action)}
+              >
+                {option.text}
+              </button>
+            ))
+          ) : (
             <button
-              key={index}
-              className="ratify-vote-btn"
-              onClick={() => handleVote(option.action)}
+              disabled={isSubmitting}
+              className="ratify-vote-btn w-[80%] flex justify-center"
             >
-              {option.text}
+              <ThreeDots
+                visible={true}
+                height="30"
+                width="40"
+                color="white"
+                radius="9"
+                ariaLabel="three-dots-loading"
+              />
             </button>
-          ))
-        ) : (
-          <button
-            disabled={isSubmitting}
-            className="ratify-vote-btn w-[80%] flex justify-center"
-          >
-            <ThreeDots
-              visible={true}
-              height="30"
-              width="40"
-              color="white"
-              radius="9"
-              ariaLabel="three-dots-loading"
-            />
-          </button>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
-    </div>
+        {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
+      </div>
+    );
   }
   if (isRetifyResult && formattedTimeLeft != "0 mins") {
     return <ThankYouCard remainingTime={remainingTime} type="retify" />;
   }
-  if(!isRetifyResult && formattedTimeLeft === "0 mins"){
-    return <RatifyResult />
+  if (!isRetifyResult && formattedTimeLeft === "0 mins") {
+    return <RatifyResult />;
+    // location.reload();
   }
-
-
-
-
 };
 
 export default RatifyCard;
