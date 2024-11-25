@@ -205,7 +205,16 @@ pub fn heartbeat() {
         }
 
         let elapsed = now - state.phase_start_time;
-        let remaining_time = PHASE_DURATION - elapsed; 
+        
+
+        let phase_duration = match state.current_phase {
+            Phase::Survey | Phase::Vote | Phase::Ratify => PHASE_DURATION,
+            Phase::SurveyResults | Phase::RatifyResults => RESULTS_DURATION,
+            _ => 0, 
+        };
+
+        // Calculate remaining time for the current phase
+        let remaining_time = phase_duration - elapsed;
         state.remaining_time = remaining_time;
            
         match state.current_phase {
