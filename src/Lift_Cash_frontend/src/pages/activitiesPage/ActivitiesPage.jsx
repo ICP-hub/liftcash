@@ -17,7 +17,6 @@ import RatifyResult from "../../components/ratifyResult/RatifyResult";
 import Survey from "../../components/survey/Survey";
 
 const ActivitiesPage = () => {
-
   console.log("Activities Page");
 
   const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(1); // initial time in minutes
@@ -35,18 +34,20 @@ const ActivitiesPage = () => {
     const nanoInMinute = nanoToSeconds * secondsInMinute; // 1 minute = 60 billion nanoseconds
 
     return nano / nanoInMinute;
-  };
+  }
 
   const getPhaseInfo = async () => {
     try {
-      await communityActor.get_current_phase_info()
+      await communityActor
+        .get_current_phase_info()
         .then((res) => {
           console.log("Phase Info:", res[0]);
           const key = Object.keys(res[0]);
-          console.log(key[0]);
+          console.log("phase =>", key[0]);
           console.log("Time Left in Nano : ", parseInt(res[1]));
           const timeLeft = nanoToMin(parseInt(res[1]));
           setTimeLeftInMinutes(timeLeft);
+          console.log("timeLeft =>", timeLeft);
           setPhase(key[0]);
         })
         .catch((err) => {
@@ -57,26 +58,33 @@ const ActivitiesPage = () => {
     }
   };
 
-
   useEffect(() => {
     getPhaseInfo();
     console.log("actor on survey page : ", communityActor);
   }, [communityActor]);
 
   if (phase === "Survey") {
-    return <Survey formattedTimeLeft={formattedTimeLeft} />
+    return <Survey formattedTimeLeft={formattedTimeLeft} />;
   }
   if (phase === "SurveyResults") {
-    return <SurveyResult formattedTimeLeft={formattedTimeLeft} />
+    return (
+      <div className="flex items-center">
+        <SurveyResult formattedTimeLeft={formattedTimeLeft} />;
+      </div>
+    );
   }
   if (phase === "Vote") {
-    return <Vote formattedTimeLeft={formattedTimeLeft} />
+    return <Vote formattedTimeLeft={formattedTimeLeft} />;
   }
   if (phase === "Ratify") {
-    return <RatifyCard formattedTimeLeft={formattedTimeLeft} />
+    return <RatifyCard formattedTimeLeft={formattedTimeLeft} />;
   }
   if (phase === "RatifyResults") {
-    return <RatifyResult formattedTimeLeft={formattedTimeLeft} />
+    return (
+      <div className="flex items-center">
+        <RatifyResult formattedTimeLeft={formattedTimeLeft} />;
+      </div>
+    );
   }
 };
 

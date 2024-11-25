@@ -8,7 +8,7 @@
   @apply text-center mt-1 text-[#00A1ED];
 }
 .ratify-result-card-h2 {
-  @apply  text-gray-800 w-full pl-10 font-bold text-xl p-5;
+  @apply text-gray-800 w-full pl-10 font-bold text-xl p-5;
 }
 
 .ratify-result-container {
@@ -28,4 +28,15 @@
 
 .ratify-result-card-last-h1 {
   @apply pt-5 text-gray-800 pb-5 font-bold text-2xl;
+}
+
+.vote-remaining-time {
+  @apply text-lg mt-6 py-5 text-center bg-[#00A1ED] font-bold text-white;
+}
+
+.container-survey-time {
+  @apply flex justify-center p-5 text-white bg-[#00A1ED] font-semibold mb-4;
+}
+.container-survey-timeleft {
+  @apply ml-2 text-red-600;
 }

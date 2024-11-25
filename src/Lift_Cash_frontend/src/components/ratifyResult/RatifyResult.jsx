@@ -9,16 +9,46 @@ const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const [disagree, setDisagree] = useState(0);
   const [isSurvey, setIsSurvey] = useState(false);
   const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(480); // initial time in minutes
-  const formattedTimeLeft = propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
-
-
-
+  // const formattedTimeLeft =
+  //   propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
 
   const communityActor = useSelector(
     (currState) => currState?.actors?.actors?.communityActor
   );
 
+  const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
+
+  function nanoToMin(nano) {
+    const secondsInMinute = 60;
+    const nanoToSeconds = 1e9; // 1 second = 1 billion nanoseconds
+    const nanoInMinute = nanoToSeconds * secondsInMinute; // 1 minute = 60 billion nanoseconds
+
+    return nano / nanoInMinute;
+  }
+
+  const getPhaseInfo = async () => {
+    try {
+      await communityActor
+        .get_current_phase_info()
+        .then((res) => {
+          console.log("Phase Info:", res[0]);
+          const key = Object.keys(res[0]);
+          console.log("phase =>", key[0]);
+          console.log("Time Left in Nano : ", parseInt(res[1]));
+          const timeLeft = nanoToMin(parseInt(res[1]));
+          setTimeLeftInMinutes(timeLeft);
+          console.log("timeLeft =>", timeLeft);
+        })
+        .catch((err) => {
+          console.log("Error getting phase info:", err);
+        });
+    } catch (error) {
+      console.error("Error getting phase info:", error);
+    }
+  };
+
   useEffect(() => {
+    getPhaseInfo();
     console.log("actor in ratify result card =>", communityActor);
   }, [communityActor]);
 
@@ -52,9 +82,7 @@ const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
     console.log("Formatted time in RR : ", formattedTimeLeft);
   }, [formattedTimeLeft]);
 
-
-
-  if (!isSurvey && formattedTimeLeft !== "0 min") {
+  if (!isSurvey && formattedTimeLeft !== "0 mins") {
     return (
       <div className="ratify-result-main-card-div">
         <h1 className="ratify-result-card-h1">Woohoo!</h1>
@@ -80,13 +108,17 @@ const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
           The vote has been ratified, enabling participants to claim an
           additional 10% of their weekly claim potential.
         </p>
+        <div className="container-survey-time">
+          Result Closes in:{" "}
+          <span className="container-survey-timeleft">{formattedTimeLeft}</span>
+        </div>
         <h1 className="ratify-result-card-last-h1">
           See you soon for the Survey
         </h1>
       </div>
     );
   }
-  if (!isSurvey && formattedTimeLeft === "0 min") {
+  if (!isSurvey && formattedTimeLeft === "0 mins") {
     return <Survey />;
   }
 };

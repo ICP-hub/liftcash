@@ -1,5 +1,5 @@
 .survey-result-main-div {
-  @apply w-full  max-w-lg  mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 overflow-hidden;
+  @apply w-full h-full max-w-lg  mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 overflow-hidden;
 }
 .survey-result-h1 {
   @apply text-center font-bold text-3xl m-5;
@@ -22,4 +22,10 @@
 }
 .survey-result-btn {
   @apply py-4  text-xl w-full  bg-red-500 text-white rounded-md hover:bg-blue-700;
+}
+.container-survey-time {
+  @apply flex justify-center p-5 text-white bg-[#00A1ED] font-semibold mb-4;
+}
+.container-survey-timeleft {
+  @apply ml-2 text-red-600;
 }

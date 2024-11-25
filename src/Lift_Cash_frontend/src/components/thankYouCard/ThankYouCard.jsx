@@ -7,10 +7,11 @@ import { useNavigate } from "react-router-dom";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 import useConvertToMinutes from "../../hooks/ useConvertToMinutes";
 
-const ThankYouCard = ({ remainingTime, type }) => {
+const ThankYouCard = ({ remainingTime, type, formattedTimeLeft }) => {
   const navigate = useNavigate();
   const convertToMinute = useConvertToMinutes(remainingTime) || 0; //remaining time (string) convert into minutes (decimal)
-
+  console.log("remainingTime =>", remainingTime);
+  console.log("converted to minuites => ", convertToMinute);
   //initial time (manual) in minutes
   // const manualTime = 1;
 
@@ -19,6 +20,9 @@ const ThankYouCard = ({ remainingTime, type }) => {
   const initialTime = convertToMinute;
 
   const formattedTime = useFormattedTimeLeft(initialTime);
+
+  console.log("formattedTime => ", formattedTime);
+  console.log("formattedTimeLeft => ", formattedTimeLeft);
 
   // Define texts conditionally based on the type prop
   const texts = {
