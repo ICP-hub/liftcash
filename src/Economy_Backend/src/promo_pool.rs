@@ -1,4 +1,5 @@
 use candid::{CandidType, Deserialize};
+use ic_cdk::{query, update};
 use std::cell::RefCell;
 
 #[derive(CandidType, Deserialize, Debug)]
@@ -37,6 +38,12 @@ thread_local! {
     static PRIZE_POOL: RefCell<Option<PrizePool>> = RefCell::new(None);
 }
 
+// #[init]
+// fn init(initial_balance: Option<f64>) {
+//     init_prize_pool(initial_balance);
+// }
+
+#[update]
 pub fn init_prize_pool(initial_balance: Option<f64>) {
     let balance = initial_balance.unwrap_or(0.0);
     PRIZE_POOL.with(|pool| {
@@ -44,6 +51,7 @@ pub fn init_prize_pool(initial_balance: Option<f64>) {
     });
 }
 
+#[query]
 pub fn fetch_prize_pool_balance() -> f64 {
     PRIZE_POOL.with(|pool| {
         pool.borrow()
@@ -53,6 +61,7 @@ pub fn fetch_prize_pool_balance() -> f64 {
     })
 }
 
+#[update]
 pub fn update_prize_pool_balance(amount: f64) -> Result<f64, String> {
     PRIZE_POOL.with(|pool| {
         pool.borrow_mut()
@@ -62,6 +71,7 @@ pub fn update_prize_pool_balance(amount: f64) -> Result<f64, String> {
     })
 }
 
+#[update]
 pub fn reset_prize_pool() {
     PRIZE_POOL.with(|pool| {
         if let Some(pool) = pool.borrow_mut().as_mut() {

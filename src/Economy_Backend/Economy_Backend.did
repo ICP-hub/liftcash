@@ -1,6 +1,27 @@
-service : {
-    initialize: (opt float64) -> ();                 
-    fetch_balance: () -> (float64) query;            
-    update_balance: (float64) -> (variant { Ok: float64; Err: text }); 
-    reset_pool: () -> ();                            
+type Result = variant { Ok : float64; Err : text };
+type UserRecord = record {
+  total_promo : float64;
+  lift_token_balance : float64;
+  unlocked_promo : float64;
+  locked_promo : float64;
+  burn_history : vec float64;
+};
+service : () -> {
+  create_user_record : () -> ();
+  fetch_all_user_records : () -> (vec record { principal; UserRecord }) query;
+  fetch_burn_history : () -> (vec float64) query;
+  fetch_lift_token_balance : () -> (float64) query;
+  fetch_locked_promo : () -> (float64) query;
+  fetch_prize_pool_balance : () -> (float64) query;
+  fetch_total_promo : () -> (float64) query;
+  fetch_unlocked_promo : () -> (float64) query;
+  fetch_user_record : () -> (UserRecord) query;
+  init_prize_pool : (opt float64) -> ();
+  reset_prize_pool : () -> ();
+  update_burn_history : (float64) -> ();
+  update_lift_token_balance : (float64) -> ();
+  update_locked_promo : (float64) -> ();
+  update_prize_pool_balance : (float64) -> (Result);
+  update_total_promo : (float64) -> ();
+  update_unlocked_promo : (float64) -> ();
 }
