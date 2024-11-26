@@ -29,8 +29,10 @@ const useFormattedTimeLeft = (initialMinutes) => {
         mins !== 1 ? "s" : ""
       }`;
     }
-    return `${timeLeft.toFixed(0)} min${timeLeft !== 1 ? "s" : ""}`;
-  };
+    // return `${timeLeft.toFixed(0)} min${timeLeft !== 1 ? "s" : ""}`;
+      return `${timeLeft.toFixed(0)} mins`;
+  // };
+    };
 
   return formatTimeLeft();
 };

@@ -13,12 +13,12 @@ import { toast } from "react-toastify";
 
 const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const [vote, setVote] = useState(null);
-  const [isRetifyResult, setIsRetifyResult] = useState(false);
+  const [isRetifyComplete, setIsRetifyComplete] = useState(false);
   const [voteResult, setVoteResult] = useState([]);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
 
   const [isRatifyVote, setIsRatifyVote] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(null);
+  const [remainingTime, setRemainingTime] = useState(0);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,6 +31,9 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   );
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
+
+  // const PassValue = propsFormattedTimeLeft;
+
   useEffect(() => {
     console.log("Formated time in Ratify Card ::: ", formattedTimeLeft);
   }, [formattedTimeLeft]);
@@ -67,7 +70,6 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   useEffect(() => {
     getPhaseInfo();
     console.log("actor in ratify card =>", communityActor);
-    // setRemainingTime(formattedTimeLeft);
   }, [communityActor]);
 
   const sortDataById = (data) => {
@@ -169,10 +171,10 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       const result = await communityActor.submit_ratification(passData);
       console.log("result =>", result);
       setVote(action);
-      setIsRetifyResult(true);
       setIsSubmitting(false);
       setIsRatifyVote(true);
-
+      setIsRetifyComplete(true);
+      setRemainingTime(formattedTimeLeft);
       toast.success("Submition Successfully");
     } catch (error) {
       console.error("Error submitting vote:", error);
@@ -184,77 +186,7 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
     console.log("Formated time in Ratify Card ::: ", formattedTimeLeft);
   }, [formattedTimeLeft]);
 
-  // return !isRetifyResult && formattedTimeLeft !== "0 mins" ? (
-  //   isRatifyVote ? (
-  //     <ThankYouCard remainingTime={remainingTime} type="retify" />
-  //   ) : (
-  // <div className="ratify-main-div">
-  //   <h1 className="ratify-title">Welcome to the Ratify</h1>
-
-  //   {voteData?.questions?.map((item, index) => (
-  //     <div key={index} className="mb-6">
-  //       <h2 className="ratify-vote-title">{item.question}</h2>
-  //       <div className="ratify-vote-lable-even">
-  //         <p className="">
-  //           {item.label1} :{" "}
-  //           <span className="ratify-vote-value">
-  //             {weeklyVoteResult[index]}%
-  //           </span>
-  //         </p>
-  //         {/* <span className="ratify-indicator">
-  //             <FaArrowDown />
-  //           </span> */}
-  //       </div>
-  //       <div className="ratify-vote-lable-odd">
-  //         <p className="">
-  //           {item.label2}:{" "}
-  //           <span className="ratify-vote-value">{voteResult[index]}%</span>
-  //         </p>
-  //         <span className="ratify-indicator">
-  //           <FaArrowUp color="green" />
-  //         </span>
-  //       </div>
-  //     </div>
-  //   ))}
-
-  //   <h2 className="ratify-vote-question-title">{voteData.vote.question}</h2>
-
-  //   <div className="ratify-vote-btn-container">
-  //     {!isSubmitting ? (
-  //       voteData.vote.options.map((option, index) => (
-  //         <button
-  //           key={index}
-  //           className="ratify-vote-btn"
-  //           onClick={() => handleVote(option.action)}
-  //         >
-  //           {option.text}
-  //         </button>
-  //       ))
-  //     ) : (
-  //       <button
-  //         disabled={isSubmitting}
-  //         className="ratify-vote-btn w-[80%] flex justify-center"
-  //       >
-  //         <ThreeDots
-  //           visible={true}
-  //           height="30"
-  //           width="40"
-  //           color="white"
-  //           radius="9"
-  //           ariaLabel="three-dots-loading"
-  //         />
-  //       </button>
-  //     )}
-  //   </div>
-
-  //   {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
-  // </div>
-  //   )
-  // ) : (
-  //   <RatifyResult />
-  // );
-
-  if (!isRetifyResult && formattedTimeLeft != "0 mins") {
+  if (!isRetifyComplete && formattedTimeLeft != "0 mins") {
     return (
       <div className="ratify-main-div">
         <h1 className="ratify-title">Welcome to the Ratify</h1>
@@ -322,12 +254,14 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       </div>
     );
   }
-  if (isRetifyResult && formattedTimeLeft != "0 mins") {
-    return <ThankYouCard remainingTime={remainingTime} type="retify" />;
+  if (isRetifyComplete && formattedTimeLeft != "0 mins") {
+    return <ThankYouCard remainingTime={formattedTimeLeft} type="retify" />;
   }
-  if (!isRetifyResult && formattedTimeLeft === "0 mins") {
+  if (!isRetifyComplete && formattedTimeLeft === "0 mins") {
     return <RatifyResult />;
-    // location.reload();
+  }
+  if (isRetifyComplete && formattedTimeLeft === "0 mins") {
+    return <RatifyResult />;
   }
 };
 

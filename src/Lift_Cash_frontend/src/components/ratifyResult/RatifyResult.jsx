@@ -7,7 +7,6 @@ import Survey from "../survey/Survey";
 const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const [agree, setAgree] = useState(0);
   const [disagree, setDisagree] = useState(0);
-  const [isSurvey, setIsSurvey] = useState(false);
   const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(480); // initial time in minutes
   // const formattedTimeLeft =
   //   propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
@@ -16,6 +15,7 @@ const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
     (currState) => currState?.actors?.actors?.communityActor
   );
 
+  // const PassValue = propsFormattedTimeLeft;
   const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
 
   function nanoToMin(nano) {
@@ -82,7 +82,7 @@ const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
     console.log("Formatted time in RR : ", formattedTimeLeft);
   }, [formattedTimeLeft]);
 
-  if (!isSurvey && formattedTimeLeft !== "0 mins") {
+  if (formattedTimeLeft !== "0 mins") {
     return (
       <div className="ratify-result-main-card-div">
         <h1 className="ratify-result-card-h1">Woohoo!</h1>
@@ -118,7 +118,7 @@ const RatifyResult = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       </div>
     );
   }
-  if (!isSurvey && formattedTimeLeft === "0 mins") {
+  if (formattedTimeLeft == "0 mins") {
     return <Survey />;
   }
 };
