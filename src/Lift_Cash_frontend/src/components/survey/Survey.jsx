@@ -14,8 +14,6 @@ import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
 function Survey() {
   const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(2880); // initial time in minutes
-  // const formattedTimeLeft =
-  //   propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
 
@@ -33,8 +31,6 @@ function Survey() {
         .get_current_phase_info()
         .then((res) => {
           console.log("Phase Info:", res[0]);
-          const key = Object.keys(res[0]);
-          console.log("phase =>", key[0]);
           console.log("Time Left in Nano : ", parseInt(res[1]));
           const timeLeft = nanoToMin(parseInt(res[1]));
           setTimeLeftInMinutes(timeLeft);
@@ -123,27 +119,11 @@ function Survey() {
       });
   };
 
-  // useEffect(() => {
-  //   if (formattedTimeLeft === "0 mins" && !isSurveyCompleted) {
-  //     setRemainingTime(formattedTimeLeft); // or any other state update to force render
-  //   }
-  // }, [formattedTimeLeft, isSurveyCompleted]);
-
   if (isSurveyCompleted && formattedTimeLeft !== "0 mins") {
-    return (
-      <ThankYouCard
-        remainingTime={remainingTime}
-        formattedTimeLeft={formattedTimeLeft}
-        type={"survey"}
-      />
-    );
+    return <ThankYouCard remainingTime={remainingTime} type={"survey"} />;
   }
-  // if (isSurveyCompleted && formattedTimeLeft === "0 mins") {
-  //     return <ThankYouCard remainingTime={remainingTime} type={"survey"} />
-  // }
   if (!isSurveyCompleted && formattedTimeLeft === "0 mins") {
     return <SurveyResult />;
-    // location.reload();
   }
   if (!isSurveyCompleted && formattedTimeLeft !== "0 mins") {
     return (
@@ -221,6 +201,9 @@ function Survey() {
         </div>
       </div>
     );
+  }
+  if (formattedTimeLeft === "0 mins" && isSurveyCompleted) {
+    return <SurveyResult />;
   }
 }
 

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
 import RatifyCard from "../ratify/RatifyCard";
+import { Pass } from "three/examples/jsm/Addons.js";
 
 const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(2880); // initial time in minutes
@@ -55,7 +56,7 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
 
   const [percent, setPercent] = useState({});
 
-  const [isVote, setIsVote] = useState(true);
+  const [isVote, setIsVote] = useState(false);
   const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
@@ -134,12 +135,12 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
         // console.log("Vote Submitted Successfully:", response);
         toast.success("Vote Submitted Successfully!");
         setIsSubmitting(false);
+        setIsVote(true);
       })
       .catch((error) => {
         console.error("Error submitting Vote:", error);
         toast.error("Error submitting Vote");
       });
-    setIsVote(false);
   };
 
   const sortDataById = (data) => {
@@ -204,7 +205,7 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
     console.log("Formated time in V: ", formattedTimeLeft);
   }, [formattedTimeLeft]);
 
-  if (isVote && formattedTimeLeft !== "0 mins") {
+  if (!isVote && formattedTimeLeft !== "0 mins") {
     return (
       <div className="vote-main-div">
         <div className="vote-header-div">
@@ -337,15 +338,15 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       </div>
     );
   }
-  if (!isVote && formattedTimeLeft !== "0 mins") {
-    return <ThankYouCard remainingTime={remainingTime} type={"vote"} />;
+  if (isVote && formattedTimeLeft !== "0 mins") {
+    return <ThankYouCard remainingTime={formattedTimeLeft} type={"vote"} />;
   }
   if (isVote && formattedTimeLeft === "0 mins") {
     return <RatifyCard />;
   }
-  // else {
-  //   return <RatifyCard />
-  // }
+  if (!isVote && formattedTimeLeft === "0 mins") {
+    return <RatifyCard />;
+  }
 };
 
 export default Vote;
