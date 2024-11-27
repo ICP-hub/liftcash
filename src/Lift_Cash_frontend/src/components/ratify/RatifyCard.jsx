@@ -13,7 +13,11 @@ import { toast } from "react-toastify";
 
 const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const [vote, setVote] = useState(null);
-  const [isRetifyComplete, setIsRetifyComplete] = useState(false);
+  // const [isRetifyComplete, setIsRetifyComplete] = useState(false);
+  const [isRetifyComplete, setIsRetifyComplete] = useState(
+    localStorage.getItem("ratifyCompleted") === "true"
+  );
+
   const [voteResult, setVoteResult] = useState([]);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
 
@@ -150,6 +154,22 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   };
 
   useEffect(() => {
+    if (formattedTimeLeft === "0 mins") {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("ratifyCompleted");
+      setIsRetifyComplete(false);
+    }
+  }, [formattedTimeLeft]);
+
+  useEffect(() => {
+    if (formattedTimeLeft === "0 mins" && isRetifyComplete) {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("ratifyCompleted");
+      setIsRetifyComplete(false);
+    }
+  }, [formattedTimeLeft, isRetifyComplete]);
+
+  useEffect(() => {
     getWeekleyResult();
     getVoteResult();
   }, []);
@@ -173,6 +193,7 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       setVote(action);
       setIsSubmitting(false);
       setIsRatifyVote(true);
+      localStorage.setItem("ratifyCompleted", "true"); // Set flag in localStorage
       setIsRetifyComplete(true);
       setRemainingTime(formattedTimeLeft);
       toast.success("Submition Successfully");
@@ -260,7 +281,10 @@ const RatifyCard = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   if (!isRetifyComplete && formattedTimeLeft === "0 mins") {
     return <RatifyResult />;
   }
-  if (isRetifyComplete && formattedTimeLeft === "0 mins") {
+  // if (isRetifyComplete && formattedTimeLeft === "0 mins") {
+  //   return <RatifyResult />;
+  // }
+  if (formattedTimeLeft === "0 mins") {
     return <RatifyResult />;
   }
 };

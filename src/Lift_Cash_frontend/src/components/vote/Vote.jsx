@@ -56,7 +56,11 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
 
   const [percent, setPercent] = useState({});
 
-  const [isVote, setIsVote] = useState(false);
+  const [isVote, setIsVote] = useState(
+    localStorage.getItem("voteCompleted") === "true"
+  );
+
+  // const [isVote, setIsVote] = useState(false);
   const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
@@ -79,6 +83,20 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       [`${id}`]: value, // Update only the relevant id's value
     }));
   };
+  useEffect(() => {
+    if (formattedTimeLeft === "0 mins") {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("voteCompleted");
+      setIsVote(false);
+    }
+  }, [formattedTimeLeft]);
+  useEffect(() => {
+    if (formattedTimeLeft === "0 mins" && isVote) {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("voteCompleted");
+      setIsVote(false);
+    }
+  }, [formattedTimeLeft, isVote]);
 
   const handleSubmit = async () => {
     if (Object.keys(percent).length < voteQuestions.length) {
@@ -134,6 +152,8 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       .then((response) => {
         // console.log("Vote Submitted Successfully:", response);
         toast.success("Vote Submitted Successfully!");
+        localStorage.setItem("voteCompleted", "true"); // Set flag in localStorage
+
         setIsSubmitting(false);
         setIsVote(true);
       })
@@ -338,12 +358,16 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       </div>
     );
   }
+  if (formattedTimeLeft === "0 mins") {
+    return <RatifyCard />;
+  }
   if (isVote && formattedTimeLeft !== "0 mins") {
     return <ThankYouCard remainingTime={formattedTimeLeft} type={"vote"} />;
   }
-  if (isVote && formattedTimeLeft === "0 mins") {
-    return <RatifyCard />;
-  }
+  // if (isVote && formattedTimeLeft === "0 mins") {
+  //   return <RatifyCard />;
+  // }
+
   if (!isVote && formattedTimeLeft === "0 mins") {
     return <RatifyCard />;
   }

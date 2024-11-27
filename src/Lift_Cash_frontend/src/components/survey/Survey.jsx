@@ -17,6 +17,10 @@ function Survey() {
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
 
+  const [isSurveyCompleted, setIsSurveyCompleted] = useState(
+    localStorage.getItem("surveyCompleted") === "true"
+  ); // Check localStorage on load
+
   function nanoToMin(nano) {
     const secondsInMinute = 60;
     const nanoToSeconds = 1e9; // 1 second = 1 billion nanoseconds
@@ -45,11 +49,16 @@ function Survey() {
   };
 
   useEffect(() => {
+    if (formattedTimeLeft === "0 mins") {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("surveyCompleted");
+      setIsSurveyCompleted(false);
+    }
     console.log("Formated time in S: ", formattedTimeLeft);
   }, [formattedTimeLeft]);
 
   const [selectedData, setSelectedData] = useState({});
-  const [isSurveyCompleted, setIsSurveyCompleted] = useState(false);
+  // const [isSurveyCompleted, setIsSurveyCompleted] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null); //  state for remaining time
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
@@ -63,6 +72,13 @@ function Survey() {
     console.log("actor on survey page : ", communityActor);
   }, [communityActor]);
 
+  useEffect(() => {
+    if (formattedTimeLeft === "0 mins" && isSurveyCompleted) {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("surveyCompleted");
+      setIsSurveyCompleted(false);
+    }
+  }, [formattedTimeLeft, isSurveyCompleted]);
   // Handler to update selected data based on question id
   const handleSelect = (id, value, type) => {
     setSelectedData(
@@ -110,6 +126,7 @@ function Survey() {
         console.log("Survey Data Submitted Successfully:", res);
         toast.success("Survey Submitted Successfully!");
         setIsSubmitting(false);
+        localStorage.setItem("surveyCompleted", "true"); // Set flag in localStorage
         setIsSurveyCompleted(true);
         setRemainingTime(formattedTimeLeft);
       })
@@ -120,7 +137,7 @@ function Survey() {
   };
 
   if (isSurveyCompleted && formattedTimeLeft !== "0 mins") {
-    return <ThankYouCard remainingTime={remainingTime} type={"survey"} />;
+    return <ThankYouCard remainingTime={formattedTimeLeft} type={"survey"} />;
   }
   if (!isSurveyCompleted && formattedTimeLeft === "0 mins") {
     return <SurveyResult />;
@@ -202,7 +219,10 @@ function Survey() {
       </div>
     );
   }
-  if (formattedTimeLeft === "0 mins" && isSurveyCompleted) {
+  // if (formattedTimeLeft === "0 mins" && isSurveyCompleted) {
+  //   return <SurveyResult />;
+  // }
+  if (formattedTimeLeft === "0 mins") {
     return <SurveyResult />;
   }
 }

@@ -87,21 +87,21 @@ const ThankYouCard = ({ remainingTime, type }) => {
         <h2 className="thank-you-card-h2 thank-you-card-h2-bottom">
           Next: {texts.nextStep}
         </h2>
-        <h2 className="thank-you-card-h2-time">Starts In {formattedTime}</h2>
+        <h2 className="thank-you-card-h2-time">Starts In {remainingTime}</h2>
         <p className="thank-you-card-p-bottom">{texts.completion}</p>
         <h1 className="thank-you-card-last-h1">{texts.farewell}</h1>
       </div>
     );
   }
-  if (formattedTime === "0 mins" && type === "survey") {
-    <SurveyResult />;
-  }
-  if (formattedTime === "0 mins" && type === "vote") {
-    <RatifyCard />;
-  }
-  if (formattedTime === "0 mins" && type !== "retify") {
-    <RatifyResult />;
-  }
+  // if (formattedTime === "0 mins" && type === "survey") {
+  //   <SurveyResult />;
+  // }
+  // if (formattedTime === "0 mins" && type === "vote") {
+  //   <RatifyCard />;
+  // }
+  // if (formattedTime === "0 mins" && type !== "retify") {
+  //   <RatifyResult />;
+  // }
 };
 
 export default ThankYouCard;
