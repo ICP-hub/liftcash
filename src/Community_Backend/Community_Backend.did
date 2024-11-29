@@ -15,8 +15,9 @@ type SurveyResponse = variant {
 };
 type VoteResponse = variant { PercentageVote : nat8 };
 service : () -> {
-  calculate_total_claim : () -> (opt nat8) query;
+  calculate_total_claim : (principal) -> (opt nat8) query;
   chck_userparticipation_vote : () -> (text) query;
+  get_all_claim_percentages : () -> (vec record { principal; nat8 });
   get_all_users : () -> (vec record { principal; text });
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
   get_current_phase_info : () -> (Phase, nat64) query;
