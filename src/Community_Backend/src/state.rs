@@ -4,9 +4,6 @@ use ic_stable_structures::{StableCell, memory_manager::{MemoryManager, MemoryId,
 use serde::Deserialize;
 use std::{borrow::Cow, cell::RefCell, collections::HashMap};
 use std::collections::HashSet;
-use ic_cdk_timers::set_timer;
-use std::time::Duration;
-use std::rc::Rc;
 
 
 use crate::{SurveyData, SurveyResponse, UserClaim, VoteData, VoteResponse};
@@ -370,6 +367,13 @@ impl VotingSystem {
             None
         }
     } 
+
+
+    pub fn get_all_claim_percentages(&self) -> Vec< (Principal, u8)> {
+        self.weekly_participation.iter().map(|(user_id, claim)| {
+            (*user_id, claim.claim_percentage)
+        }).collect()
+    }
 
     pub fn whoiam(&self) -> Principal{
         return caller();
