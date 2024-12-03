@@ -1,8 +1,7 @@
 use candid::{CandidType, Deserialize, Principal};
-use ic_cdk::{caller, init, query, update};
-// use ic_cdk::api::call::CallResult;
-use std::collections::HashMap;
+use ic_cdk::{caller, query, update};
 use std::cell::RefCell;
+use std::collections::HashMap;
 
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub struct UserRecord {
@@ -66,7 +65,14 @@ impl UserRecord {
 }
 
 thread_local! {
-    static USER_RECORDS: RefCell<HashMap<Principal, UserRecord>> = RefCell::new(HashMap::new());
+   pub static USER_RECORDS: RefCell<HashMap<Principal, UserRecord>> = RefCell::new(HashMap::new());
+}
+
+pub fn with_user_records<F, R>(f: F) -> R
+where
+    F: FnOnce(&RefCell<HashMap<Principal, UserRecord>>) -> R,
+{
+    USER_RECORDS.with(f)
 }
 
 pub fn init_user_record() {
@@ -87,7 +93,8 @@ pub fn create_user_record() {
 pub fn fetch_user_record() -> UserRecord {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow()
+        records
+            .borrow()
             .get(&caller)
             .expect("User record not found")
             .clone()
@@ -98,7 +105,8 @@ pub fn fetch_user_record() -> UserRecord {
 pub fn update_total_promo(amount: f64) {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow_mut()
+        records
+            .borrow_mut()
             .get_mut(&caller)
             .expect("User record not found")
             .update_total_promo(amount);
@@ -109,7 +117,8 @@ pub fn update_total_promo(amount: f64) {
 pub fn update_locked_promo(amount: f64) {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow_mut()
+        records
+            .borrow_mut()
             .get_mut(&caller)
             .expect("User record not found")
             .update_locked_promo(amount);
@@ -120,7 +129,8 @@ pub fn update_locked_promo(amount: f64) {
 pub fn update_unlocked_promo(amount: f64) {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow_mut()
+        records
+            .borrow_mut()
             .get_mut(&caller)
             .expect("User record not found")
             .update_unlocked_promo(amount);
@@ -131,7 +141,8 @@ pub fn update_unlocked_promo(amount: f64) {
 pub fn update_burn_history(amount: f64) {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow_mut()
+        records
+            .borrow_mut()
             .get_mut(&caller)
             .expect("User record not found")
             .update_burn_history(amount);
@@ -142,7 +153,8 @@ pub fn update_burn_history(amount: f64) {
 pub fn update_lift_token_balance(amount: f64) {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow_mut()
+        records
+            .borrow_mut()
             .get_mut(&caller)
             .expect("User record not found")
             .update_lift_token_balance(amount);
@@ -153,7 +165,8 @@ pub fn update_lift_token_balance(amount: f64) {
 pub fn fetch_total_promo() -> f64 {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow()
+        records
+            .borrow()
             .get(&caller)
             .expect("User record not found")
             .fetch_total_promo()
@@ -164,7 +177,8 @@ pub fn fetch_total_promo() -> f64 {
 pub fn fetch_locked_promo() -> f64 {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow()
+        records
+            .borrow()
             .get(&caller)
             .expect("User record not found")
             .fetch_locked_promo()
@@ -175,7 +189,8 @@ pub fn fetch_locked_promo() -> f64 {
 pub fn fetch_unlocked_promo() -> f64 {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow()
+        records
+            .borrow()
             .get(&caller)
             .expect("User record not found")
             .fetch_unlocked_promo()
@@ -186,7 +201,8 @@ pub fn fetch_unlocked_promo() -> f64 {
 pub fn fetch_burn_history() -> Vec<f64> {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow()
+        records
+            .borrow()
             .get(&caller)
             .expect("User record not found")
             .fetch_burn_history()
@@ -197,7 +213,8 @@ pub fn fetch_burn_history() -> Vec<f64> {
 pub fn fetch_lift_token_balance() -> f64 {
     let caller = caller();
     USER_RECORDS.with(|records| {
-        records.borrow()
+        records
+            .borrow()
             .get(&caller)
             .expect("User record not found")
             .fetch_lift_token_balance()
@@ -207,18 +224,10 @@ pub fn fetch_lift_token_balance() -> f64 {
 #[query]
 pub fn fetch_all_user_records() -> Vec<(Principal, UserRecord)> {
     USER_RECORDS.with(|records| {
-        records.borrow()
+        records
+            .borrow()
             .iter()
             .map(|(k, v)| (*k, v.clone()))
             .collect()
     })
 }
-
-
-
-
-
-
-
-
-

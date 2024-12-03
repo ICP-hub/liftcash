@@ -1,28 +1,72 @@
 import React, { useState, useEffect } from "react";
 import "./ActivitiesPage.css";
 import { useSelector } from "react-redux";
-import RatifyCard from "../../components/ratify/RatifyCard";
-import Vote from "../../components/vote/Vote";
-import SurveyResult from "../../components/surveyResult/SurveyResult";
-import RatifyResult from "../../components/ratifyResult/RatifyResult";
-import Survey from "../../components/survey/Survey";
+import PhaseRenderer from "../../components/phaseRenderer /PhaseRenderer";
+
+const initialPhaseState = {
+  type: null, // e.g., "survey", "vote", "ratify", "survey_result", etc.
+  submitted: false,
+  timeLeft: 0,
+};
 
 const ActivitiesPage = () => {
-  const [phase, setPhase] = useState("");
+
+  const [phase, setPhase] = useState(initialPhaseState);
 
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
   );
+
+  useEffect(() => {
+    getPhaseInfo();
+    console.log("actor on survey page : ", communityActor);
+  }, [communityActor]);
+
+  useEffect(() => {
+    if (phase.timeLeft > 0) {
+      // Decrement timeLeft every 60 seconds
+      const timer = setInterval(() => {
+        setPhase((prev) => ({
+          ...prev,
+          timeLeft: prev.timeLeft - 1,
+        }));
+      }, 60000); // 60 seconds
+
+      return () => clearInterval(timer); // Cleanup on unmount
+    } else {
+      handlePhaseTransition(); // Move to the next phase when timeLeft reaches 0
+    }
+  }, [phase.timeLeft]);
+
+  const handlePhaseTransition = () => {
+    // Logic to fetch the next phase or update state
+    console.log("Transitioning to the next phase...");
+    getPhaseInfo();
+  };
+
+
+  function nanoToMin(nano) {
+    const secondsInMinute = 60;
+    const nanoToSeconds = 1e9;
+    const nanoInMinute = nanoToSeconds * secondsInMinute;
+    return nano / nanoInMinute;
+  }
 
   const getPhaseInfo = async () => {
     try {
       await communityActor
         .get_current_phase_info()
         .then((res) => {
-          console.log("Phase Info:", res[0]);
+          console.log("Phase Info:", res);
           const key = Object.keys(res[0]);
           console.log("phase =>", key[0]);
-          setPhase(key[0]);
+          const timeLeft = Math.ceil(nanoToMin(parseInt(res[1])));
+          console.log("Time in Act : ", timeLeft)
+          setPhase({
+            type: key[0],
+            submitted: false,
+            timeLeft: timeLeft,
+          })
         })
         .catch((err) => {
           console.log("Error getting phase info:", err);
@@ -32,34 +76,18 @@ const ActivitiesPage = () => {
     }
   };
 
-  useEffect(() => {
-    getPhaseInfo();
-    console.log("actor on survey page : ", communityActor);
-  }, [communityActor]);
+  const handleSubmission = () => {
+    setPhase((prev) => ({
+      ...prev,
+      submitted: true,
+    }));
+  };
 
-  if (phase === "Survey") {
-    return <Survey />;
+  const callNextPhase = () => {
+    getPhaseInfo();
   }
-  if (phase === "SurveyResults") {
-    return (
-      <div className="flex items-center">
-        <SurveyResult />;
-      </div>
-    );
-  }
-  if (phase === "Vote") {
-    return <Vote />;
-  }
-  if (phase === "Ratify") {
-    return <RatifyCard />;
-  }
-  if (phase === "RatifyResults") {
-    return (
-      <div className="flex items-center">
-        <RatifyResult />;
-      </div>
-    );
-  }
+
+  return <PhaseRenderer phase={phase} onSubmission={handleSubmission} onTimeUp={callNextPhase} />;
 };
 
 export default ActivitiesPage;
