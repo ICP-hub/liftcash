@@ -6,59 +6,20 @@ import ThankYouCard from "../thankYouCard/ThankYouCard";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
-import RatifyCard from "../ratify/RatifyCard";
-import { Pass } from "three/examples/jsm/Addons.js";
 
-const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
-  const [timeLeftInMinutes, setTimeLeftInMinutes] = useState(2880); // initial time in minutes
-  // const formattedTimeLeft =
-  //   propsFormattedTimeLeft ?? useFormattedTimeLeft(timeLeftInMinutes);
+const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
 
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
   );
 
-  const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
-
-  function nanoToMin(nano) {
-    const secondsInMinute = 60;
-    const nanoToSeconds = 1e9; // 1 second = 1 billion nanoseconds
-    const nanoInMinute = nanoToSeconds * secondsInMinute; // 1 minute = 60 billion nanoseconds
-
-    return nano / nanoInMinute;
-  }
-
-  const getPhaseInfo = async () => {
-    try {
-      await communityActor
-        .get_current_phase_info()
-        .then((res) => {
-          console.log("Phase Info:", res[0]);
-          const key = Object.keys(res[0]);
-          console.log("phase =>", key[0]);
-          console.log("Time Left in Nano : ", parseInt(res[1]));
-          const timeLeft = nanoToMin(parseInt(res[1]));
-          setTimeLeftInMinutes(timeLeft);
-          console.log("timeLeft =>", timeLeft);
-        })
-        .catch((err) => {
-          console.log("Error getting phase info:", err);
-        });
-    } catch (error) {
-      console.error("Error getting phase info:", error);
-    }
-  };
+  const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
 
   useEffect(() => {
-    getPhaseInfo();
     console.log("actor on vote page : ", communityActor);
   }, [communityActor]);
 
   const [percent, setPercent] = useState({});
-
-  const [isVote, setIsVote] = useState(false);
-  const [isBackToSurveyResult, setIsBackToSurveyResult] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(null);
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -69,7 +30,6 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       initialPercent[data.id] = data.slider.default;
     });
     setPercent(initialPercent);
-    setRemainingTime(formattedTimeLeft);
   }, []);
 
   // Handle percentage change for each question
@@ -134,8 +94,8 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
       .then((response) => {
         // console.log("Vote Submitted Successfully:", response);
         toast.success("Vote Submitted Successfully!");
+        onSubmit();
         setIsSubmitting(false);
-        setIsVote(true);
       })
       .catch((error) => {
         console.error("Error submitting Vote:", error);
@@ -203,150 +163,141 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
 
   useEffect(() => {
     console.log("Formated time in V: ", formattedTimeLeft);
+    if (formattedTimeLeft === "0 mins") {
+      onTimeUp();
+    }
   }, [formattedTimeLeft]);
 
-  if (!isVote && formattedTimeLeft !== "0 mins") {
-    return (
-      <div className="vote-main-div">
-        <div className="vote-header-div">
-          {/* <p
+  return (
+    <div className="vote-main-div">
+      <div className="vote-header-div">
+        {/* <p
           className="navigate-to-survey-result"
           onClick={() => setIsBackToSurveyResult(true)}
         >
           Back to survey results
         </p> */}
-          <h1 className="vote-title">Welcome to the Vote</h1>
-          <p className="vote-sub-title">
-            Complete for 70% of your weekly Claim
-          </p>
+        <h1 className="vote-title">Welcome to the Vote</h1>
+        <p className="vote-sub-title">
+          Complete for 70% of your weekly Claim
+        </p>
+      </div>
+
+      <div className="vote-time-description">
+        <div className="container-survey-time">
+          Vote Closes in:{" "}
+          <span className="container-survey-timeleft">
+            {formattedTimeLeft}
+          </span>
         </div>
+        <p className="vote-description">
+          Thanks for being active in stewarding this economy. Besides
+          empowering your own financial freedom, your answers also affect the
+          FREEOS community. For more info{" "}
+          <a href="#" className="vote-link">
+            click here
+          </a>
+          .
+        </p>
 
-        <div className="vote-time-description">
-          <div className="container-survey-time">
-            Vote Closes in:{" "}
-            <span className="container-survey-timeleft">
-              {formattedTimeLeft}
-            </span>
-          </div>
-          <p className="vote-description">
-            Thanks for being active in stewarding this economy. Besides
-            empowering your own financial freedom, your answers also affect the
-            FREEOS community. For more info{" "}
-            <a href="#" className="vote-link">
-              click here
-            </a>
-            .
-          </p>
+        <h1 className="vote-title bg-blue-200 py-5">
+          Ready to Vote? Let's start.
+        </h1>
+        {voteQuestions.map((data, index) => (
+          <div key={data.id}>
+            <div className="vote-card-container">
+              <h2 className="vote-card-title ">"{data.title}"</h2>
+              <p className="vote-card-sub-title">
+                {data.issuance.title}: {weeklyVoteResult[index]}{" "}
+                {index === 3 ? "USD" : "%"}
+              </p>
+              <p className="vote-card-question">{data.question}</p>
+              <p className="vote-card-question-description">
+                {data.description}
+              </p>
 
-          <h1 className="vote-title bg-blue-200 py-5">
-            Ready to Vote? Let's start.
-          </h1>
-          {voteQuestions.map((data, index) => (
-            <div key={data.id}>
-              <div className="vote-card-container">
-                <h2 className="vote-card-title ">"{data.title}"</h2>
-                <p className="vote-card-sub-title">
-                  {data.issuance.title}: {weeklyVoteResult[index]}{" "}
-                  {index === 3 ? "USD" : "%"}
-                </p>
-                <p className="vote-card-question">{data.question}</p>
-                <p className="vote-card-question-description">
-                  {data.description}
-                </p>
-
-                {/* Slider Input */}
-                <div className="vote-input-container">
-                  <input
-                    type="range"
-                    step={data.slider.unit === "USD" ? "0.00001" : "1"}
-                    min={data.slider.min}
-                    max={data.slider.max}
-                    value={percent[data.id] || data.slider.default}
-                    className="vote-slider"
-                    onChange={(event) =>
-                      handlePercentChange(data.id, event.target.value)
-                    }
-                  />
-                </div>
-                <div className="vote-display-percent">
-                  <p className="sliderunitfirst">
-                    {data.slider.min} {data.slider.unit}
-                  </p>
-                  <p className="sliderunitsecond">
-                    {data.slider.max} {data.slider.unit}
-                  </p>
-                </div>
+              {/* Slider Input */}
+              <div className="vote-input-container">
+                <input
+                  type="range"
+                  step={data.slider.unit === "USD" ? "0.00001" : "1"}
+                  min={data.slider.min}
+                  max={data.slider.max}
+                  value={percent[data.id] || data.slider.default}
+                  className="vote-slider"
+                  onChange={(event) =>
+                    handlePercentChange(data.id, event.target.value)
+                  }
+                />
               </div>
+              <div className="vote-display-percent">
+                <p className="sliderunitfirst">
+                  {data.slider.min} {data.slider.unit}
+                </p>
+                <p className="sliderunitsecond">
+                  {data.slider.max} {data.slider.unit}
+                </p>
+              </div>
+            </div>
 
-              {/* Manual Input */}
-              {/* <div
+            {/* Manual Input */}
+            {/* <div
               className={`vote-manual-input-container ${
                 data.slider.unit === "USD"
                   ? "md:space-x-28"
                   : "md:space-x-32"
               }`}
             > */}
-              <div className="vote-manual-input-container">
-                <p className="vote-manual-input-p">Or manually enter amount:</p>
-                <div className="vote-input-container">
-                  <input
-                    type="number"
-                    step={data.slider.unit === "USD" ? "0.00001" : "1"}
-                    className="vote-input"
-                    value={percent[data.id] || data.slider.default}
-                    min={data.slider.min}
-                    max={data.slider.max}
-                    onChange={(event) =>
-                      handlePercentChange(data.id, event.target.value)
-                    }
-                  />
-                  <span
-                    className={`vote-percent-sign ${
-                      data.slider.unit !== "USD" ? "pl-5" : " pl-0 "
+            <div className="vote-manual-input-container">
+              <p className="vote-manual-input-p">Or manually enter amount:</p>
+              <div className="vote-input-container">
+                <input
+                  type="number"
+                  step={data.slider.unit === "USD" ? "0.00001" : "1"}
+                  className="vote-input"
+                  value={percent[data.id] || data.slider.default}
+                  min={data.slider.min}
+                  max={data.slider.max}
+                  onChange={(event) =>
+                    handlePercentChange(data.id, event.target.value)
+                  }
+                />
+                <span
+                  className={`vote-percent-sign ${data.slider.unit !== "USD" ? "pl-5" : " pl-0 "
                     }`}
-                  >
-                    {data.slider.unit}
-                  </span>
-                </div>
+                >
+                  {data.slider.unit}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
-        <p className="vote-bottom-instruction">
-          Almost done- Just check and <br /> 'Submit your Vote'
-        </p>
-        <div className="vote-btn-div">
-          <button
-            disabled={isSubmitting}
-            className="vote-btn"
-            onClick={handleSubmit}
-          >
-            {isSubmitting ? (
-              <ThreeDots
-                visible={true}
-                height="30"
-                width="40"
-                color="white"
-                radius="9"
-                ariaLabel="three-dots-loading"
-              />
-            ) : (
-              "Submit Vote"
-            )}
-          </button>
-        </div>
+          </div>
+        ))}
       </div>
-    );
-  }
-  if (isVote && formattedTimeLeft !== "0 mins") {
-    return <ThankYouCard remainingTime={formattedTimeLeft} type={"vote"} />;
-  }
-  if (isVote && formattedTimeLeft === "0 mins") {
-    return <RatifyCard />;
-  }
-  if (!isVote && formattedTimeLeft === "0 mins") {
-    return <RatifyCard />;
-  }
+      <p className="vote-bottom-instruction">
+        Almost done- Just check and <br /> 'Submit your Vote'
+      </p>
+      <div className="vote-btn-div">
+        <button
+          disabled={isSubmitting}
+          className="vote-btn"
+          onClick={handleSubmit}
+        >
+          {isSubmitting ? (
+            <ThreeDots
+              visible={true}
+              height="30"
+              width="40"
+              color="white"
+              radius="9"
+              ariaLabel="three-dots-loading"
+            />
+          ) : (
+            "Submit Vote"
+          )}
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Vote;
