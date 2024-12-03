@@ -10,19 +10,19 @@ import RatifyResult from "../ratifyResult/RatifyResult";
 
 const ThankYouCard = ({ remainingTime, type }) => {
   const navigate = useNavigate();
-  const convertToMinute = useConvertToMinutes(remainingTime) || 0; //remaining time (string) convert into minutes (decimal)
+  // const convertToMinute = useConvertToMinutes(remainingTime) || 0; //remaining time (string) convert into minutes (decimal)
   console.log("remainingTime =>", remainingTime);
-  console.log("converted to minuites => ", convertToMinute);
+  // console.log("converted to minuites => ", convertToMinute);
 
-  // const initialTime = convertToMinute;
+  // // const initialTime = convertToMinute;
 
-  const [initialTime, setInitialTime] = useState(convertToMinute);
+  // const [initialTime, setInitialTime] = useState(convertToMinute);
 
-  const formattedTime = useFormattedTimeLeft(initialTime);
+  // const formattedTime = useFormattedTimeLeft(initialTime);
 
-  useEffect(() => {
-    console.log("formatted time =>", formattedTime);
-  }, [formattedTime]);
+  // useEffect(() => {
+  //   console.log("formatted time =>", formattedTime);
+  // }, [formattedTime]);
 
   // Define texts conditionally based on the type prop
   const texts = {
@@ -63,7 +63,7 @@ const ThankYouCard = ({ remainingTime, type }) => {
     }`,
   };
 
-  if (formattedTime !== "0 mins") {
+  if (remainingTime !== "0 mins") {
     return (
       <div className="thank-you-main-card-div">
         <h1 className="thank-you-card-h1">{texts.header}</h1>

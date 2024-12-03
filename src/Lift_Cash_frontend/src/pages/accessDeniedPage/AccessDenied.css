@@ -1,0 +1,33 @@
+.access-denied-container {
+  @apply flex items-center w-full  justify-center h-screen bg-blue-500;
+}
+
+.access-denied-box {
+  @apply bg-white shadow-lg w-[90%] h-[90%] rounded-lg text-center;
+}
+.innerContainer {
+  @apply p-8 mt-[20%];
+}
+.icon-container {
+  @apply mb-6;
+}
+
+.access-icon {
+  @apply w-16 h-16 text-blue-500 mx-auto;
+}
+
+.error-title {
+  @apply text-xl font-bold text-blue-600 mb-4;
+}
+
+.error-message {
+  @apply text-gray-600 mb-4;
+}
+
+.navigation-text {
+  @apply text-gray-500 mb-4;
+}
+
+.navigation-button {
+  @apply px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-all;
+}

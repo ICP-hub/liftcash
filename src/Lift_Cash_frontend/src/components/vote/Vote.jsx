@@ -17,6 +17,7 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
   );
+  const [errors, setErrors] = useState({});
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeftInMinutes);
 
@@ -78,6 +79,19 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
 
   // Handle percentage change for each question
   const handlePercentChange = (id, value) => {
+    const question = voteQuestions.find((q) => q.id === id);
+
+    if (value < question.slider.min || value > question.slider.max) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [id]: `Value must be between ${question.slider.min} and ${question.slider.max} ${question.slider.unit}`,
+      }));
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [id]: null,
+      }));
+    }
     setPercent((prevPercent) => ({
       ...prevPercent,
       [`${id}`]: value, // Update only the relevant id's value
@@ -99,6 +113,15 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
   }, [formattedTimeLeft, isVote]);
 
   const handleSubmit = async () => {
+    for (const question of voteQuestions) {
+      if (
+        percent[question.id] < question.slider.min ||
+        percent[question.id] > question.slider.max
+      ) {
+        alert("Please correct invalid inputs before submitting.");
+        return;
+      }
+    }
     if (Object.keys(percent).length < voteQuestions.length) {
       alert("Please complete the Vote before submitting.");
       setIsSubmitting(false);
@@ -329,6 +352,11 @@ const Vote = ({ formattedTimeLeft: propsFormattedTimeLeft }) => {
                   </span>
                 </div>
               </div>
+              {errors[data.id] && (
+                <p className="text-red-600 text-center mb-4 font-medium text-lg">
+                  {errors[data.id]}
+                </p>
+              )}
             </div>
           ))}
         </div>

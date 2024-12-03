@@ -139,7 +139,7 @@ function Survey() {
   if (isSurveyCompleted && formattedTimeLeft !== "0 mins") {
     return <ThankYouCard remainingTime={formattedTimeLeft} type={"survey"} />;
   }
-  if (!isSurveyCompleted && formattedTimeLeft === "0 mins") {
+  if (formattedTimeLeft === "0 mins") {
     return <SurveyResult />;
   }
   if (!isSurveyCompleted && formattedTimeLeft !== "0 mins") {
