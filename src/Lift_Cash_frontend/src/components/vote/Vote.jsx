@@ -94,6 +94,7 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
       .then((response) => {
         // console.log("Vote Submitted Successfully:", response);
         toast.success("Vote Submitted Successfully!");
+        onSubmit();
         setIsSubmitting(false);
       })
       .catch((error) => {
