@@ -3,6 +3,7 @@ use crate::user_records::with_user_records;
 use candid::Principal;
 use ic_cdk::api::call::{call, CallResult};
 use ic_cdk_macros::update;
+use crate :: user_records::mutate_user_record;
 
 #[update]
 pub async fn distribute_rewards(weekly_issuance_percentage: f64) -> Result<String, String> {
@@ -80,22 +81,20 @@ fn update_user_record(user: Principal, reward: f64) -> Result<(), String> {
     let locked_amount = (reward * locking_percentage) / 100.0;
 
     // Access and modify user records
-    with_user_records(|records| {
-        records.borrow_mut()
-            .get_mut(&user)
-            .ok_or_else(|| "User record not found.".to_string())
-            .map(|record| {
-                // Update total promo
-                record.update_total_promo(reward);
+    mutate_user_record(user, |record| {
+        // Update total promo
+        record.update_total_promo(reward);
 
-                // Lock a portion of the rewards
-                record.update_locked_promo(locked_amount);
+        // Lock a portion of the rewards
+        record.update_locked_promo(locked_amount);
 
-                // Unlock the remaining rewards
-                record.update_unlocked_promo(reward - locked_amount);
-            })
+        // Unlock the remaining rewards
+        record.update_unlocked_promo(reward - locked_amount);
+
+        Ok(())
     })
 }
+
 
 async fn get_user_claim(principal: Principal) -> Result<Option<u8>, String> {
     let result: CallResult<(Option<u8>,)> = call(
