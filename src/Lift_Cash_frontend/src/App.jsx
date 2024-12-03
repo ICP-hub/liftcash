@@ -8,56 +8,67 @@ import Transferpage from "./pages/transferPage/Transferpage";
 import AfterAuthPage from "./pages/afterAuthPage/AfterAuthPage";
 import ActivitiesPage from "./pages/activitiesPage/ActivitiesPage";
 import ClaimAndAssets from "./pages/claimAndAssetsPage/ClaimAndAssets";
-
+import PageNotFound from "./pages/404 page/PageNotFound";
 
 function App() {
-
   const { isAuthenticated } = useAuthClient();
 
   return (
     <Routes>
-      <Route path="/" element={isAuthenticated
-        ? <AfterAuthPage>
-          <ActivitiesPage />
-        </AfterAuthPage>
-        : <LandingPage />}
+      <Route
+        path="/"
+        element={
+          isAuthenticated ? (
+            <AfterAuthPage>
+              <ActivitiesPage />
+            </AfterAuthPage>
+          ) : (
+            <LandingPage />
+          )
+        }
       />
       <Route path="/signup" element={<LoginPage />} />
-      <Route path="/claim"
+      <Route
+        path="/claim"
         element={
           <AfterAuthPage>
             <ClaimAndAssets />
           </AfterAuthPage>
         }
       />
-      <Route path="/activities"
+      <Route
+        path="/activities"
         element={
           <AfterAuthPage>
             <ActivitiesPage />
           </AfterAuthPage>
         }
       />
-      <Route path="/transfer"
+      <Route
+        path="/transfer"
         element={
           <AfterAuthPage>
             <Transferpage />
           </AfterAuthPage>
         }
       />
-      <Route path="/mint"
+      <Route
+        path="/mint"
         element={
           <AfterAuthPage>
             <MintPage />
           </AfterAuthPage>
         }
       />
-      <Route path="/info"
+      <Route
+        path="/info"
         element={
           <AfterAuthPage>
             <InfoPage />
           </AfterAuthPage>
         }
       />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 }

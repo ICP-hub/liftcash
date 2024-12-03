@@ -112,6 +112,22 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   };
 
   useEffect(() => {
+    if (formattedTimeLeft === "0 mins") {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("ratifyCompleted");
+      setIsRetifyComplete(false);
+    }
+  }, [formattedTimeLeft]);
+
+  useEffect(() => {
+    if (formattedTimeLeft === "0 mins" && isRetifyComplete) {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("ratifyCompleted");
+      setIsRetifyComplete(false);
+    }
+  }, [formattedTimeLeft, isRetifyComplete]);
+
+  useEffect(() => {
     getWeekleyResult();
     getVoteResult();
   }, []);
@@ -135,6 +151,7 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
       setVote(action);
       setIsSubmitting(false);
       setIsRatifyVote(true);
+      localStorage.setItem("ratifyCompleted", "true"); // Set flag in localStorage
       setIsRetifyComplete(true);
       setRemainingTime(formattedTimeLeft);
       onSubmit();
@@ -208,11 +225,8 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
           </button>
         )}
       </div>
-
-      {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
     </div>
   );
-
 };
 
 export default RatifyCard;

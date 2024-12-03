@@ -10,17 +10,16 @@ import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
-function Survey({ timeLeft, onSubmit, onTimeUp}) { 
-
+function Survey({ timeLeft, onSubmit, onTimeUp }) {
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
 
   const communityActor = useSelector(
-    (state) => state?.actors?.actors?.communityActor
+    (state) => state?.actors?.actors?.communityActor,
   );
 
   useEffect(() => {
     console.log("Formated time in S: ", formattedTimeLeft);
-    if(formattedTimeLeft === "0 mins"){
+    if (formattedTimeLeft === "0 mins") {
       onTimeUp();
     }
   }, [formattedTimeLeft]);
@@ -39,7 +38,7 @@ function Survey({ timeLeft, onSubmit, onTimeUp}) {
         ...prev,
         [`q${id}`]: [value, type],
       }),
-      []
+      [],
     );
   };
 
@@ -97,9 +96,7 @@ function Survey({ timeLeft, onSubmit, onTimeUp}) {
         </p>
         <div className="container-survey-time">
           Survey Closes in:{" "}
-          <span className="container-survey-timeleft">
-            {formattedTimeLeft}
-          </span>
+          <span className="container-survey-timeleft">{formattedTimeLeft}</span>
         </div>
         <p className="container-survey-secondary-description">
           This Survey helps the community of Lift Cash participants know what

@@ -12,6 +12,7 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
   );
+  const [errors, setErrors] = useState({});
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
 
@@ -20,6 +21,7 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
   }, [communityActor]);
 
   const [percent, setPercent] = useState({});
+
   const [weeklyVoteResult, setWeeklyVoteResult] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -34,13 +36,49 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
 
   // Handle percentage change for each question
   const handlePercentChange = (id, value) => {
+    const question = voteQuestions.find((q) => q.id === id);
+
+    if (value < question.slider.min || value > question.slider.max) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [id]: `Value must be between ${question.slider.min} and ${question.slider.max} ${question.slider.unit}`,
+      }));
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [id]: null,
+      }));
+    }
     setPercent((prevPercent) => ({
       ...prevPercent,
       [`${id}`]: value, // Update only the relevant id's value
     }));
   };
+  useEffect(() => {
+    if (formattedTimeLeft === "0 mins") {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("voteCompleted");
+      setIsVote(false);
+    }
+  }, [formattedTimeLeft]);
+  useEffect(() => {
+    if (formattedTimeLeft === "0 mins" && isVote) {
+      // Remove localStorage when time runs out
+      localStorage.removeItem("voteCompleted");
+      setIsVote(false);
+    }
+  }, [formattedTimeLeft, isVote]);
 
   const handleSubmit = async () => {
+    for (const question of voteQuestions) {
+      if (
+        percent[question.id] < question.slider.min ||
+        percent[question.id] > question.slider.max
+      ) {
+        alert("Please correct invalid inputs before submitting.");
+        return;
+      }
+    }
     if (Object.keys(percent).length < voteQuestions.length) {
       alert("Please complete the Vote before submitting.");
       setIsSubmitting(false);
@@ -269,10 +307,16 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
                   {data.slider.unit}
                 </span>
               </div>
+              {errors[data.id] && (
+                <p className="text-red-600 text-center mb-4 font-medium text-lg">
+                  {errors[data.id]}
+                </p>
+              )}
             </div>
           </div>
         ))}
       </div>
+
       <p className="vote-bottom-instruction">
         Almost done- Just check and <br /> 'Submit your Vote'
       </p>
