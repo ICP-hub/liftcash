@@ -10,8 +10,8 @@ const Loading = () => {
           height="150"
           width="150"
           color="#00A1ED"
-          //   secondaryColor="#4fa94d"
-          radius="15"
+            // secondaryColor="#4fa94d"
+          radius="20"
           ariaLabel="mutating-dots-loading"
           //   wrapperStyle={{}}
           //   wrapperClass=""

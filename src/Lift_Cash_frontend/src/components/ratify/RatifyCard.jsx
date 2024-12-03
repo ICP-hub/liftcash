@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./Ratifycard.css";
 import { voteData } from "../../pages/activitiesPage/constants/Ratify";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-import RatifyResult from "../ratifyResult/RatifyResult";
 import { useSelector } from "react-redux";
 
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
-import ThankYouCard from "../thankYouCard/ThankYouCard";
 
 import { ThreeDots } from "react-loader-spinner";
 import { toast } from "react-toastify";
@@ -112,22 +110,6 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   };
 
   useEffect(() => {
-    if (formattedTimeLeft === "0 mins") {
-      // Remove localStorage when time runs out
-      localStorage.removeItem("ratifyCompleted");
-      setIsRetifyComplete(false);
-    }
-  }, [formattedTimeLeft]);
-
-  useEffect(() => {
-    if (formattedTimeLeft === "0 mins" && isRetifyComplete) {
-      // Remove localStorage when time runs out
-      localStorage.removeItem("ratifyCompleted");
-      setIsRetifyComplete(false);
-    }
-  }, [formattedTimeLeft, isRetifyComplete]);
-
-  useEffect(() => {
     getWeekleyResult();
     getVoteResult();
   }, []);
@@ -148,12 +130,7 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
     try {
       const result = await communityActor.submit_ratification(passData);
       console.log("result =>", result);
-      setVote(action);
       setIsSubmitting(false);
-      setIsRatifyVote(true);
-      localStorage.setItem("ratifyCompleted", "true"); // Set flag in localStorage
-      setIsRetifyComplete(true);
-      setRemainingTime(formattedTimeLeft);
       onSubmit();
       toast.success("Submition Successfully");
     } catch (error) {
@@ -167,7 +144,7 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
     <div className="ratify-main-div">
       <h1 className="ratify-title">Welcome to the Ratify</h1>
       <div className="container-survey-time">
-        Survey Closes in:{" "}
+        Time Left :{" "}
         <span className="container-survey-timeleft">{formattedTimeLeft}</span>
       </div>
       {voteData?.questions?.map((item, index) => (
@@ -180,9 +157,6 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
                 {weeklyVoteResult[index]}%
               </span>
             </p>
-            {/* <span className="ratify-indicator">
-          <FaArrowDown />
-        </span> */}
           </div>
           <div className="ratify-vote-lable-odd">
             <p className="">
@@ -190,7 +164,8 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
               <span className="ratify-vote-value">{voteResult[index]}%</span>
             </p>
             <span className="ratify-indicator">
-              <FaArrowUp color="green" />
+              {/* <FaArrowUp color="green" />- */}
+              {weeklyVoteResult[index] > voteResult[index] ? <FaArrowDown color="red" /> : <FaArrowUp color="green" />}
             </span>
           </div>
         </div>

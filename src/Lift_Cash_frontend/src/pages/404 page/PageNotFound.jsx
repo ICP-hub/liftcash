@@ -11,7 +11,7 @@ const PageNotFound = () => {
         The page you are looking for might have been removed had its name
         changed or is temporairly unavailable.
       </div>
-      <button onClick={() => navigate("/activities")} className="button">
+      <button onClick={() => navigate("/")} className="button">
         Go to Homepage
       </button>
     </div>

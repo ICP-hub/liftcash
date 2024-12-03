@@ -67,7 +67,7 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
       localStorage.removeItem("voteCompleted");
       setIsVote(false);
     }
-  }, [formattedTimeLeft, isVote]);
+  }, [formattedTimeLeft]);
 
   const handleSubmit = async () => {
     for (const question of voteQuestions) {

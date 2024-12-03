@@ -6,7 +6,7 @@
   @apply bg-white shadow-lg w-[90%] h-[90%] rounded-lg text-center;
 }
 .innerContainer {
-  @apply p-8 mt-[20%];
+  @apply p-8 mt-[11%];
 }
 .icon-container {
   @apply mb-6;

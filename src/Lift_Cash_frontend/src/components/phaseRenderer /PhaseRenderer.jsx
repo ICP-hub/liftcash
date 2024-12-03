@@ -5,6 +5,7 @@ import Vote from '../vote/Vote';
 import RatifyCard from '../ratify/RatifyCard';
 import SurveyResult from '../surveyResult/SurveyResult';
 import RatifyResult from '../ratifyResult/RatifyResult';
+import Loading from '../loading/Loading';
 
 function PhaseRenderer({ phase, onSubmission, onTimeUp }) {
     if (phase.submitted) {
@@ -22,7 +23,7 @@ function PhaseRenderer({ phase, onSubmission, onTimeUp }) {
         case 'RatifyResults':
           return <RatifyResult timeLeft={phase.timeLeft} ononTimeUp={onTimeUp} />;
         default:
-          return <div>Loading...</div>;
+          return <Loading />
       }
 }
 

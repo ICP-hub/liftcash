@@ -5,18 +5,12 @@ import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent } from "@dfinity/agent";
 import { createActor as createCommunityActor } from "../../../declarations/Community_Backend";
 import { createActor as createEconomyActor } from "../../../declarations/Economy_Backend";
-// import { createActor as createLiftActor } from "../../../declarations/LedgerDid/lift";
-// import { createActor as createPromoActor } from "../../../declarations/LedgerDid/promo";
 
 const AuthContext = createContext();
 
 export const useAuthClient = () => {
 
   const dispatch = useDispatch();
-
-
-  // const actor = useSelector(state => state?.actors?.actors);
-  // console.log("actor : ", actor);
 
 
   const [authClient, setAuthClient] = useState(null);
