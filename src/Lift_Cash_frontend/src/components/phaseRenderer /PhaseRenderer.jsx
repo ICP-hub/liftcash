@@ -21,7 +21,7 @@ function PhaseRenderer({ phase, onSubmission, onTimeUp }) {
         case 'SurveyResults':
           return <SurveyResult timeLeft={phase.timeLeft} onTimeUp={onTimeUp} />;
         case 'RatifyResults':
-          return <RatifyResult timeLeft={phase.timeLeft} ononTimeUp={onTimeUp} />;
+          return <RatifyResult timeLeft={phase.timeLeft} onTimeUp={onTimeUp} />;
         default:
           return <Loading />
       }

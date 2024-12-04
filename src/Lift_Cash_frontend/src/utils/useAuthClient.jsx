@@ -44,31 +44,16 @@ export const useAuthClient = () => {
           agent: agent,
         }
       );
-      let economoyActor = createEconomyActor(
+      let economyActor = createEconomyActor(
         process.env.CANISTER_ID_ECONOMY_BACKEND,
         {
           agent: agent,
         }
-      );
-
-      // let liftLedgerActor = createLiftActor(
-      //   process.env.CANISTER_ID_LIFT_LEDGER_CANISTER,
-      //   {
-      //     agent: agent,
-      //   }
-      // );
-      // let promoLedgerActor = createPromoActor(
-      //   process.env.CANISTER_ID_PROMO_LEDGER_CANISTER,
-      //   {
-      //     agent: agent,
-      //   }
-      // );
+      );;
 
       dispatch(setActors({
         communityActor: communityActor,
-        economyActor: economoyActor,
-        // liftLedgerActor: liftLedgerActor,
-        // promoLedgerActor: promoLedgerActor
+        economyActor: economyActor, economyActor
       }))
     }
     return true;

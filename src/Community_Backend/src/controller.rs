@@ -251,6 +251,8 @@ pub fn heartbeat() {
                 state.phase_start_time = now;
             },
             Phase::RatifyResults if elapsed >= RESULTS_DURATION => {
+                // Trigger the reward mechanism before moving to the next phase
+                trigger_reward_mechanism();
                 start_new_week();
                 state.current_phase = Phase::Survey;
                 state.phase_start_time = now;
@@ -259,6 +261,12 @@ pub fn heartbeat() {
         }
     });
 }
+
+#[query]
+pub fn trigger_reward_mechanism() {
+    ic_cdk::println!("Triggering reward mechanism: Distributing rewards for the week.");
+}
+
 
 #[query]
 pub fn get_current_phase_info() -> (Phase, u64) {

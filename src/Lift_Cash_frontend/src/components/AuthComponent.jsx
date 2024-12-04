@@ -7,42 +7,69 @@ import { useSelector } from "react-redux";
 
 export default function AuthComponent({ closeModal }) {
   const navigate = useNavigate();
-  const { login } = useAuthClient();
+  const { login, principal } = useAuthClient();
   const [isRegistered, setIsRegistered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState("");
 
   const communityActor = useSelector((state) => state?.actors?.actors?.communityActor);
+  const economyActor = useSelector((state) => state?.actors?.actors?.economyActor);
 
   useEffect(() => {
-    if (communityActor) {
-      checkUser();
+    if (communityActor && economyActor) {
+      checkUserAndRecords();
     }
-  }, [communityActor]);
+  }, [communityActor, economyActor]);
 
-  async function checkUser() {
+  async function checkUserAndRecords() {
     try {
-      await communityActor.get_user()
-        .then((response) => {
-          console.log("Username fetched successfully: ", response[0][1]);
-          localStorage.setItem("username", response[0][1]);
-          setIsRegistered(true);
-          closeModal();
-          console.log("Authenticated successfully, navigating...");
-          navigate("/activities");
-        })
-        .catch((error) => {
-          console.warn("Error while fetching username: ", error);
-        });
+      // Fetch user record from economy canister
+      const userRecords = await economyActor.fetch_all_user_records();
+      const userFound = userRecords.some((record) => record[0] === principal);
+
+      if (!userFound) {
+        console.log("User record not found. Creating a new record...");
+        await createUserRecords();
+      } else {
+        console.log("User record exists.");
+      }
+
+      // Fetch username from community canister
+      const usernameResponse = await communityActor.get_user();
+      if (usernameResponse && usernameResponse.length > 0) {
+        const fetchedUsername = usernameResponse[0][1];
+        console.log("Username fetched successfully: ", fetchedUsername);
+        localStorage.setItem("username", fetchedUsername);
+        setIsRegistered(true);
+        closeModal();
+        navigate("/activities");
+      } else {
+        console.log("Username not found. Opening registration modal...");
+        setIsModalOpen(true);
+      }
     } catch (error) {
-      console.error("Error while fetching username: ", error);
+      console.error("Error during user and record checks: ", error);
+    }
+  }
+
+  async function createUserRecords() {
+    try {
+      await economyActor.create_user_record()
+      .then((response) => {
+        console.log("User record created successfully: ", response);
+      })
+      .catch((error) => {
+        console.log("Error while creating user record: ", error);
+      });
+      
+    } catch (error) {
+      console.error("Error while creating user record: ", error);
     }
   }
 
   async function authenticate() {
     try {
       await login();
-
       if (!isRegistered) {
         setIsModalOpen(true);
       }

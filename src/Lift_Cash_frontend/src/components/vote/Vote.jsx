@@ -2,8 +2,7 @@ import "./Vote.css";
 import React, { useEffect, useState } from "react";
 import { voteQuestions } from "../../pages/activitiesPage/constants/Vote";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
-import ThankYouCard from "../thankYouCard/ThankYouCard";
-import { useSelector } from "react-redux";
+  import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
 
@@ -58,14 +57,6 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
     if (formattedTimeLeft === "0 mins") {
       // Remove localStorage when time runs out
       localStorage.removeItem("voteCompleted");
-      setIsVote(false);
-    }
-  }, [formattedTimeLeft]);
-  useEffect(() => {
-    if (formattedTimeLeft === "0 mins" && isVote) {
-      // Remove localStorage when time runs out
-      localStorage.removeItem("voteCompleted");
-      setIsVote(false);
     }
   }, [formattedTimeLeft]);
 
@@ -209,12 +200,6 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
   return (
     <div className="vote-main-div">
       <div className="vote-header-div">
-        {/* <p
-          className="navigate-to-survey-result"
-          onClick={() => setIsBackToSurveyResult(true)}
-        >
-          Back to survey results
-        </p> */}
         <h1 className="vote-title">Welcome to the Vote</h1>
         <p className="vote-sub-title">
           Complete for 70% of your weekly Claim
@@ -277,15 +262,6 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
                 </p>
               </div>
             </div>
-
-            {/* Manual Input */}
-            {/* <div
-              className={`vote-manual-input-container ${
-                data.slider.unit === "USD"
-                  ? "md:space-x-28"
-                  : "md:space-x-32"
-              }`}
-            > */}
             <div className="vote-manual-input-container">
               <p className="vote-manual-input-p">Or manually enter amount:</p>
               <div className="vote-input-container">
