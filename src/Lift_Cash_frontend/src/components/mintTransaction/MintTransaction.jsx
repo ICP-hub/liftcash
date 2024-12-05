@@ -79,7 +79,7 @@ const MintTransaction = () => {
           </select>
         </div>
         <hr className="mint-transaction-hr" />
-        {/* Mint FREEOS Button */}
+        {/* Mint LIFTCASH Button */}
         <div className="mint-transaction-btn-div">
           <button
             className="mint-transaction-submit-btn"

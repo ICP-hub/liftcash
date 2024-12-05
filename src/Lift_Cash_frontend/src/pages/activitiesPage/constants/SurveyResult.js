@@ -16,7 +16,7 @@ export const surveyResults = [
   },
   {
     id: 3,
-    question: "Where do you feel the FREEOS market is heading?",
+    question: "Where do you feel the LIFTCASH market is heading?",
     results: [
       { label: "Growing (Bull Market)", percentage: "42.62%" },
       { label: "Shrinking (Bear Market)", percentage: "21.31%" },
@@ -25,7 +25,7 @@ export const surveyResults = [
   },
   {
     id: 4,
-    question: "How long before the FREEOS market changes direction?",
+    question: "How long before the LIFTCASH market changes direction?",
     results: [{ label: "13 Months (average)" }],
   },
   {

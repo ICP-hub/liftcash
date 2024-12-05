@@ -4,6 +4,7 @@ import icpLogo from "../assets/images/ICP.png";
 import { useEffect, useState } from "react";
 import Modal from "./modal/Modal.jsx";
 import { useSelector } from "react-redux";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function AuthComponent({ closeModal }) {
   const navigate = useNavigate();
@@ -11,8 +12,11 @@ export default function AuthComponent({ closeModal }) {
   const [isRegistered, setIsRegistered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const communityActor = useSelector((state) => state?.actors?.actors?.communityActor);
+  const communityActor = useSelector(
+    (state) => state?.actors?.actors?.communityActor
+  );
 
   useEffect(() => {
     if (communityActor) {
@@ -22,7 +26,8 @@ export default function AuthComponent({ closeModal }) {
 
   async function checkUser() {
     try {
-      await communityActor.get_user()
+      await communityActor
+        .get_user()
         .then((response) => {
           console.log("Username fetched successfully: ", response[0][1]);
           localStorage.setItem("username", response[0][1]);
@@ -53,6 +58,7 @@ export default function AuthComponent({ closeModal }) {
 
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     if (username === "") {
       alert("Username cannot be empty");
       return;
@@ -64,6 +70,7 @@ export default function AuthComponent({ closeModal }) {
       localStorage.setItem("username", username);
       setIsRegistered(true);
       setIsModalOpen(false);
+      setIsSubmitting(false);
 
       console.log("Username registered successfully:", username);
       navigate("/activities");
@@ -83,7 +90,9 @@ export default function AuthComponent({ closeModal }) {
       </button>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h2 className="text-lg font-semibold mb-4 text-primary">Register Username</h2>
+        <h2 className="text-lg font-semibold mb-4 text-primary">
+          Register Username
+        </h2>
         <form onSubmit={handleUsernameSubmit} className="space-y-8">
           <label className="block">
             <input
@@ -95,11 +104,24 @@ export default function AuthComponent({ closeModal }) {
               required
             />
           </label>
+
           <button
+            disabled={isSubmitting}
             type="submit"
-            className="btn-primary font-semibold text-white bg-primary hover:bg-blue-500 rounded-lg py-2 w-full"
+            className="btn-primary flex justify-center font-semibold text-white bg-primary hover:bg-blue-500 rounded-lg py-2 w-full"
           >
-            Submit
+            {isSubmitting ? (
+              <ThreeDots
+                visible={true}
+                height="30"
+                width="40"
+                color="white"
+                radius="9"
+                ariaLabel="three-dots-loading"
+              />
+            ) : (
+              "Submit "
+            )}
           </button>
         </form>
       </Modal>

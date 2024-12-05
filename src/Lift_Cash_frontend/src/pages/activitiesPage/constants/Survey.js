@@ -27,7 +27,7 @@ export const survey = [
     id: 3,
     title: "Economy Sentiment",
     description:
-      "Do you feel the Freeos economy is growing (bull market), shrinking (bear market), or neither (going sideways)?",
+      "Do you feel the liftcash economy is growing (bull market), shrinking (bear market), or neither (going sideways)?",
     type: "radiobutton",
     options: [
       { label: "Growing (bull market)", value: "growing" },
@@ -39,7 +39,7 @@ export const survey = [
     id: 4,
     title: "Market Change of Direction",
     description:
-      "How long will the above Freeos market last before it changes direction?",
+      "How long will the above liftcash market last before it changes direction?",
     type: "slider",
     range: {
       min: 1,

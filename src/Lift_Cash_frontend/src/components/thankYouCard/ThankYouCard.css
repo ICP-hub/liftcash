@@ -1,5 +1,5 @@
 .thank-you-main-card-div {
-  @apply w-full max-w-lg mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 text-center;
+  @apply w-full max-w-lg mx-auto mb-8 bg-white rounded-lg border border-blue-500 shadow-md mt-8 text-center;
 }
 .thank-you-card-h1 {
   @apply mt-10 font-bold text-3xl;

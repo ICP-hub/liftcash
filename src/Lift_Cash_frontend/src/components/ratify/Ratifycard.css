@@ -46,3 +46,11 @@
 .ratify-note {
   @apply text-sm text-center text-red-600 my-5;
 }
+
+.messageContainer {
+  @apply bg-blue-400 px-4 gap-1 py-8 flex flex-col justify-center items-center;
+}
+
+.textmessage {
+  @apply font-semibold text-lg text-red-500;
+}
