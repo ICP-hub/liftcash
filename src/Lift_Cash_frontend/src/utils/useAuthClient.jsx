@@ -5,19 +5,11 @@ import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent } from "@dfinity/agent";
 import { createActor as createCommunityActor } from "../../../declarations/Community_Backend";
 import { createActor as createEconomyActor } from "../../../declarations/Economy_Backend";
-// import { createActor as createLiftActor } from "../../../declarations/LedgerDid/lift";
-// import { createActor as createPromoActor } from "../../../declarations/LedgerDid/promo";
 
 const AuthContext = createContext();
 
 export const useAuthClient = () => {
-
   const dispatch = useDispatch();
-
-
-  // const actor = useSelector(state => state?.actors?.actors);
-  // console.log("actor : ", actor);
-
 
   const [authClient, setAuthClient] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -50,32 +42,20 @@ export const useAuthClient = () => {
           agent: agent,
         }
       );
-      let economoyActor = createEconomyActor(
+      let economyActor = createEconomyActor(
         process.env.CANISTER_ID_ECONOMY_BACKEND,
         {
           agent: agent,
         }
       );
 
-      // let liftLedgerActor = createLiftActor(
-      //   process.env.CANISTER_ID_LIFT_LEDGER_CANISTER,
-      //   {
-      //     agent: agent,
-      //   }
-      // );
-      // let promoLedgerActor = createPromoActor(
-      //   process.env.CANISTER_ID_PROMO_LEDGER_CANISTER,
-      //   {
-      //     agent: agent,
-      //   }
-      // );
-
-      dispatch(setActors({
-        communityActor: communityActor,
-        economyActor: economoyActor,
-        // liftLedgerActor: liftLedgerActor,
-        // promoLedgerActor: promoLedgerActor
-      }))
+      dispatch(
+        setActors({
+          communityActor: communityActor,
+          economyActor: economyActor,
+          economyActor,
+        })
+      );
     }
     return true;
   };
@@ -93,7 +73,7 @@ export const useAuthClient = () => {
         if (
           authClient.isAuthenticated() &&
           (await authClient.getIdentity().getPrincipal().isAnonymous()) ===
-          false
+            false
         ) {
           resolve(clientInfo(authClient));
         } else {

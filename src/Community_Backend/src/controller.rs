@@ -8,8 +8,7 @@ use candid::Principal;
 use crate::STATE;
 use crate::Phase;
 use crate::constants::{PHASE_DURATION,RESULTS_DURATION};
-use crate::state;
-// use crate::state::calculate_survey_results;
+
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
     VOTING_SYSTEM_CELL.with(|cell| {
@@ -101,10 +100,11 @@ pub fn submit_ratification(ratify: bool) -> Result<(), String> {
 }
 
 #[query]
-pub fn calculate_total_claim() -> Option<u8> {
+pub fn calculate_total_claim(principal: Principal) -> Option<u8> {
+
     read_voting_system(|voting_system| {
         // voting_system.calculate_total_claim(user_id)
-        voting_system.calculate_total_claim(caller())
+        voting_system.calculate_total_claim(principal)
     })
 }
 
@@ -251,6 +251,8 @@ pub fn heartbeat() {
                 state.phase_start_time = now;
             },
             Phase::RatifyResults if elapsed >= RESULTS_DURATION => {
+                // Trigger the reward mechanism before moving to the next phase
+                trigger_reward_mechanism();
                 start_new_week();
                 state.current_phase = Phase::Survey;
                 state.phase_start_time = now;
@@ -259,6 +261,12 @@ pub fn heartbeat() {
         }
     });
 }
+
+#[query]
+pub fn trigger_reward_mechanism() {
+    ic_cdk::println!("Triggering reward mechanism: Distributing rewards for the week.");
+}
+
 
 #[query]
 pub fn get_current_phase_info() -> (Phase, u64) {
@@ -324,4 +332,11 @@ pub fn whoiam() -> Principal {
     //     voting_system.whoiam()
     // })
     api::caller()
+}
+
+#[update]
+pub fn get_all_claim_percentages() ->  Vec< (Principal, u8)> {
+    read_voting_system(|voting_system| {
+        voting_system.get_all_claim_percentages()
+    })
 }

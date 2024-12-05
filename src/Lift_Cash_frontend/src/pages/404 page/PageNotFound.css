@@ -1,5 +1,5 @@
 .main {
-  @apply bg-white mt-20 flex flex-col gap-4 items-center justify-center;
+  @apply bg-white flex flex-col gap-4 items-center justify-center;
 }
 /* .masked-text {
   font-size: 24rem;
@@ -33,5 +33,5 @@
   @apply text-sm;
 }
 .button {
-  @apply bg-[#00A1ED] text-center text-white font-semibold border-none p-2 rounded-lg;
+  @apply bg-[#00A1ED] mt-12 text-center text-white font-semibold border-none p-2 rounded-lg;
 }
