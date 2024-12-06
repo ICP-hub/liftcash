@@ -135,4 +135,4 @@ async fn get_all_claims() -> Result<Vec<(Principal, u8)>, String> {
 pub async fn test_intercall(input : String) -> String{
     ic_cdk::println!("Inter canister call made to RMech: {:?}", input);
     input
-}
+} 

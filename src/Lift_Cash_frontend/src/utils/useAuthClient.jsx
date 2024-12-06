@@ -53,7 +53,6 @@ export const useAuthClient = () => {
         setActors({
           communityActor: communityActor,
           economyActor: economyActor,
-          economyActor,
         })
       );
     }

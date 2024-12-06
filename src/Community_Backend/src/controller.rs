@@ -17,7 +17,7 @@ use std::collections::HashMap;
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
     VOTING_SYSTEM_CELL.with(|cell| {
         let voting_system = cell.borrow();
-        f(voting_system.get()) 
+        f(voting_system.get())
     })
 }
 
@@ -31,27 +31,28 @@ pub fn mutate_voting_system<R>(f: impl FnOnce(&mut VotingSystem) -> R) -> R {
         let mut state = cell.borrow_mut();
         let mut voting_system = state.get().clone(); // Make sure to clone if needed for mutability
         let result = f(&mut voting_system);
-        state.set(voting_system).expect("Failed to update VotingSystem in stable memory"); // Save the new state
+        state
+            .set(voting_system)
+            .expect("Failed to update VotingSystem in stable memory"); // Save the new state
         result
     })
 }
 
-
 #[init]
 pub fn init() {
-
     VOTING_SYSTEM_CELL.with(|cell| {
         *cell.borrow_mut() = StableCell::init(
             MEMORY_MANAGER.with(|mm| mm.borrow().get(VOTING_SYSTEM_MEMORY_ID)),
             VotingSystem::default(),
-        ).expect("Failed to initialize VotingSystem");
+        )
+        .expect("Failed to initialize VotingSystem");
     });
     mutate_voting_system(|voting_system| {
-        voting_system.start_new_week(); 
+        voting_system.start_new_week();
     });
     STATE.with(|state| {
         let mut state = state.borrow_mut();
-        state.current_phase = Phase::Survey; 
+        state.current_phase = Phase::Survey;
         state.phase_start_time = ic_cdk::api::time();
     });
 }
@@ -75,9 +76,7 @@ pub fn submit_survey(answers: HashMap<String, SurveyResponse>) -> Result<(), Str
     if current_phase != Phase::Survey {
         return Err("Survey submissions are only allowed during the Survey phase.".to_string());
     }
-    mutate_voting_system(|voting_system| {
-        voting_system.submit_survey(caller(), answers)
-    })
+    mutate_voting_system(|voting_system| voting_system.submit_survey(caller(), answers))
 }
 
 #[update]
@@ -87,9 +86,7 @@ pub fn submit_vote(votes: HashMap<String, VoteResponse>) -> Result<(), String> {
     if current_phase != Phase::Vote {
         return Err("Vote submissions are only allowed during the vote phase.".to_string());
     }
-    mutate_voting_system(|voting_system| {
-        voting_system.submit_vote(caller(), votes)
-    })
+    mutate_voting_system(|voting_system| voting_system.submit_vote(caller(), votes))
 }
 
 #[update]
@@ -98,14 +95,11 @@ pub fn submit_ratification(ratify: bool) -> Result<(), String> {
     if current_phase != Phase::Ratify {
         return Err("Ratify submissions are only allowed during the Ratify phase.".to_string());
     }
-    mutate_voting_system(|voting_system| {
-        voting_system.submit_ratification(caller(), ratify)
-    })
+    mutate_voting_system(|voting_system| voting_system.submit_ratification(caller(), ratify))
 }
 
 #[query]
 pub fn calculate_total_claim(principal: Principal) -> Option<u8> {
-
     read_voting_system(|voting_system| {
         // voting_system.calculate_total_claim(user_id)
         voting_system.calculate_total_claim(principal)
@@ -151,7 +145,11 @@ pub fn get_ratification_results() -> HashMap<String, u64> {
 pub fn get_weekly_survey_results() -> Vec<(u64, Vec<(String, String)>)> {
     mutate_voting_system(|voting_system| {
         let mut results = Vec::new();
-        let mut weeks: Vec<u64> = voting_system.weekly_survey_results.keys().cloned().collect();
+        let mut weeks: Vec<u64> = voting_system
+            .weekly_survey_results
+            .keys()
+            .cloned()
+            .collect();
         weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
         for week in weeks.iter().take(4) {
             if let Some(week_results) = voting_system.weekly_survey_results.get(week) {
@@ -179,9 +177,7 @@ pub fn get_weekly_vote_results() -> HashMap<u64, HashMap<String, VoteResponse>> 
 
 #[query]
 pub fn get_weekly_ratification_counts() -> HashMap<u64, HashMap<String, u64>> {
-    read_voting_system(|voting_system| {
-        voting_system.weekly_ratification_counts.clone()
-    })
+    read_voting_system(|voting_system| voting_system.weekly_ratification_counts.clone())
 }
 
 #[query]
@@ -209,18 +205,17 @@ pub fn heartbeat() {
         }
 
         let elapsed = now - state.phase_start_time;
-        
 
         let phase_duration = match state.current_phase {
             Phase::Survey | Phase::Vote | Phase::Ratify => PHASE_DURATION,
             Phase::SurveyResults | Phase::RatifyResults => RESULTS_DURATION,
-            _ => 0, 
+            _ => 0,
         };
 
         // Calculate remaining time for the current phase
         let remaining_time = phase_duration - elapsed;
         state.remaining_time = remaining_time;
-           
+
         match state.current_phase {
             Phase::Survey if elapsed >= PHASE_DURATION => {
                 mutate_voting_system(|voting_system| {
@@ -229,11 +224,11 @@ pub fn heartbeat() {
                 });
                 state.current_phase = Phase::SurveyResults;
                 state.phase_start_time = now;
-            },
+            }
             Phase::SurveyResults if elapsed >= RESULTS_DURATION => {
                 state.current_phase = Phase::Vote;
                 state.phase_start_time = now;
-            },
+            }
             Phase::Vote if elapsed >= PHASE_DURATION => {
                 mutate_voting_system(|voting_system| {
                     let week = voting_system.last_week;
@@ -241,7 +236,7 @@ pub fn heartbeat() {
                 });
                 state.current_phase = Phase::Ratify;
                 state.phase_start_time = now;
-            },
+            }
             // Phase::VoteResults if elapsed >= RESULTS_DURATION => {
             //     state.current_phase = Phase::Ratify;
             //     state.phase_start_time = now;
@@ -253,14 +248,15 @@ pub fn heartbeat() {
                 });
                 state.current_phase = Phase::RatifyResults;
                 state.phase_start_time = now;
-            },
+            }
             Phase::RatifyResults if elapsed >= RESULTS_DURATION => {
                 start_new_week();
-                // Trigger the reward mechanism before moving to the next phase
-                trigger_reward_mechanism();
+                ic_cdk::spawn(async move {
+                    trigger_reward_mechanism().await;
+                });
                 state.current_phase = Phase::Survey;
                 state.phase_start_time = now;
-            },
+            }
             _ => {}
         }
     });
@@ -301,19 +297,35 @@ pub async fn trigger_reward_mechanism() -> () {
     match sorted_data.last() {
         Some((week, votes)) => {
             ic_cdk::println!("Last week: {}", week);
-    
+
             // Fetch the first item from the votes map
             match votes.iter().next() {
                 Some((question, response)) => {
                     match response {
                         VoteResponse::PercentageVote(value) => {
-                            ic_cdk::println!(
-                                "First question: {}, Value: {}",
-                                question,
-                                value
-                            );
+                            ic_cdk::println!("First question: {}, Value: {}", question, value);
 
                             // Inter-Canister call to the Economics Canister
+                            let economics_canister_id =
+                                Principal::from_text("bd3sg-teaaa-aaaaa-qaaba-cai").unwrap();
+
+                            let result: CallResult<(String,)> = call(
+                                economics_canister_id, //get the id from environment variable
+                                "test_intercall",
+                                ("Hello from Voting Canister!".to_string(),),
+                            )
+                            .await;
+
+                            match result {
+                                Ok((data,)) => {
+                                    ic_cdk::println!("Inter-Canister call result: {}", data)
+                                }
+                                Err((code, msg)) => ic_cdk::println!(
+                                    "Error calling canister: code {:?}, message: {}",
+                                    code,
+                                    msg
+                                ),
+                            }
                         }
                     }
                 }
@@ -325,7 +337,7 @@ pub async fn trigger_reward_mechanism() -> () {
         None => {
             ic_cdk::println!("No data available.");
         }
-    }    
+    }
 }
 
 #[query]
