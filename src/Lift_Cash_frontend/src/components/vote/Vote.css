@@ -1,5 +1,5 @@
 .vote-main-div {
-  @apply max-w-md mb-6  mx-auto bg-white rounded-lg  border border-blue-500 shadow-md mt-8 overflow-hidden;
+  @apply max-w-lg mb-6  mx-auto bg-white rounded-lg  border border-blue-500 shadow-md mt-8 overflow-hidden;
 }
 .navigate-to-survey-result {
   @apply p-4 text-blue-400 hover:underline cursor-pointer;
