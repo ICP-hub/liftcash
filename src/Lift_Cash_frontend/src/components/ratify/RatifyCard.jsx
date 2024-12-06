@@ -15,6 +15,7 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   );
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
+  const [isParticipated, setIsParticipated] = useState(true);
 
   // const PassValue = propsFormattedTimeLeft;
 
@@ -38,9 +39,9 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
     }
   };
 
-  useEffect(() => {
-    fetchUserParticipation();
-  }, []);
+  // useEffect(() => {
+  //   fetchUserParticipation();
+  // }, []);
 
   useEffect(() => {
     console.log("Formated time in Ratify Card ::: ", formattedTimeLeft);
@@ -143,6 +144,7 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   };
 
   useEffect(() => {
+    fetchUserParticipation();
     getWeekleyResult();
     getVoteResult();
   }, []);
@@ -176,7 +178,7 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
     <div className="ratify-main-div">
       <h1 className="ratify-title">Welcome to the Ratify</h1>
       <div className="container-survey-time">
-        Survey Closes in:{" "}
+        Time Left:{" "}
         <span className="container-survey-timeleft">{formattedTimeLeft}</span>
       </div>
       {voteData?.questions?.map((item, index) => (
