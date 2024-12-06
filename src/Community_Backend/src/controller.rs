@@ -121,10 +121,10 @@ pub fn get_survey_results() -> Vec<(String, String)> {
 #[query]
 pub fn get_average_votes() -> HashMap<String, VoteResponse> {
     read_voting_system(|voting_system| {
-        // let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
-        // if current_phase != Phase::VoteResults {
-        //     return HashMap::new();
-        // }
+        let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
+        if current_phase != Phase::Ratify && current_phase != Phase::RatifyResults {
+            return HashMap::new(); // Return empty if the phase is not completed
+        }
         let last_week = voting_system.last_week;
         voting_system.calculate_average_votes(last_week)
     })
@@ -200,7 +200,7 @@ pub fn heartbeat() {
         let now = ic_cdk::api::time();
         if state.current_phase == Phase::Uninitialized {
             start_new_week();
-            state.current_phase = Phase::Survey; // Set to start at the Survey phase
+            state.current_phase = Phase::Survey; 
             state.phase_start_time = now;
         }
 
