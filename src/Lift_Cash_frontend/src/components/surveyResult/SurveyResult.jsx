@@ -32,8 +32,8 @@ const SurveyResult = ({ timeLeft, onTimeUp }) => {
   const [question, setQuestion] = useState([
     "Where do you feel the Bitcoin & Wider crypto markets are heading?",
     "How long before the crypto market changes direction?",
-    "Where do you feel the FREEOS market is heading?",
-    "How long before the FREEOS market changes direction?",
+    "Where do you feel the LIFTCASH market is heading?",
+    "How long before the LIFTCASH market changes direction?",
     "What are the  priorities for voting this week ?",
   ]);
 

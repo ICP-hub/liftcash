@@ -9,9 +9,7 @@ import { createActor as createEconomyActor } from "../../../declarations/Economy
 const AuthContext = createContext();
 
 export const useAuthClient = () => {
-
   const dispatch = useDispatch();
-
 
   const [authClient, setAuthClient] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,12 +47,15 @@ export const useAuthClient = () => {
         {
           agent: agent,
         }
-      );;
+      );
 
-      dispatch(setActors({
-        communityActor: communityActor,
-        economyActor: economyActor, economyActor
-      }))
+      dispatch(
+        setActors({
+          communityActor: communityActor,
+          economyActor: economyActor,
+          economyActor,
+        })
+      );
     }
     return true;
   };
@@ -72,7 +73,7 @@ export const useAuthClient = () => {
         if (
           authClient.isAuthenticated() &&
           (await authClient.getIdentity().getPrincipal().isAnonymous()) ===
-          false
+            false
         ) {
           resolve(clientInfo(authClient));
         } else {

@@ -1,14 +1,14 @@
 {
   "survey": {
     "title": "Issuance and Economic Control Survey",
-    "description": "Please provide your input on the issuance and economic control of FREEOS tokens.",
+    "description": "Please provide your input on the issuance and economic control of LIFTCASH tokens.",
     "questions": [
       {
         "id": "1",
         "title": "Issuance",
         "last_weeks_issuance": "50%",
         "question": "What percentage of the issuance should be minted this week?",
-        "description": "Issuance is the amount of Points issued weekly. Minimising the issuance reduces the supply of FREEOS tokens that can be minted. Restricting supply can increase the price when there is suitable demand.",
+        "description": "Issuance is the amount of Points issued weekly. Minimising the issuance reduces the supply of LIFTCASH tokens that can be minted. Restricting supply can increase the price when there is suitable demand.",
         "slider": {
           "range": {
             "min": "0%",
@@ -25,8 +25,8 @@
         "id": "2",
         "title": "Burning",
         "last_weeks_issuance": "30%",
-        "question": "What percentage of the FREEOS tokens should be burned this week?",
-        "description": "Burning removes FREEOS tokens from circulation, which can affect the supply-demand balance and influence the token's price.",
+        "question": "What percentage of the LIFTCASH tokens should be burned this week?",
+        "description": "Burning removes LIFTCASH tokens from circulation, which can affect the supply-demand balance and influence the token's price.",
         "slider": {
           "range": {
             "min": "0%",
@@ -44,7 +44,7 @@
         "title": "Staking Rewards",
         "last_weeks_issuance": "40%",
         "question": "What percentage of rewards should be issued for staking this week?",
-        "description": "Staking rewards incentivize participants to lock their FREEOS tokens, reducing the circulating supply and potentially increasing the price.",
+        "description": "Staking rewards incentivize participants to lock their LIFTCASH tokens, reducing the circulating supply and potentially increasing the price.",
         "slider": {
           "range": {
             "min": "0%",
@@ -62,7 +62,7 @@
         "title": "Locking Threshold",
         "last_weeks_issuance": "60%",
         "question": "What percentage of the Locking Threshold should be adjusted this week?",
-        "description": "Locking thresholds determine how much FREEOS needs to be staked for voting and other network activities.",
+        "description": "Locking thresholds determine how much LIFTCASH needs to be staked for voting and other network activities.",
         "slider": {
           "range": {
             "min": "0%",
@@ -80,7 +80,7 @@
         "title": "Supply Control",
         "last_weeks_issuance": "70%",
         "question": "What percentage of the total supply should be adjusted this week?",
-        "description": "Supply control adjusts the total issuance and burning combined, aiming to maintain a balance between inflation and deflation of FREEOS tokens.",
+        "description": "Supply control adjusts the total issuance and burning combined, aiming to maintain a balance between inflation and deflation of LIFTCASH tokens.",
         "slider": {
           "range": {
             "min": "0%",

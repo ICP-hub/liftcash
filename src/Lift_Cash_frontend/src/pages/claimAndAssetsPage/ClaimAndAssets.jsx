@@ -24,7 +24,7 @@
 //             </div>
 //           </div>
 //           <div>
-//             <p className=" text-xs text-gray-700">FREEOS</p>
+//             <p className=" text-xs text-gray-700">LIFTCASH</p>
 //             <p className="text-3xl font-bold">0</p>
 //           </div>
 //         </div>
@@ -44,7 +44,7 @@
 //             <CiWarning style={{fontSize:"28px", color:"white"}} />
 //             </span>
 //             <span className="text-3xl text-white font-bold">CLAIM</span>
-//             <span className="text-xs font-medium text-white py-1 px-2">Your Freeos POINTS</span>
+//             <span className="text-xs font-medium text-white py-1 px-2">Your LIFTCASH POINTS</span>
 //           </button>
 //           <div className="flex  justify-between items-center text-center mb-8 mt-4">
 //             <div className="w-1/2 flex-wrap flex-col items-start flex">
@@ -100,10 +100,7 @@ import bgimg from "../../assets/images/background.svg";
 
 const ClaimAndAssets = () => {
   return (
-    <div
-      
-      className="claim-assets-container "
-    >
+    <div className="claim-assets-container ">
       <DashBoardHead />
 
       <div className="card-container">
@@ -138,7 +135,7 @@ const ClaimAndAssets = () => {
               <CiWarning style={{ fontSize: "28px", color: "white" }} />
             </span>
             <span className="claim-text">CLAIM</span>
-            <span className="small-description">Your Freeos POINTS</span>
+            <span className="small-description">Your LiftCash POINTS</span>
           </button>
           <div className="flex justify-between items-center text-center mb-8 mt-4">
             <div className="w-1/2 flex-wrap flex-col items-start flex">
