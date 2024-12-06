@@ -70,6 +70,7 @@ export const useAuthClient = () => {
     return new Promise(async (resolve, reject) => {
       try {
         if (
+          authClient !== null &&
           authClient.isAuthenticated() &&
           (await authClient.getIdentity().getPrincipal().isAnonymous()) ===
             false
@@ -93,6 +94,7 @@ export const useAuthClient = () => {
 
   const logout = async () => {
     await authClient?.logout();
+    localStorage.clear();
     dispatch(clearActors());
     setIsAuthenticated(false);
   };

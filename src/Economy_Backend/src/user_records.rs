@@ -22,11 +22,11 @@ pub struct UserRecord {
 impl UserRecord {
     pub fn new() -> Self {
         Self {
-            total_promo: 0.0,
-            locked_promo: 0.0,
-            unlocked_promo: 0.0,
+            total_promo: 1.0,
+            locked_promo: 1.0,
+            unlocked_promo: 1.0,
             burn_history: Vec::new(),
-            lift_token_balance: 0.0,
+            lift_token_balance: 1.0,
         }
     }
 

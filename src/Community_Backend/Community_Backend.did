@@ -24,6 +24,7 @@ service : () -> {
   get_ratification_results : () -> (vec record { text; nat64 }) query;
   get_survey_results : () -> (vec record { text; text }) query;
   get_user : () -> (opt record { principal; text });
+  get_week_count : () -> (nat64) query;
   get_weekly_ratification_counts : () -> (
       vec record { nat64; vec record { text; nat64 } },
     ) query;

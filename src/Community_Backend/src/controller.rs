@@ -406,13 +406,21 @@ fn get_all_users() -> Vec<(Principal, String)> {
 
 #[query]
 pub fn whoiam() -> Principal {
-    // read_voting_system(|voting_system| {
-    //     voting_system.whoiam()
-    // })
     api::caller()
 }
 
 #[update]
 pub fn get_all_claim_percentages() -> Vec<(Principal, u8)> {
     read_voting_system(|voting_system| voting_system.get_all_claim_percentages())
+}
+
+#[query]
+pub fn get_week_count() -> u64 {
+    let weekly_vote_result = get_weekly_vote_results();
+    let sorted_data = sort_records(weekly_vote_result);
+
+    match sorted_data.last() {
+        Some((week, _)) => *week,
+        None => 0, 
+    }
 }
