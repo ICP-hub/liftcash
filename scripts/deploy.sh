@@ -1,3 +1,6 @@
+set -a
+source .env
+set +a
 
 cargo build --release --target wasm32-unknown-unknown --package Community_Backend
 cargo build --release --target wasm32-unknown-unknown --package Economy_Backend

@@ -115,7 +115,7 @@ async fn get_user_claim(principal: Principal) -> Result<Option<u8>, String> {
 
 async fn get_all_claims() -> Result<Vec<(Principal, u8)>, String> {
     let result: CallResult<(Vec<(Principal, u8)>,)> = call(
-        Principal::from_text("bkyz2-fmaaa-aaaaa-qaaaq-cai").unwrap(),
+        Principal::from_text("bkyz2-fmaaa-aaaaa-qaaaq-cai").unwrap(), //get the id from environment variable
         "get_all_claim_percentages",
         (),
     )
@@ -128,4 +128,11 @@ async fn get_all_claims() -> Result<Vec<(Principal, u8)>, String> {
             code, msg
         )),
     }
+}
+
+
+#[update]
+pub async fn test_intercall(input : String) -> String{
+    ic_cdk::println!("Inter canister call made to RMech: {:?}", input);
+    input
 }

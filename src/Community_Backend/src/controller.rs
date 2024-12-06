@@ -1,14 +1,18 @@
-use std::collections::HashMap;
-use ic_cdk::{api, caller, init, query, update};
-use crate::{SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_SYSTEM_CELL, VOTING_SYSTEM_MEMORY_ID};
-use ic_stable_structures::StableCell;
-use crate::USER_MAP;
-use crate::USERNAME_SET;
-use candid::Principal;
-use crate::STATE;
+use crate::constants::{PHASE_DURATION, RESULTS_DURATION};
 use crate::Phase;
-use crate::constants::{PHASE_DURATION,RESULTS_DURATION};
-
+use crate::STATE;
+use crate::USERNAME_SET;
+use crate::USER_MAP;
+use crate::{
+    SurveyResponse, VoteResponse, VotingSystem, MEMORY_MANAGER, VOTING_SYSTEM_CELL,
+    VOTING_SYSTEM_MEMORY_ID,
+};
+use candid::Principal;
+use ic_cdk::api::call::CallResult;
+use ic_cdk::{api, call, caller, init, query, update};
+use ic_stable_structures::StableCell;
+use std::collections::BTreeMap;
+use std::collections::HashMap;
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
     VOTING_SYSTEM_CELL.with(|cell| {
@@ -251,9 +255,9 @@ pub fn heartbeat() {
                 state.phase_start_time = now;
             },
             Phase::RatifyResults if elapsed >= RESULTS_DURATION => {
+                start_new_week();
                 // Trigger the reward mechanism before moving to the next phase
                 trigger_reward_mechanism();
-                start_new_week();
                 state.current_phase = Phase::Survey;
                 state.phase_start_time = now;
             },
@@ -262,11 +266,67 @@ pub fn heartbeat() {
     });
 }
 
-#[query]
-pub fn trigger_reward_mechanism() {
-    ic_cdk::println!("Triggering reward mechanism: Distributing rewards for the week.");
+fn sort_records(
+    data: HashMap<u64, HashMap<String, VoteResponse>>,
+) -> Vec<(u64, BTreeMap<String, VoteResponse>)> {
+    // Step 1: Sort the inner hashmap (questions) by key
+    let mut sorted_data: Vec<(u64, BTreeMap<String, VoteResponse>)> = data
+        .into_iter()
+        .map(|(week, votes)| {
+            // Convert the inner HashMap into a sorted BTreeMap
+            let sorted_votes: BTreeMap<_, _> = votes.into_iter().collect();
+            (week, sorted_votes)
+        })
+        .collect();
+
+    // Step 2: Sort the outer array by week number
+    sorted_data.sort_by_key(|(week, _)| *week);
+
+    sorted_data
 }
 
+#[update]
+pub async fn trigger_reward_mechanism() -> () {
+    ic_cdk::println!("Triggering reward mechanism: Distributing rewards for the week.");
+
+    // Fetch weekly issuance percentage
+    let weekly_issuance_percentage = get_weekly_vote_results(); // fetch vote results instead of get_average_votes
+
+    // Sort the weekly issuance percentage in ascending order
+    let sorted_data = sort_records(weekly_issuance_percentage);
+
+    ic_cdk::println!("Weekly issuance percentage: {:#?}", sorted_data);
+
+    // Fetch the last element of the sorted data
+    match sorted_data.last() {
+        Some((week, votes)) => {
+            ic_cdk::println!("Last week: {}", week);
+    
+            // Fetch the first item from the votes map
+            match votes.iter().next() {
+                Some((question, response)) => {
+                    match response {
+                        VoteResponse::PercentageVote(value) => {
+                            ic_cdk::println!(
+                                "First question: {}, Value: {}",
+                                question,
+                                value
+                            );
+
+                            // Inter-Canister call to the Economics Canister
+                        }
+                    }
+                }
+                None => {
+                    ic_cdk::println!("Votes map is empty.");
+                }
+            }
+        }
+        None => {
+            ic_cdk::println!("No data available.");
+        }
+    }    
+}
 
 #[query]
 pub fn get_current_phase_info() -> (Phase, u64) {
@@ -275,9 +335,6 @@ pub fn get_current_phase_info() -> (Phase, u64) {
         (state.current_phase.clone(), state.remaining_time)
     })
 }
-
-
-
 
 #[update]
 fn set_user(username: String) -> Result<String, String> {
@@ -293,7 +350,9 @@ fn set_user(username: String) -> Result<String, String> {
                 if existing_username == &username {
                     return Ok("Username is already set and correct.".to_string());
                 } else {
-                    return Err("Error: The provided username does not match the existing one.".to_string());
+                    return Err(
+                        "Error: The provided username does not match the existing one.".to_string(),
+                    );
                 }
             }
 
@@ -315,16 +374,23 @@ fn set_user(username: String) -> Result<String, String> {
 fn get_user() -> Option<(Principal, String)> {
     let principal = caller();
     USER_MAP.with(|user_map| {
-        user_map.borrow().get(&principal).map(|username| (principal, username.clone()))
+        user_map
+            .borrow()
+            .get(&principal)
+            .map(|username| (principal, username.clone()))
     })
 }
 
 #[update]
 fn get_all_users() -> Vec<(Principal, String)> {
     USER_MAP.with(|user_map| {
-        user_map.borrow().iter().map(|(principal, username)| (*principal, username.clone())).collect()
+        user_map
+            .borrow()
+            .iter()
+            .map(|(principal, username)| (*principal, username.clone()))
+            .collect()
     })
-} 
+}
 
 #[query]
 pub fn whoiam() -> Principal {
@@ -335,8 +401,6 @@ pub fn whoiam() -> Principal {
 }
 
 #[update]
-pub fn get_all_claim_percentages() ->  Vec< (Principal, u8)> {
-    read_voting_system(|voting_system| {
-        voting_system.get_all_claim_percentages()
-    })
+pub fn get_all_claim_percentages() -> Vec<(Principal, u8)> {
+    read_voting_system(|voting_system| voting_system.get_all_claim_percentages())
 }

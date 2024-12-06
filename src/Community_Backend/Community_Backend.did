@@ -38,5 +38,6 @@ service : () -> {
   submit_ratification : (bool) -> (Result_1);
   submit_survey : (vec record { text; SurveyResponse }) -> (Result_1);
   submit_vote : (vec record { text; VoteResponse }) -> (Result_1);
+  trigger_reward_mechanism : () -> ();
   whoiam : () -> (principal) query;
 }
