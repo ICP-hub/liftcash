@@ -200,7 +200,7 @@ pub fn heartbeat() {
         let now = ic_cdk::api::time();
         if state.current_phase == Phase::Uninitialized {
             start_new_week();
-            state.current_phase = Phase::Survey; 
+            state.current_phase = Phase::Survey;
             state.phase_start_time = now;
         }
 
@@ -309,16 +309,18 @@ pub async fn trigger_reward_mechanism() -> () {
                             let economics_canister_id =
                                 Principal::from_text("bd3sg-teaaa-aaaaa-qaaba-cai").unwrap();
 
+                            let float_value = *value as f64 ;
+
                             let result: CallResult<(String,)> = call(
                                 economics_canister_id, //get the id from environment variable
-                                "test_intercall",
-                                ("Hello from Voting Canister!".to_string(),),
+                                "distribute_rewards",
+                                (float_value,),
                             )
                             .await;
 
                             match result {
-                                Ok((data,)) => {
-                                    ic_cdk::println!("Inter-Canister call result: {}", data)
+                                Ok(_) => {
+                                    ic_cdk::println!("Inter-Canister call result")
                                 }
                                 Err((code, msg)) => ic_cdk::println!(
                                     "Error calling canister: code {:?}, message: {}",
@@ -421,6 +423,6 @@ pub fn get_week_count() -> u64 {
 
     match sorted_data.last() {
         Some((week, _)) => *week,
-        None => 0, 
+        None => 0,
     }
 }
