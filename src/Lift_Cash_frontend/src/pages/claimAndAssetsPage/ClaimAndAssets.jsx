@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import bgimg from "../../assets/images/background.svg";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
 const ClaimAndAssets = () => {
 
@@ -16,8 +17,12 @@ const ClaimAndAssets = () => {
     burn_history: [],
     lift_token_balance: 0.0,
   });
-  
+
   const [weekCount, setWeekCount] = useState(0);
+
+  const [timeLeft, setTimeLeft] = useState(0);
+
+  const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
 
   const economyActor = useSelector(
     (state) => state?.actors?.actors?.economyActor
@@ -31,6 +36,7 @@ const ClaimAndAssets = () => {
     console.log("actor on survey page : ", communityActor);
     fetchUserRecords();
     fetchWeekCount();
+    getPhaseInfo();
   }, [economyActor, communityActor]);
 
 
@@ -72,7 +78,54 @@ const ClaimAndAssets = () => {
     }
   };
 
-  
+  function nanoToMin(nano) {
+    const secondsInMinute = 60;
+    const nanoToSeconds = 1e9;
+    const nanoInMinute = nanoToSeconds * secondsInMinute;
+    return nano / nanoInMinute;
+  }
+
+  const getPhaseInfo = async () => {
+    try {
+      await communityActor
+        .get_current_phase_info()
+        .then((res) => {
+          console.log("Phase Info:", res);
+          const key = Object.keys(res[0]);
+          console.log("phase =>", key[0]);
+          const timeLeft = Math.ceil(nanoToMin(parseInt(res[1])));
+          console.log("Time in Act : ", timeLeft)
+          // 2d 2880
+          // 8h 480
+          if (key[0] === "Survey") {
+            let totalTime = timeLeft + 480 + 2880 + 2880 + 480;
+            setTimeLeft(totalTime);
+          }
+          if (key[0] === "SurveyResults") {
+            let totalTime = timeLeft + 2880 + 2880 + 480;
+            setTimeLeft(totalTime);
+          }
+          if (key[0] === "Vote") {
+            let totalTime = timeLeft + 2880 + 480;
+            setTimeLeft(totalTime);
+          }
+          if (key[0] === "Ratify") {
+            let totalTime = timeLeft + 480;
+            setTimeLeft(totalTime);
+          }
+          if (key[0] === "RatifResults") {
+            setTimeLeft(timeLeft);
+          }
+        })
+        .catch((err) => {
+          console.log("Error getting phase info:", err);
+        });
+    } catch (error) {
+      console.error("Error getting phase info:", error);
+    }
+  };
+
+
 
 
   return (
@@ -106,13 +159,25 @@ const ClaimAndAssets = () => {
         </div> */}
 
         <div className="claim-box">
-          <button disabled className="disabled-claim-button">
-            <span>
-              <CiWarning style={{ fontSize: "28px", color: "white" }} />
-            </span>
-            <span className="claim-text">CLAIM</span>
-            <span className="small-description">Your PROMO</span>
-          </button>
+          {formattedTimeLeft === "0 mins" ? (
+            <button disabled className="enabled-claim-button">
+              <span>
+                <CiWarning style={{ fontSize: "28px", color: "white" }} />
+              </span>
+              <span className="claim-text">CLAIM</span>
+              <span className="small-description">Your PROMO</span>
+            </button>
+          ) : (
+            <button className="disabled-claim-button">
+              <span>
+                <CiWarning style={{ fontSize: "28px", color: "white" }} />
+              </span>
+              <span className="claim-text">CLAIM</span>
+              <span className="small-description">Your PROMO</span>
+            </button>
+          )}
+
+
           <div className="flex justify-between items-center text-center mb-8 mt-4">
             <div className="w-1/2 flex-wrap flex-col items-start flex">
               <p className="text-xs">Iteration</p>
@@ -120,7 +185,7 @@ const ClaimAndAssets = () => {
             </div>
             <div className="w-1/3 flex flex-col items-end flex-wrap">
               <p className="text-xs">Next Claim</p>
-              <p className="text-xl font-semibold">5days, 18hrs</p>
+              <p className="text-xl font-semibold">{formattedTimeLeft}</p>
             </div>
           </div>
         </div>

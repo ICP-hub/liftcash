@@ -15,7 +15,7 @@
 }
 
 .asset-amount {
-  @apply text-3xl font-bold;
+  @apply text-lg font-bold;
 }
 
 .mint-button-container {
@@ -24,6 +24,14 @@
 
 .disabled-claim-button {
   @apply absolute -top-[50px] left-[35%] z-10 text-gray-500 bg-gray-200 rounded-full w-[120px] h-[120px] flex flex-col justify-center items-center;
+}
+
+.enabled-claim-button{
+  @apply absolute -top-[50px] left-[35%] z-10 text-gray-500 bg-[#51C5FB] rounded-full w-[120px] h-[120px] flex flex-col justify-center items-center;
+}
+
+.enabled-claim-button:hover{
+  @apply bg-[#3B82F6] drop-shadow-2xl shadow-black delay-200
 }
 
 .claim-text {

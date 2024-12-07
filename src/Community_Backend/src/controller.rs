@@ -57,17 +57,27 @@ pub fn init() {
     });
 }
 
+// #[update]
+// pub fn start_new_week() {
+//     mutate_voting_system(|voting_system| {
+//         voting_system.start_new_week();
+//     });
+// }
 #[update]
 pub fn start_new_week() {
     mutate_voting_system(|voting_system| {
+        // Record the votes for the week
+        if let Some(current_week) = voting_system.current_week.checked_sub(1) {
+            if !voting_system.weekly_vote_results.contains_key(&current_week) {
+                let vote_results = voting_system.calculate_average_votes(current_week);
+                voting_system.weekly_vote_results.insert(current_week, vote_results);
+            }
+        }
+        // Start a new week
         voting_system.start_new_week();
     });
-    // STATE.with(|state| {
-    //     let mut state = state.borrow_mut();
-    //     state.current_phase = Phase::Survey;  // Explicitly setting the phase
-    //     state.phase_start_time = ic_cdk::api::time();  // Resetting the phase start time
-    // });
 }
+
 
 #[update]
 pub fn submit_survey(answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
@@ -229,14 +239,25 @@ pub fn heartbeat() {
                 state.current_phase = Phase::Vote;
                 state.phase_start_time = now;
             }
+            // Phase::Vote if elapsed >= PHASE_DURATION => {
+            //     mutate_voting_system(|voting_system| {
+            //         let week = voting_system.last_week;
+            //         voting_system.calculate_average_votes(week);
+            //     });
+            //     state.current_phase = Phase::Ratify;
+            //     state.phase_start_time = now;
+            // }
             Phase::Vote if elapsed >= PHASE_DURATION => {
                 mutate_voting_system(|voting_system| {
                     let week = voting_system.last_week;
-                    voting_system.calculate_average_votes(week);
+                    // Calculate and store vote results
+                    let vote_results = voting_system.calculate_average_votes(week);
+                    voting_system.weekly_vote_results.insert(week+1, vote_results);
                 });
                 state.current_phase = Phase::Ratify;
                 state.phase_start_time = now;
             }
+            
             // Phase::VoteResults if elapsed >= RESULTS_DURATION => {
             //     state.current_phase = Phase::Ratify;
             //     state.phase_start_time = now;
