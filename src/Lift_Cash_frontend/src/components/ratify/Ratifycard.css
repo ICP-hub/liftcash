@@ -1,5 +1,5 @@
 .ratify-main-div {
-  @apply w-full max-w-lg mx-auto bg-white mb-6 rounded-lg border border-blue-500 shadow-md mt-8;
+  @apply w-full max-w-md mx-auto bg-white mb-6 rounded-lg border border-blue-500 shadow-md mt-8;
 }
 
 .ratify-title {

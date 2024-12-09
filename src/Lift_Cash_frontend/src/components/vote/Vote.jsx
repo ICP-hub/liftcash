@@ -2,12 +2,11 @@ import "./Vote.css";
 import React, { useEffect, useState } from "react";
 import { voteQuestions } from "../../pages/activitiesPage/constants/Vote";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
-  import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
 
 const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
-
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
   );
@@ -201,22 +200,18 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
     <div className="vote-main-div">
       <div className="vote-header-div">
         <h1 className="vote-title">Welcome to the Vote</h1>
-        <p className="vote-sub-title">
-          Complete for 70% of your weekly Claim
-        </p>
+        <p className="vote-sub-title">Complete for 70% of your weekly Claim</p>
       </div>
 
       <div className="vote-time-description">
         <div className="container-survey-time">
           Vote Closes in:{" "}
-          <span className="container-survey-timeleft">
-            {formattedTimeLeft}
-          </span>
+          <span className="container-survey-timeleft">{formattedTimeLeft}</span>
         </div>
         <p className="vote-description">
-          Thanks for being active in stewarding this economy. Besides
-          empowering your own financial freedom, your answers also affect the
-          FREEOS community. For more info{" "}
+          Thanks for being active in stewarding this economy. Besides empowering
+          your own financial freedom, your answers also affect the FREEOS
+          community. For more info{" "}
           <a href="#" className="vote-link">
             click here
           </a>
@@ -277,18 +272,19 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
                   }
                 />
                 <span
-                  className={`vote-percent-sign ${data.slider.unit !== "USD" ? "pl-5" : " pl-0 "
-                    }`}
+                  className={`vote-percent-sign ${
+                    data.slider.unit !== "USD" ? "pl-5" : " pl-0 "
+                  }`}
                 >
                   {data.slider.unit}
                 </span>
               </div>
-              {errors[data.id] && (
-                <p className="text-red-600 text-center mb-4 font-medium text-lg">
-                  {errors[data.id]}
-                </p>
-              )}
             </div>
+            {errors[data.id] && (
+              <p className="text-red-600 text-center mb-4 font-medium text-lg">
+                {errors[data.id]}
+              </p>
+            )}
           </div>
         ))}
       </div>

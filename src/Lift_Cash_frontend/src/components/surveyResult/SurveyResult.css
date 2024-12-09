@@ -1,5 +1,5 @@
 .survey-result-main-div {
-  @apply w-full h-full max-w-lg mb-8 mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 overflow-hidden;
+  @apply w-full h-full max-w-md mb-8 mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 overflow-hidden;
 }
 .survey-result-h1 {
   @apply text-center font-bold text-3xl m-5;

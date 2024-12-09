@@ -12,7 +12,7 @@ const ThankYouCard = ({ remainingTime, type, onTimeUp }) => {
 
   useEffect(() => {
     console.log("formatted time in Thankyou card =>", formattedTime);
-    if(formattedTime === "0 mins"){
+    if (formattedTime === "0 mins") {
       onTimeUp();
     }
   }, [formattedTime]);
@@ -23,33 +23,37 @@ const ThankYouCard = ({ remainingTime, type, onTimeUp }) => {
       type === "Survey"
         ? "Woohoo!"
         : type === "Ratify"
-          ? "Yay , you did it"
-          : "Yay , you did it",
-    participation: `Thanks for participating in this week's ${type === "Survey"
+        ? "Yay , you did it"
+        : "Yay , you did it",
+    participation: `Thanks for participating in this week's ${
+      type === "Survey"
         ? "Survey"
         : type === "Ratify"
-          ? "Ractification "
-          : "vote"
-      }`,
+        ? "Ractification "
+        : "vote"
+    }`,
     nextStep:
       type === "Survey"
         ? "The Weekly Vote"
         : type === "Ratify"
-          ? "The Ractification Result"
-          : "The Ratification Vote",
-    completion: `Completing the ${type === "Survey"
+        ? "The Ractification Result"
+        : "The Ratification Vote",
+    completion: `Completing the ${
+      type === "Survey"
         ? "vote"
         : type === "Ratify"
-          ? "Ractification Result"
-          : "Ratification Vote"
-      } enables you to claim an additional ${type === "Survey" ? "70" : type === "Ratify" ? "10" : "10"
-      }% of your weekly claim potential`,
-    farewell: `See you soon for the ${type === "Survey"
+        ? "Ractification Result"
+        : "Ratification Vote"
+    } enables you to claim an additional ${
+      type === "Survey" ? "70" : type === "Ratify" ? "10" : "10"
+    }% of your weekly claim potential`,
+    farewell: `See you soon for the ${
+      type === "Survey"
         ? "Vote"
         : type === "Ratify"
-          ? "Ractification Result"
-          : "Ratification Vote"
-      }`,
+        ? "Ractification Result"
+        : "Ratification Vote"
+    }`,
   };
 
   return (
@@ -75,12 +79,14 @@ const ThankYouCard = ({ remainingTime, type, onTimeUp }) => {
       <h2 className="thank-you-card-h2 thank-you-card-h2-bottom">
         Next: {texts.nextStep}
       </h2>
-      <h2 className="thank-you-card-h2-time">Starts In {formattedTime}</h2>
+      <h2 className="thank-you-card-h2-time">
+        Starts In :{" "}
+        <span className="container-survey-timeleft">{formattedTime}</span>
+      </h2>
       <p className="thank-you-card-p-bottom">{texts.completion}</p>
       <h1 className="thank-you-card-last-h1">{texts.farewell}</h1>
     </div>
   );
-
 };
 
 export default ThankYouCard;

@@ -31,7 +31,7 @@
     @apply text-lg font-bold mb-2 py-4 md:text-2xl text-white pl-10 bg-[#00A1ED];
   }
   .container-survey-question-description {
-    @apply text-sm pl-5 md:pl-10   text-gray-700 mb-4;
+    @apply text-sm pl-5 pr-2 md:pl-10   text-gray-700 mb-4;
   }
   .option-container-radio {
     @apply space-y-2 pl-10;
