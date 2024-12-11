@@ -89,7 +89,7 @@ impl Storable for PrizePool {
 
 #[update]
 pub fn init_prize_pool(initial_balance: Option<f64>) {
-    let balance = initial_balance.unwrap_or(0.0); //----- Default to 0.0 if None
+    let balance = initial_balance.unwrap_or(10000.0); //----- Default to 0.0 if None
     PRIZE_POOL.with(|cell| {
         let mut state = cell.borrow_mut();
         state.set(Some(PrizePool::new(balance)))
