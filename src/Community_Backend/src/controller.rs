@@ -68,16 +68,20 @@ pub fn start_new_week() {
     mutate_voting_system(|voting_system| {
         // Record the votes for the week
         if let Some(current_week) = voting_system.current_week.checked_sub(1) {
-            if !voting_system.weekly_vote_results.contains_key(&current_week) {
+            if !voting_system
+                .weekly_vote_results
+                .contains_key(&current_week)
+            {
                 let vote_results = voting_system.calculate_average_votes(current_week);
-                voting_system.weekly_vote_results.insert(current_week, vote_results);
+                voting_system
+                    .weekly_vote_results
+                    .insert(current_week, vote_results);
             }
         }
         // Start a new week
         voting_system.start_new_week();
     });
 }
-
 
 #[update]
 pub fn submit_survey(answers: HashMap<String, SurveyResponse>) -> Result<(), String> {
@@ -239,42 +243,31 @@ pub fn heartbeat() {
                 state.current_phase = Phase::Vote;
                 state.phase_start_time = now;
             }
-            // Phase::Vote if elapsed >= PHASE_DURATION => {
-            //     mutate_voting_system(|voting_system| {
-            //         let week = voting_system.last_week;
-            //         voting_system.calculate_average_votes(week);
-            //     });
-            //     state.current_phase = Phase::Ratify;
-            //     state.phase_start_time = now;
-            // }
             Phase::Vote if elapsed >= PHASE_DURATION => {
                 mutate_voting_system(|voting_system| {
                     let week = voting_system.last_week;
                     // Calculate and store vote results
                     let vote_results = voting_system.calculate_average_votes(week);
-                    voting_system.weekly_vote_results.insert(week+1, vote_results);
+                    voting_system
+                        .weekly_vote_results
+                        .insert(week + 1, vote_results);
                 });
                 state.current_phase = Phase::Ratify;
                 state.phase_start_time = now;
             }
-            
-            // Phase::VoteResults if elapsed >= RESULTS_DURATION => {
-            //     state.current_phase = Phase::Ratify;
-            //     state.phase_start_time = now;
-            // },
             Phase::Ratify if elapsed >= PHASE_DURATION => {
                 mutate_voting_system(|voting_system| {
                     let week = voting_system.last_week;
                     voting_system.calculate_ratification_results(week);
+                });
+                ic_cdk::spawn(async move {
+                    trigger_reward_mechanism().await;
                 });
                 state.current_phase = Phase::RatifyResults;
                 state.phase_start_time = now;
             }
             Phase::RatifyResults if elapsed >= RESULTS_DURATION => {
                 start_new_week();
-                ic_cdk::spawn(async move {
-                    trigger_reward_mechanism().await;
-                });
                 state.current_phase = Phase::Survey;
                 state.phase_start_time = now;
             }
@@ -330,25 +323,16 @@ pub async fn trigger_reward_mechanism() -> () {
                             let economics_canister_id =
                                 Principal::from_text("bd3sg-teaaa-aaaaa-qaaba-cai").unwrap();
 
-                            let float_value = *value as f64 ;
+                            let float_value = *value as f64;
 
-                            let result: CallResult<(String,)> = call(
-                                economics_canister_id, //get the id from environment variable
+                            let res = kaires::call_inter_canister::<f64, String>(
                                 "distribute_rewards",
-                                (float_value,),
+                                float_value,
+                                economics_canister_id,
                             )
-                            .await;
-
-                            match result {
-                                Ok(_) => {
-                                    ic_cdk::println!("Inter-Canister call result")
-                                }
-                                Err((code, msg)) => ic_cdk::println!(
-                                    "Error calling canister: code {:?}, message: {}",
-                                    code,
-                                    msg
-                                ),
-                            }
+                            .await
+                            .expect("Error in inter canister");
+                            ic_cdk::println!("response is: {}", res);
                         }
                     }
                 }

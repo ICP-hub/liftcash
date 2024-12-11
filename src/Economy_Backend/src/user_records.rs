@@ -1,8 +1,7 @@
 use candid::{CandidType, Deserialize, Principal,Encode,Decode};
 use ic_cdk::{caller, query, update};
 use std::cell::RefCell;
-use std::collections::HashMap;
-use ic_stable_structures::{StableCell, memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
+use ic_stable_structures::{memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
 use ic_stable_structures::StableBTreeMap;
 use std::borrow::Cow;
 
@@ -22,11 +21,11 @@ pub struct UserRecord {
 impl UserRecord {
     pub fn new() -> Self {
         Self {
-            total_promo: 1.0,
-            locked_promo: 1.0,
-            unlocked_promo: 1.0,
+            total_promo: 0.0,
+            locked_promo: 0.0,
+            unlocked_promo: 0.0,
             burn_history: Vec::new(),
-            lift_token_balance: 1.0,
+            lift_token_balance: 0.0,
         }
     }
 
