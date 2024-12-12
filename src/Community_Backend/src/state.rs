@@ -102,7 +102,6 @@ impl VotingSystem {
         self.weekly_ratification_counts.insert(self.last_week, ratification_results);
         let ratification_approved = self.check_ratification_approval(self.last_week);
         if !ratification_approved && self.last_week > 0 {
-            // Carry forward the previous week's vote results if ratification is not approved
             if let Some(prev_vote_results) = self.weekly_vote_results.get(&(self.last_week - 1)).cloned() {
                 self.weekly_vote_results
                     .entry(self.last_week)
