@@ -8,7 +8,8 @@ import HeroSection from "../../sections/heroSection/HeroSection";
 import LiftCashDAOSection from "../../sections/liftCashDaoSection/LiftCashDAOSection";
 import ParticipationSection from "../../sections/participationSection/ParticipationSection";
 import PurposeSection from "../../sections/purposeSection/PurposeSection";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Loading from "../../components/loading/Loading";
 
 const LandingPage = () => {
   const darkMode = useSelector((state) => state.theme.darkMode);
@@ -16,19 +17,33 @@ const LandingPage = () => {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
-  return (
-    <div>
-      <Header />
-      <HeroSection />
-      <AboutSection />
-      <ParticipationSection />
-      <LiftCashDAOSection />
-      <PurposeSection />
-      <FaqSection />
-      <BlogSection />
-      <Footer />
-    </div>
-  );
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+
+  if (loading) {
+    return <Loading />;
+  } else {
+    return (
+      <div>
+        <Header />
+        <HeroSection />
+        <AboutSection />
+        <ParticipationSection />
+        <LiftCashDAOSection />
+        <PurposeSection />
+        <FaqSection />
+        <BlogSection />
+        <Footer />
+      </div>
+    );
+  }
 };
 
 export default LandingPage;
