@@ -2,14 +2,14 @@ import "./ClaimAndAssets.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import { RiLoginCircleLine } from "react-icons/ri";
 import { CiWarning } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import bgimg from "../../assets/images/background.svg";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
 const ClaimAndAssets = () => {
-
+  const navigate = useNavigate();
   const [userRecord, setUserRecord] = useState({
     total_promo: 0.0,
     locked_promo: 0.0,
@@ -39,11 +39,9 @@ const ClaimAndAssets = () => {
     getPhaseInfo();
   }, [economyActor, communityActor]);
 
-
   useEffect(() => {
     console.log("UR : ", userRecord);
   }, [userRecord]);
-
 
   const fetchUserRecords = async () => {
     try {
@@ -56,7 +54,6 @@ const ClaimAndAssets = () => {
         .catch((error) => {
           console.log("Error fetching user records: ", error);
         });
-
     } catch (error) {
       console.log("Error fetching user records: ", error);
     }
@@ -94,7 +91,7 @@ const ClaimAndAssets = () => {
           const key = Object.keys(res[0]);
           console.log("phase =>", key[0]);
           const timeLeft = Math.ceil(nanoToMin(parseInt(res[1])));
-          console.log("Time in Act : ", timeLeft)
+          console.log("Time in Act : ", timeLeft);
           // 2d 2880
           // 8h 480
           if (key[0] === "Survey") {
@@ -125,9 +122,6 @@ const ClaimAndAssets = () => {
     }
   };
 
-
-
-
   return (
     <div className="claim-assets-container ">
       <DashBoardHead />
@@ -138,14 +132,14 @@ const ClaimAndAssets = () => {
             <p className="asset-label">PROMO</p>
             <p className="asset-amount">{userRecord.unlocked_promo}</p>
           </div>
-          <div>
+          {/* <div>
             <p className="text-xs text-gray-600">Mint</p>
             <div className="mint-button-container">
               <Link to={"/mint"}>
                 <RiLoginCircleLine style={{ fontSize: "32px" }} />{" "}
               </Link>
             </div>
-          </div>
+          </div> */}
           <div>
             <p className="asset-label">LIFT</p>
             <p className="asset-amount">{userRecord.lift_token_balance}</p>
@@ -159,15 +153,16 @@ const ClaimAndAssets = () => {
         </div> */}
 
         <div className="claim-box">
-          {formattedTimeLeft === "0 mins" ? (
-            <button disabled className="enabled-claim-button">
-              <span>
-                <CiWarning style={{ fontSize: "28px", color: "white" }} />
-              </span>
-              <span className="claim-text">CLAIM</span>
-              <span className="small-description">Your PROMO</span>
-            </button>
-          ) : (
+          {/* {formattedTimeLeft === "0 mins" ? ( */}
+          <button
+            onClick={() => navigate("/mint")}
+            className="enabled-claim-button"
+          >
+            <RiLoginCircleLine style={{ fontSize: "32px" }} />{" "}
+            <span className="claim-text">MINT</span>
+            {/* <span className="small-description">Your PROMO</span> */}
+          </button>
+          {/* ) : (
             <button className="disabled-claim-button">
               <span>
                 <CiWarning style={{ fontSize: "28px", color: "white" }} />
@@ -175,8 +170,7 @@ const ClaimAndAssets = () => {
               <span className="claim-text">CLAIM</span>
               <span className="small-description">Your PROMO</span>
             </button>
-          )}
-
+          )} */}
 
           <div className="flex justify-between items-center text-center mb-8 mt-4">
             <div className="w-1/2 flex-wrap flex-col items-start flex">
@@ -196,12 +190,17 @@ const ClaimAndAssets = () => {
           <h2 className="locked-header">
             Locked <span>PROMO</span>:
           </h2>
-          <p className="text-[24px] text-gray-900 font-medium">{userRecord.locked_promo}</p>
+          <p className="text-[24px] text-gray-900 font-medium">
+            {userRecord.locked_promo}
+          </p>
         </div>
 
         <p className="text-xs flex flex-row gap-2">
           For more info on Locked PROMO{" "}
-          <p className="text-[#0000EE] underline" onClick={() => window.open('/', '_blank')}>
+          <p
+            className="text-[#0000EE] underline"
+            onClick={() => window.open("/", "_blank")}
+          >
             click here
           </p>
         </p>
@@ -212,7 +211,10 @@ const ClaimAndAssets = () => {
 
         <p className="info-text flex flex-row gap-2">
           Your PROMO cannot be unlocked. For more info{" "}
-          <p className="text-[#8256AA] underline" onClick={() => window.open('/claim', '_blank')}>
+          <p
+            className="text-[#8256AA] underline"
+            onClick={() => window.open("/claim", "_blank")}
+          >
             click here
           </p>
         </p>
