@@ -15,7 +15,11 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   );
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> d4da13d33c986d025f2af495d28a14a1e11e357a
   const[isParticipated, setIsParticipated] = useState(false);
 
   // const PassValue = propsFormattedTimeLeft;
