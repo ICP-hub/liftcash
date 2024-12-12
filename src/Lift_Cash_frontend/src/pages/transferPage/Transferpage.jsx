@@ -89,15 +89,36 @@ import "./TransferPage.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 // import React, { useState } from "react";
 import bgimg from "../../assets/images/background.svg";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Transferpage = () => {
-  // const [activeTab, setActiveTab] = useState("LIFT");
+  const [userRecord, setUserRecord] = useState({
+    total_promo: 0.0,
+    lift_token_balance: 0.0,
+  });
+
+  const economyActor = useSelector(
+    (state) => state?.actors?.actors?.economyActor
+  );
+
+  const fetchUserRecords = async () => {
+    try {
+      const res = await economyActor.fetch_user_record();
+      console.log("User Records:", res);
+      setUserRecord(res);
+    } catch (error) {
+      console.log("Error fetching user records: ", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("economyActor in transfer page:", economyActor);
+    fetchUserRecords();
+  }, [economyActor]);
 
   return (
-    <div
-      
-      className="page-container"
-    >
+    <div className="page-container">
       <DashBoardHead className="border-red-900" />
 
       <div className="card-container border-blue-500">
@@ -105,11 +126,11 @@ const Transferpage = () => {
 
         <div className="balanceContainer">
           <div className="balance-item">
-            <p className="balance-amount">0</p>
+            <p className="balance-amount">{userRecord.lift_token_balance} </p>
             <p className="balance-label">LIFT</p>
           </div>
           <div className="balance-item">
-            <p className="balance-amount">0</p>
+            <p className="balance-amount">{userRecord.total_promo} </p>
             <p className="balance-label">PROMO</p>
           </div>
         </div>
