@@ -68,11 +68,36 @@
 
 // export default MintFreeos
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./MintFreeos.css";
 import MintTransaction from "../../../components/mintTransaction/MintTransaction";
+import { useSelector } from "react-redux";
 
 const MintFreeos = () => {
+  const [userRecord, setUserRecord] = useState({
+    total_promo: 0.0,
+    lift_token_balance: 0.0,
+  });
+
+  const economyActor = useSelector(
+    (state) => state?.actors?.actors?.economyActor
+  );
+
+  const fetchUserRecords = async () => {
+    try {
+      const res = await economyActor.fetch_user_record();
+      console.log("User Records:", res);
+      setUserRecord(res);
+    } catch (error) {
+      console.log("Error fetching user records: ", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("economyActor in transfer page:", economyActor);
+    fetchUserRecords();
+  }, [economyActor]);
+
   return (
     <div>
       <div className="header-bg">
@@ -94,15 +119,15 @@ const MintFreeos = () => {
         <h2 className="balance-heading">Your Current balances:</h2>
         <div className="balance-grid">
           <div className="balance-card">
-            <p className="balance-text">0</p>
+            <p className="balance-text">{userRecord.total_promo} </p>
             <p>PORMO</p>
           </div>
           <div className="balance-card">
-            <p className="balance-text">0</p>
+            <p className="balance-text">{userRecord.lift_token_balance} </p>
             <p>LIFT</p>
           </div>
           <div className="balance-card   ">
-            <p className="balance-text">0</p>
+            <p className="balance-text">{userRecord.total_icp || 0} </p>
             <p>ICP</p>
           </div>
           {/* <div className="balance-card   ">

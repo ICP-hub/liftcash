@@ -15,9 +15,9 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   );
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
-  const [isParticipated, setIsParticipated] = useState(true);
+  // const [isParticipated, setIsParticipated] = useState(true);
 
-  const[isParticipated, setIsParticipated] = useState(false);
+  const [isParticipated, setIsParticipated] = useState(false);
 
   // const PassValue = propsFormattedTimeLeft;
 
@@ -71,7 +71,10 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
         .then((response) => {
           console.log("Vote Result: ", response);
           const sortedVoteResult = sortDataById(response);
-          console.log("Sorted Vote Result: ", sortedVoteResult[0][1].PercentageVote);
+          console.log(
+            "Sorted Vote Result: ",
+            sortedVoteResult[0][1].PercentageVote
+          );
           let temp = [];
           for (let i = 0; i < sortedVoteResult.length; i++) {
             if (i === 3) {
