@@ -17,7 +17,7 @@ const Loading = () => {
           //   wrapperClass=""
         />
       </div>
-      <div className="text-xl font-semibold -ml-5">Loading...</div>
+      {/* <div className="text-xl font-semibold -ml-5">Loading...</div> */}
     </div>
   );
 };
