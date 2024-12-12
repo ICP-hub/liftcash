@@ -139,6 +139,7 @@ pub fn init_user_record() {
 }
 
 
+
 #[update]
 pub fn create_user_record() {
     let caller = caller();

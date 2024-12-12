@@ -93,17 +93,20 @@ impl VotingSystem {
         let results = self.calculate_survey_results(self.last_week);
         self.weekly_survey_results.insert(self.last_week, results);
         let vote_results = self.calculate_average_votes(self.last_week);
-        // self.weekly_vote_results.insert(self.last_week, vote_results);
+        // self.weekly_vote_results.insert(self.last_week, vote_results.clone());
+        self.weekly_vote_results
+        .entry(self.last_week)
+        .or_insert_with(HashMap::new)
+        .extend(vote_results.clone());
         let ratification_results = self.calculate_ratification_results(self.last_week);
         self.weekly_ratification_counts.insert(self.last_week, ratification_results);
         let ratification_approved = self.check_ratification_approval(self.last_week);
-        if ratification_approved {
-            self.weekly_vote_results.insert(self.last_week, vote_results);
-        } else {
-            if self.last_week > 0 {
-                if let Some(prev_vote_results) = self.weekly_vote_results.get(&(self.last_week - 1)) {
-                    self.weekly_vote_results.insert(self.last_week, prev_vote_results.clone());
-                }
+        if !ratification_approved && self.last_week > 0 {
+            if let Some(prev_vote_results) = self.weekly_vote_results.get(&(self.last_week - 1)).cloned() {
+                self.weekly_vote_results
+                    .entry(self.last_week)
+                    .or_insert_with(HashMap::new)
+                    .extend(prev_vote_results.clone());
             }
         }
         self.current_week += 1;
