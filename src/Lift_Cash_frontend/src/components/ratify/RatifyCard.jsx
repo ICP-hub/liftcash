@@ -15,7 +15,6 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   );
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
-  const [isParticipated, setIsParticipated] = useState(true);
 
   const[isParticipated, setIsParticipated] = useState(false);
 
