@@ -320,8 +320,13 @@ pub async fn trigger_reward_mechanism() -> () {
                             ic_cdk::println!("First question: {}, Value: {}", question, value);
 
                             // Inter-Canister call to the Economics Canister
-                            let economics_canister_id =
-                                Principal::from_text("bd3sg-teaaa-aaaaa-qaaba-cai").unwrap();
+                            // let economics_canister_id =
+                            //     Principal::from_text("bd3sg-teaaa-aaaaa-qaaba-cai").unwrap();
+
+                            let economics_canister_id = option_env!("CANISTER_ID_ECONOMY_BACKEND")
+                                .expect("ECONOMICS_CANISTER_ID env var not set")
+                                .parse::<Principal>()
+                                .expect("Invalid Economics Canister ID");
 
                             let float_value = *value as f64;
 
