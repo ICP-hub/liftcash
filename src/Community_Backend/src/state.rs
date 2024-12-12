@@ -93,7 +93,11 @@ impl VotingSystem {
         let results = self.calculate_survey_results(self.last_week);
         self.weekly_survey_results.insert(self.last_week, results);
         let vote_results = self.calculate_average_votes(self.last_week);
-        // self.weekly_vote_results.insert(self.last_week, vote_results);
+        // self.weekly_vote_results.insert(self.last_week, vote_results.clone());
+        self.weekly_vote_results
+        .entry(self.last_week)
+        .or_insert_with(HashMap::new)
+        .extend(vote_results.clone());
         let ratification_results = self.calculate_ratification_results(self.last_week);
         self.weekly_ratification_counts.insert(self.last_week, ratification_results);
         let ratification_approved = self.check_ratification_approval(self.last_week);
