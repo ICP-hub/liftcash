@@ -3,10 +3,12 @@ type Result_1 = variant { Ok : vec record { principal; nat8 }; Err : text };
 type Result_2 = variant { Ok : opt nat8; Err : text };
 type Result_3 = variant { Ok : float64; Err : text };
 type UserRecord = record {
+  last_week_reward : float64;
   total_promo : float64;
   lift_token_balance : float64;
   unlocked_promo : float64;
   locked_promo : float64;
+  icp_balance : float64;
   burn_history : vec float64;
 };
 service : () -> {
@@ -14,6 +16,8 @@ service : () -> {
   distribute_rewards : (float64) -> (Result);
   fetch_all_user_records : () -> (vec record { principal; UserRecord }) query;
   fetch_burn_history : () -> (vec float64) query;
+  fetch_icp_balance : () -> (float64) query;
+  fetch_last_week_reward : () -> (float64) query;
   fetch_lift_token_balance : () -> (float64) query;
   fetch_locked_promo : () -> (float64) query;
   fetch_prize_pool_balance : () -> (float64) query;
@@ -26,6 +30,8 @@ service : () -> {
   reset_prize_pool : () -> ();
   test_intercall : (text) -> (text);
   update_burn_history : (float64) -> ();
+  update_icp_balance : (float64) -> ();
+  update_last_week_reward : (float64) -> ();
   update_lift_token_balance : (float64) -> ();
   update_locked_promo : (float64) -> ();
   update_prize_pool_balance : (float64) -> (Result_3);
