@@ -33,6 +33,9 @@ export default function AuthComponent({ closeModal }) {
       const userRecords = await economyActor.fetch_all_user_records();
       const userFound = userRecords.some((record) => record[0] === principal);
 
+      console.log("Principal : ", principal.toText()); 
+      console.log("User Found : ", userFound);
+
       if (!userFound) {
         console.log("User record not found. Creating a new record...");
         await createUserRecords();
@@ -55,7 +58,7 @@ export default function AuthComponent({ closeModal }) {
       }
     } catch (error) {
       console.error("Error during user and record checks: ", error);
-    }
+    } 
   }
 
   async function createUserRecords() {
