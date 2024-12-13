@@ -5,7 +5,6 @@ use serde::Deserialize;
 use std::{borrow::Cow, cell::RefCell, collections::HashMap};
 use std::collections::HashSet;
 
-
 use crate::{SurveyData, SurveyResponse, UserClaim, VoteData, VoteResponse};
 use crate::types::{State,Phase};
 
