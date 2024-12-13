@@ -1,7 +1,5 @@
 type Result = variant { Ok : text; Err : text };
-type Result_1 = variant { Ok : vec record { principal; nat8 }; Err : text };
-type Result_2 = variant { Ok : opt nat8; Err : text };
-type Result_3 = variant { Ok : float64; Err : text };
+type Result_1 = variant { Ok : float64; Err : text };
 type UserRecord = record {
   total_promo : float64;
   lift_token_balance : float64;
@@ -20,15 +18,13 @@ service : () -> {
   fetch_total_promo : () -> (float64) query;
   fetch_unlocked_promo : () -> (float64) query;
   fetch_user_record : () -> (UserRecord) query;
-  get_all_claims : () -> (Result_1);
-  get_user_claim : (principal) -> (Result_2);
   init_prize_pool : (opt float64) -> ();
   reset_prize_pool : () -> ();
   test_intercall : (text) -> (text);
   update_burn_history : (float64) -> ();
   update_lift_token_balance : (float64) -> ();
   update_locked_promo : (float64) -> ();
-  update_prize_pool_balance : (float64) -> (Result_3);
+  update_prize_pool_balance : (float64) -> (Result_1);
   update_total_promo : (float64) -> ();
   update_unlocked_promo : (float64) -> ();
 }

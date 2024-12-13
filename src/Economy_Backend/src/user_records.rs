@@ -133,8 +133,15 @@ where
 
 pub fn init_user_record() {
     USER_RECORDS.with(|records| {
-        let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(USER_RECORD_MEMORY_ID));
-        *records.borrow_mut() = StableBTreeMap::init(memory)
+        // let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(USER_RECORD_MEMORY_ID));
+        // *records.borrow_mut() = StableBTreeMap::init(memory)
+        if records.borrow().len() == 0 {
+            let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(USER_RECORD_MEMORY_ID));
+            *records.borrow_mut() = StableBTreeMap::init(memory);
+            ic_cdk::api::print("User records initialized.");
+        } else {
+            ic_cdk::api::print("User records already initialized.");
+        }
     });
 }
 
@@ -145,7 +152,12 @@ pub fn create_user_record() {
     let caller = caller();
     USER_RECORDS.with(|records| {
         let mut records = records.borrow_mut();
-        records.insert(caller, UserRecord::new());
+        if records.contains_key(&caller) {
+            ic_cdk::api::print("User record already exists for the caller.");
+        } else {
+            records.insert(caller, UserRecord::new());
+            ic_cdk::api::print("New user record created for the caller.");
+        }
     });
 }
 
