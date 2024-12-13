@@ -56,6 +56,7 @@ export const useAuthClient = () => {
         })
       );
     }
+    localStorage.setItem("userPrincipal", principal);
     return true;
   };
 
