@@ -3,8 +3,8 @@ import Modal from "../../components/modal/Modal";
 import AuthComponent from "../../components/AuthComponent";
 import "./LoginPage.css";
 import { useAuthClient } from "../../utils/useAuthClient";
-import logo from "../../assets/images/logo.png"
-import svg from "../../assets/images/SVG.png"
+import logo from "../../assets/images/logo.png";
+import svg from "../../assets/images/SVG.png";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
@@ -30,11 +30,7 @@ const LoginPage = () => {
     <div className="login-main-conatiner ">
       {/* Logo */}
       <div className="login-logo-div ">
-        <img
-          src={logo}
-          alt="Lift Cash Logo"
-          className="login-logo-img"
-        />
+        <img src={logo} alt="Lift Cash Logo" className="login-logo-img" />
         <p className="text-3xl mt-2 font-bold tracking-normal text-[#ff4500]">
           Lift Cash
         </p>
@@ -51,19 +47,21 @@ const LoginPage = () => {
 
       {/* Connect Wallet Button */}
 
-      {
-        isAuthenticated ?
-          <button onClick={() => {
+      {isAuthenticated ? (
+        <button
+          onClick={() => {
             logout();
-            navigate("/")
-          }} className="login-btn">
-            Logout
-          </button>
-          :
-          <button onClick={openModal} className="login-btn">
-            Connect Wallet
-          </button>
-      }
+            navigate("/");
+          }}
+          className="login-btn"
+        >
+          Logout
+        </button>
+      ) : (
+        <button onClick={openModal} className="login-btn">
+          Connect Wallet
+        </button>
+      )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <AuthComponent closeModal={closeModal} />
@@ -83,31 +81,27 @@ const LoginPage = () => {
       </p>
       {/* bottom image */}
       <div className="login-bottom-img-div">
-        <img
-          src={svg}
-          alt="images"
-          className="login-bottom-img"
-        />
+        <img src={svg} alt="images" className="login-bottom-img" />
       </div>
 
       {/* Toggle Switch */}
-      <div className="login-toggle-switch-main">
+      {/* <div className="login-toggle-switch-main">
         <label className="login-toggle-switch-lable">
-          {/* Toggle button */}
           <div
-            className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer ${isAnimationEnabled ? "bg-[#6cb2eb]" : "bg-gray-300"
-              }`}
+            className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer ${
+              isAnimationEnabled ? "bg-[#6cb2eb]" : "bg-gray-300"
+            }`}
             onClick={handleToggle}
           >
-            {/* Circle inside the toggle */}
             <div
-              className={` login-toggle-animation ${isAnimationEnabled ? "translate-x-6 bg-[#00A1ED]" : "bg-white"
-                }`}
+              className={` login-toggle-animation ${
+                isAnimationEnabled ? "translate-x-6 bg-[#00A1ED]" : "bg-white"
+              }`}
             />
           </div>
           <span className="login-bottom-span">Enable Animation</span>
         </label>
-      </div>
+      </div> */}
 
       {/* Version Text */}
       <div className="login-version-text">v0.1.0</div>
