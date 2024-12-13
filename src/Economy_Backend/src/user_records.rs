@@ -16,6 +16,8 @@ pub struct UserRecord {
     pub unlocked_promo: f64,
     pub burn_history: Vec<f64>,
     pub lift_token_balance: f64,
+    pub last_week_reward: f64, 
+    pub icp_balance: f64,
 }
 
 impl UserRecord {
@@ -26,6 +28,8 @@ impl UserRecord {
             unlocked_promo: 0.0,
             burn_history: Vec::new(),
             lift_token_balance: 0.0,
+            last_week_reward: 0.0,
+            icp_balance: 0.0,   
         }
     }
 
@@ -49,6 +53,14 @@ impl UserRecord {
         self.lift_token_balance += amount;
     }
 
+    pub fn update_last_week_reward(&mut self, amount: f64) {
+        self.last_week_reward = amount;
+    }
+
+    pub fn update_icp_balance(&mut self, amount: f64) {
+        self.icp_balance = amount;
+    }
+
     pub fn fetch_total_promo(&self) -> f64 {
         self.total_promo
     }
@@ -67,6 +79,14 @@ impl UserRecord {
 
     pub fn fetch_lift_token_balance(&self) -> f64 {
         self.lift_token_balance
+    }
+
+    pub fn fetch_last_week_reward(&self) -> f64 {
+        self.last_week_reward
+    }
+
+    pub fn fetch_icp_balance(&self) -> f64 {
+        self.icp_balance
     }
 }
 
@@ -207,6 +227,22 @@ pub fn update_lift_token_balance(amount: f64) {
     });
 }
 
+#[update]
+pub fn update_last_week_reward(amount: f64) {
+    let caller = caller();
+    mutate_user_record(caller, |user_record| {
+        user_record.update_last_week_reward(amount);
+    });
+}
+
+#[update]
+pub fn update_icp_balance(amount: f64) {
+    let caller = caller();
+    mutate_user_record(caller, |user_record| {
+        user_record.update_icp_balance(amount);
+    });
+}
+
 #[query]
 pub fn fetch_total_promo() -> f64 {
     let caller = caller();
@@ -236,6 +272,20 @@ pub fn fetch_lift_token_balance() -> f64 {
     let caller = caller();
     read_user_record(caller, |user_record| user_record.fetch_lift_token_balance()).expect("User record not found")
 }
+
+#[query]
+pub fn fetch_last_week_reward() -> f64 {
+    let caller = caller();
+    read_user_record(caller, |user_record| user_record.fetch_last_week_reward()).expect("User record not found")
+}
+
+#[query]
+pub fn fetch_icp_balance() -> f64 {
+    let caller = caller();
+    read_user_record(caller, |user_record| user_record.fetch_icp_balance()).expect("User record not found")
+}
+
+
 
 #[query]
 pub fn fetch_all_user_records() -> Vec<(Principal, UserRecord)> {

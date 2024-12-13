@@ -15,10 +15,8 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
   );
 
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
- 
-  const[isParticipated, setIsParticipated] = useState(false);
 
-  // const PassValue = propsFormattedTimeLeft;
+  const[isParticipated, setIsParticipated] = useState(false);
 
   const fetchUserParticipation = async () => {
     try {
