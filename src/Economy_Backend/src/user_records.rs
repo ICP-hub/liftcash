@@ -303,15 +303,3 @@ pub fn fetch_all_user_records() -> Vec<(Principal, UserRecord)> {
     })
 }
 
-#[update]
-pub fn update_someone(principal: Principal, amount: f64) {
-    mutate_user_record(principal, |user_record| {
-        user_record.update_total_promo(amount);
-        user_record.update_locked_promo(amount);
-        user_record.update_unlocked_promo(amount);
-        user_record.update_burn_history(amount);
-        user_record.update_lift_token_balance(amount);
-        user_record.update_last_week_reward(amount);
-        user_record.update_icp_balance(amount);
-    });
-}
