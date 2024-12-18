@@ -1,10 +1,12 @@
-use candid::{CandidType, Deserialize, Principal,Encode,Decode};
+use candid::{CandidType, Decode, Deserialize, Encode, Principal};
 use ic_cdk::{caller, query, update};
-use std::cell::RefCell;
-use ic_stable_structures::{memory_manager::{MemoryManager, MemoryId, VirtualMemory}, DefaultMemoryImpl, Storable};
 use ic_stable_structures::StableBTreeMap;
+use ic_stable_structures::{
+    memory_manager::{MemoryId, MemoryManager, VirtualMemory},
+    DefaultMemoryImpl, Storable,
+};
 use std::borrow::Cow;
-
+use std::cell::RefCell;
 
 pub type VMem = VirtualMemory<DefaultMemoryImpl>;
 pub const USER_RECORD_MEMORY_ID: MemoryId = MemoryId::new(2);
@@ -16,6 +18,8 @@ pub struct UserRecord {
     pub unlocked_promo: f64,
     pub burn_history: Vec<f64>,
     pub lift_token_balance: f64,
+    pub last_week_reward: f64,
+    pub icp_balance: f64,
 }
 
 impl UserRecord {
@@ -26,6 +30,8 @@ impl UserRecord {
             unlocked_promo: 0.0,
             burn_history: Vec::new(),
             lift_token_balance: 0.0,
+            last_week_reward: 0.0,
+            icp_balance: 0.0,
         }
     }
 
@@ -49,6 +55,14 @@ impl UserRecord {
         self.lift_token_balance += amount;
     }
 
+    pub fn update_last_week_reward(&mut self, amount: f64) {
+        self.last_week_reward = amount;
+    }
+
+    pub fn update_icp_balance(&mut self, amount: f64) {
+        self.icp_balance = amount;
+    }
+
     pub fn fetch_total_promo(&self) -> f64 {
         self.total_promo
     }
@@ -68,6 +82,14 @@ impl UserRecord {
     pub fn fetch_lift_token_balance(&self) -> f64 {
         self.lift_token_balance
     }
+
+    pub fn fetch_last_week_reward(&self) -> f64 {
+        self.last_week_reward
+    }
+
+    pub fn fetch_icp_balance(&self) -> f64 {
+        self.icp_balance
+    }
 }
 
 thread_local! {
@@ -81,7 +103,8 @@ thread_local! {
 }
 
 impl Storable for UserRecord {
-    const BOUND: ic_stable_structures::storable::Bound = ic_stable_structures::storable::Bound::Unbounded;
+    const BOUND: ic_stable_structures::storable::Bound =
+        ic_stable_structures::storable::Bound::Unbounded;
 
     fn to_bytes(&self) -> Cow<[u8]> {
         Cow::Owned(Encode!(self).unwrap())
@@ -104,12 +127,12 @@ where
     F: FnOnce(&UserRecord) -> R,
 {
     with_user_records(|user_records| {
-        let user_records = user_records.borrow(); 
+        let user_records = user_records.borrow();
         if let Some(user_record) = user_records.get(&principal) {
-            Some(f(&user_record)) 
+            Some(f(&user_record))
         } else {
             ic_cdk::api::print("User record not found.");
-            None 
+            None
         }
     })
 }
@@ -121,31 +144,40 @@ where
     with_user_records(|user_records| {
         let mut user_records = user_records.borrow_mut();
         if let Some(mut user_record) = user_records.remove(&principal) {
-            let result = f(&mut user_record);  // Call f once
+            let result = f(&mut user_record); // Call f once
             user_records.insert(principal, user_record.clone());
-            result 
+            result
         } else {
             panic!("User record not found for mutation");
         }
     })
 }
 
-
 pub fn init_user_record() {
     USER_RECORDS.with(|records| {
-        let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(USER_RECORD_MEMORY_ID));
-        *records.borrow_mut() = StableBTreeMap::init(memory)
+        // let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(USER_RECORD_MEMORY_ID));
+        // *records.borrow_mut() = StableBTreeMap::init(memory)
+        if records.borrow().len() == 0 {
+            let memory = MEMORY_MANAGER.with(|mm| mm.borrow().get(USER_RECORD_MEMORY_ID));
+            *records.borrow_mut() = StableBTreeMap::init(memory);
+            ic_cdk::api::print("User records initialized.");
+        } else {
+            ic_cdk::api::print("User records already initialized.");
+        }
     });
 }
-
-
 
 #[update]
 pub fn create_user_record() {
     let caller = caller();
     USER_RECORDS.with(|records| {
         let mut records = records.borrow_mut();
-        records.insert(caller, UserRecord::new());
+        if records.contains_key(&caller) {
+            ic_cdk::api::print("User record already exists for the caller.");
+        } else {
+            records.insert(caller, UserRecord::new());
+            ic_cdk::api::print("New user record created for the caller.");
+        }
     });
 }
 
@@ -195,34 +227,69 @@ pub fn update_lift_token_balance(amount: f64) {
     });
 }
 
+#[update]
+pub fn update_last_week_reward(amount: f64) {
+    let caller = caller();
+    mutate_user_record(caller, |user_record| {
+        user_record.update_last_week_reward(amount);
+    });
+}
+
+#[update]
+pub fn update_icp_balance(amount: f64) {
+    let caller = caller();
+    mutate_user_record(caller, |user_record| {
+        user_record.update_icp_balance(amount);
+    });
+}
+
 #[query]
 pub fn fetch_total_promo() -> f64 {
     let caller = caller();
-    read_user_record(caller, |user_record| user_record.fetch_total_promo()).expect("User record not found")
+    read_user_record(caller, |user_record| user_record.fetch_total_promo())
+        .expect("User record not found")
 }
 
 #[query]
 pub fn fetch_locked_promo() -> f64 {
     let caller = caller();
-    read_user_record(caller, |user_record| user_record.fetch_locked_promo()).expect("User record not found")
+    read_user_record(caller, |user_record| user_record.fetch_locked_promo())
+        .expect("User record not found")
 }
 
 #[query]
 pub fn fetch_unlocked_promo() -> f64 {
     let caller = caller();
-    read_user_record(caller, |user_record| user_record.fetch_unlocked_promo()).expect("User record not found")
+    read_user_record(caller, |user_record| user_record.fetch_unlocked_promo())
+        .expect("User record not found")
 }
 
 #[query]
 pub fn fetch_burn_history() -> Vec<f64> {
     let caller = caller();
-    read_user_record(caller, |user_record| user_record.fetch_burn_history()).expect("User record not found")
+    read_user_record(caller, |user_record| user_record.fetch_burn_history())
+        .expect("User record not found")
 }
 
 #[query]
 pub fn fetch_lift_token_balance() -> f64 {
     let caller = caller();
-    read_user_record(caller, |user_record| user_record.fetch_lift_token_balance()).expect("User record not found")
+    read_user_record(caller, |user_record| user_record.fetch_lift_token_balance())
+        .expect("User record not found")
+}
+
+#[query]
+pub fn fetch_last_week_reward() -> f64 {
+    let caller = caller();
+    read_user_record(caller, |user_record| user_record.fetch_last_week_reward())
+        .expect("User record not found")
+}
+
+#[query]
+pub fn fetch_icp_balance() -> f64 {
+    let caller = caller();
+    read_user_record(caller, |user_record| user_record.fetch_icp_balance())
+        .expect("User record not found")
 }
 
 #[query]
@@ -235,3 +302,4 @@ pub fn fetch_all_user_records() -> Vec<(Principal, UserRecord)> {
             .collect()
     })
 }
+

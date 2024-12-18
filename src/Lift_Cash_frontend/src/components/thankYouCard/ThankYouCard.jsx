@@ -29,20 +29,20 @@ const ThankYouCard = ({ remainingTime, type, onTimeUp }) => {
       type === "Survey"
         ? "Survey"
         : type === "Ratify"
-        ? "Ractification "
+        ? "Ratification "
         : "vote"
     }`,
     nextStep:
       type === "Survey"
         ? "The Weekly Vote"
         : type === "Ratify"
-        ? "The Ractification Result"
+        ? "The Ratification Result"
         : "The Ratification Vote",
     completion: `Completing the ${
       type === "Survey"
         ? "vote"
         : type === "Ratify"
-        ? "Ractification Result"
+        ? "Ratification Result"
         : "Ratification Vote"
     } enables you to claim an additional ${
       type === "Survey" ? "70" : type === "Ratify" ? "10" : "10"
@@ -51,7 +51,7 @@ const ThankYouCard = ({ remainingTime, type, onTimeUp }) => {
       type === "Survey"
         ? "Vote"
         : type === "Ratify"
-        ? "Ractification Result"
+        ? "Ratification Result"
         : "Ratification Vote"
     }`,
   };

@@ -4,6 +4,7 @@ use candid::Principal;
 use ic_cdk::api::call::{call, CallResult};
 use ic_cdk_macros::update;
 use crate :: user_records::mutate_user_record;
+use ic_cdk_macros::query;
 
 #[update]
 pub async fn distribute_rewards(weekly_issuance_percentage: f64) -> Result<String, String> {
@@ -95,10 +96,15 @@ fn update_user_record(user: Principal, reward: f64) -> Result<(), String> {
     })
 }
 
-
 async fn get_user_claim(principal: Principal) -> Result<Option<u8>, String> {
+
+    let community_canister_id = option_env!("CANISTER_ID_COMMUNITY_BACKEND")
+        .expect("COMMUNITY_CANISTER_ID env var not set")
+        .parse::<Principal>()
+        .expect("Invalid Community Canister ID");
+       
     let result: CallResult<(Option<u8>,)> = call(
-        Principal::from_text("bkyz2-fmaaa-aaaaa-qaaaq-cai").unwrap(),
+        community_canister_id,
         "calculate_total_claim",
         (principal,),
     )
@@ -114,10 +120,15 @@ async fn get_user_claim(principal: Principal) -> Result<Option<u8>, String> {
 }
 
 async fn get_all_claims() -> Result<Vec<(Principal, u8)>, String> {
+    let community_canister_id = option_env!("CANISTER_ID_COMMUNITY_BACKEND")
+        .expect("COMMUNITY_CANISTER_ID env var not set")
+        .parse::<Principal>()
+        .expect("Invalid Community Canister ID");
+
     let result: CallResult<(Vec<(Principal, u8)>,)> = call(
-        Principal::from_text("bkyz2-fmaaa-aaaaa-qaaaq-cai").unwrap(), //get the id from environment variable
+        community_canister_id,
         "get_all_claim_percentages",
-        (),
+        (), 
     )
     .await;
 

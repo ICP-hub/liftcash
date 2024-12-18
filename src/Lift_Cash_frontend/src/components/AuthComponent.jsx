@@ -14,6 +14,8 @@ export default function AuthComponent({ closeModal }) {
   const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  let userPrincipal = localStorage.getItem("userPrincipal"); 
+
   const communityActor = useSelector(
     (state) => state?.actors?.actors?.communityActor
   );
@@ -30,14 +32,19 @@ export default function AuthComponent({ closeModal }) {
   async function checkUserAndRecords() {
     try {
       // Fetch user record from economy canister
-      const userRecords = await economyActor.fetch_all_user_records();
-      const userFound = userRecords.some((record) => record[0] === principal);
+      console.log("Principal : ", userPrincipal); 
+      const userRecords = await economyActor?.fetch_all_user_records();
+
+      userRecords.some((record) => {console.log("Record : ", record[0].toText())});
+      const userFound = userRecords.some((record) => record[0].toText() === userPrincipal);
+     
+      console.log("User Found : ", userRecords, userFound);
 
       if (!userFound) {
         console.log("User record not found. Creating a new record...");
         await createUserRecords();
       } else {
-        console.log("User record exists.");
+        console.log("User record already exists.");
       }
 
       // Fetch username from community canister
@@ -55,7 +62,7 @@ export default function AuthComponent({ closeModal }) {
       }
     } catch (error) {
       console.error("Error during user and record checks: ", error);
-    }
+    } 
   }
 
   async function createUserRecords() {
