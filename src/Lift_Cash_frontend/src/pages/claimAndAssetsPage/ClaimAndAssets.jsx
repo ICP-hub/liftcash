@@ -7,6 +7,7 @@ import bgimg from "../../assets/images/background.svg";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
+import CongratsModal from "../../components/CongratsCard/CongratsModal";
 
 const ClaimAndAssets = () => {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ const ClaimAndAssets = () => {
     burn_history: [],
     lift_token_balance: 0.0,
   });
+
+  const [isOpen, setIsOpen] = useState(true);
 
   const [weekCount, setWeekCount] = useState(0);
 
@@ -121,6 +124,7 @@ const ClaimAndAssets = () => {
       console.error("Error getting phase info:", error);
     }
   };
+  if (isOpen) return <CongratsModal isOpen={isOpen} setIsOpen={setIsOpen} />;
 
   return (
     <div className="claim-assets-container ">
@@ -159,7 +163,7 @@ const ClaimAndAssets = () => {
             className="enabled-claim-button"
           >
             <RiLoginCircleLine style={{ fontSize: "32px" }} />{" "}
-            <span className="claim-text">MINT</span>
+            {/* <span className="claim-text">MINT</span> */}
             {/* <span className="small-description">Your PROMO</span> */}
           </button>
           {/* ) : (
