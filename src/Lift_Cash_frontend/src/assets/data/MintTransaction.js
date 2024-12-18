@@ -4,4 +4,4 @@ export const mintOptions = [
   // { label: "XUSDC(14.044118%)", value: "XUSDC" },
 ];
 
-export const balances = ["POINT", "PROMO"];
+export const balances = ["PROMO"];
