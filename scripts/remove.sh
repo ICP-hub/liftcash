@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Define the ending number for the loop

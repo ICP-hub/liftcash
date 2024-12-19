@@ -13,47 +13,32 @@ Clone the Lift Cash GitHub repository to your local machine:
 git clone https://github.com/ICP-hub/liftcash.git
 ```
 
-### 2. Start the Local Replica
-Run the following command to start a local replica of the Internet Computer:
-
-```bash
-dfx start
-```
-
-### 3. Install Dependencies
+### 2. Install Dependencies
 Navigate to the project folder and install the required dependencies:
 
 ```bash
 npm install
 ```
 
-### 4. Update Deployment Scripts
-Replace the `Principal` in the `LIFT_DEPLOY.sh` and `PROMO_DEPLOY.sh` files with your own Principal (e.g., `export DEFAULT=sfwko-hd7us-gen5t-ssuci-vfjwf-afepb-a7p4y-guh5l-s5n2e-zuxvt-dae`).
-
-### 5. Create New Identities
-Create a new identity for the `minter` and `archive_controller` by running:
+### 3. Start the Internet Computer Replica
+Start the local Internet Computer replica by running the following command:
 
 ```bash
-dfx identity new minter
-dfx identity new archive_controller
+dfx start --background --clean
 ```
 
-### 6. Deploy Canisters
-Run the deployment script to deploy canisters on your local replica. Navigate to the `Scripts` folder and make the `deploy.sh` script executable:
-
-```bash
-cd Scripts
-chmod +x deploy.sh
-./deploy.sh
-```
-
-### 7. Manage Dependencies
+### 4. Manage Dependencies
 Run the following commands to pull and deploy any external dependencies required by the project:
 
 - **Pull Dependencies**: This command downloads any required dependencies defined in the `dfx.json` file from the mainnet (or from a specified network):
 
     ```bash
     dfx deps pull
+    ```
+- **Initialize Dependencies**: This command initializes the dependencies:
+
+    ```bash
+    dfx deps init
     ```
 
 - **Deploy Dependencies**: After pulling the dependencies, deploy them on your local replica:
@@ -62,7 +47,20 @@ Run the following commands to pull and deploy any external dependencies required
     dfx deps deploy
     ```
 
-### 8. Start the Frontend
+### 5. Deploy the Canisters
+Run the following command to deploy the Lift Cash canisters:
+
+```bash
+cd scripts 
+
+# To deploy the canisters to the local replica
+./deploy.sh 
+
+# To deploy the canisters on IC Mainnet
+./deploy.sh ic
+```
+
+### 6. Start the Frontend
 Run the following command to start the frontend:
 
 ```bash
@@ -70,6 +68,26 @@ npm start
 ```
 
 ### 9. Access the Frontend
-Open your web browser and navigate to `http://localhost:3000` to view the application.
+Open your web browser and navigate to `http://localhost:3000` to view the Dapp.
+
+
+## Testing
+
+To run the tests for the Lift Cash project, run the following command:
+
+```bash 
+cd scripts
+
+# To run the tests on the local replica
+./init.sh
+
+# To run the tests on the IC Mainnet
+./init.sh ic
+```
+
+This command will initialize the test environment and run the test cases for the Lift Cash project. When the tests are complete, you will see the test results in the terminal.
+
+Test scripts are able to create new users, and participate in the governance of the Lift Cash project. The tests are designed to simulate the behavior of real users interacting with the Dapp.
+
 
 
