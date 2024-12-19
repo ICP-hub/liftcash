@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Notify the user
-echo -e "\e[1;34mEnvironment variables loaded from .env.\e[0m"
-sleep 2  # Add a 2-second delay
-
 # Build the Community_Backend and Economy_Backend projects
 echo -e "\e[1;34mBuilding the Community_Backend project...\e[0m"
 sleep 1  # Add a 1-second delay before building Community_Backend
