@@ -53,4 +53,4 @@ while [ $phases_completed -lt ${#handled_phases[@]} ]; do
     echo -e "\e[1;33mProceeding to the next phase...\e[0m"
 done
 
-echo -e "\e[1;32mAll actionable phases have been handled. Exiting script.\e[0m"
+echo -e "\e[1;34mAll actionable phases have been handled.\e[0m"
