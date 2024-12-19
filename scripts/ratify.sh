@@ -1,0 +1,1 @@
+echo -e "\e[1;32mRunning the Ratify script...\e[0m"

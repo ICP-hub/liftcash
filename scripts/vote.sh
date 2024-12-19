@@ -1,0 +1,1 @@
+echo -e "\e[1;32mRunning the Vote script...\e[0m"
