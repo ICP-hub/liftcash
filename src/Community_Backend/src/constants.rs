@@ -7,5 +7,5 @@ pub const ANONYMOUS_USER:&str = "Anonymous users are not allowed for this call";
 // pub const RATIFICATION_RESULTS_INTERVAL: u64 = RATIFICATION_SUBMISSION_DURATION+60000000000;  
 pub const PHASE_DURATION: u64 = 1 * 60 * 1_000_000_000;
 // 2 * 24 * 60 * 60 * 1_000_000_000; // 2 days in nanoseconds
-pub const RESULTS_DURATION: u64 = 0 * 60 * 1_000_000_000;
+pub const RESULTS_DURATION: u64 = 1 * 60 * 1_000_000_000;
 // 8 * 60 * 60 * 1_000_000_000;

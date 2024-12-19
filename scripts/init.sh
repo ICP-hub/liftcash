@@ -6,6 +6,9 @@ chmod +x deploy.sh
 chmod +x createuser.sh
 chmod +x participate.sh
 chmod +x remove.sh
+chmod +x survey.sh
+chmod +x vote.sh
+chmod +x ratify.sh
 echo -e "\e[1;34mPermissions set successfully!\e[0m"
 
 

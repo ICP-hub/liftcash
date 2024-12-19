@@ -6,6 +6,7 @@ source ../.env  # Adjust the relative path to point to the root directory
 set +a
 
 PHASE_DURATION=60  # Duration of each phase in seconds
+PHASE_DURATION2=120  # Duration of each phase in seconds
 SURVEY_SCRIPT="./survey.sh"
 VOTE_SCRIPT="./vote.sh"
 RATIFY_SCRIPT="./ratify.sh"
@@ -21,7 +22,7 @@ handle_phase() {
             echo -e "\e[1;34mRunning the $variant_value script...\e[0m"
             sleep 2  # Pause for 2 seconds
             bash $SURVEY_SCRIPT
-            sleep $PHASE_DURATION
+            sleep $PHASE_DURATION2
             ;;
         ("Vote")
             echo -e "\e[1;34mRunning the $variant_value script...\e[0m"
@@ -33,7 +34,7 @@ handle_phase() {
             echo -e "\e[1;34mRunning the $variant_value script...\e[0m"
             sleep 2  # Pause for 2 seconds
             bash $RATIFY_SCRIPT
-            sleep $PHASE_DURATION
+            sleep $PHASE_DURATION2
             ;;
         (*)
             echo -e "\e[1;31mUnknown phase: $variant_value. Waiting for a known phase...\e[0m"
@@ -41,18 +42,6 @@ handle_phase() {
     esac
 }
 
-# # Main loop to handle all phases
-# echo -e "\e[1;33mStarting the phase handler...\e[0m"
-# phases_handled=0  # Counter to track the number of handled phases
-
-# while [ $phases_handled -lt 3 ]; do
-#     handle_phase
-#     phases_handled=$((phases_handled + 1))
-#     echo -e "\e[1;33mWaiting for the next phase...\e[0m"
-#     # sleep 120  # Wait for 2 minutes before checking again
-# done
-
-# echo -e "\e[1;32mAll phases have been handled. Exiting script.\e[0m"
 # Main loop to handle actionable phases
 echo -e "\e[1;33mStarting the phase handler...\e[0m"
 handled_phases=("Survey" "Vote" "Ratify")
