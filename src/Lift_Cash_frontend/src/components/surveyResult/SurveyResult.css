@@ -1,12 +1,12 @@
 .survey-result-main-div {
-  @apply w-full h-full max-w-md mb-8 mx-auto  bg-white rounded-lg border border-blue-500 shadow-md mt-8 overflow-hidden;
+  @apply w-full h-full flex-col justify-center items-center max-w-md mb-8 mx-auto  bg-white rounded-lg border border-primary shadow-md mt-8 overflow-hidden;
 }
 .survey-result-h1 {
   @apply text-center font-bold text-3xl m-5;
 }
 
 .survey-result-p {
-  @apply bg-blue-200 font-semibold text-center py-5 px-2;
+  @apply bg-light-grey font-semibold text-center py-5 px-2;
 }
 .survey-result-container {
   @apply px-5 py-4 space-y-5;
@@ -15,17 +15,17 @@
   @apply px-5 py-2 space-y-2;
 }
 .survey-result-question {
-  @apply text-blue-500  font-bold;
+  @apply text-primary font-bold;
 }
 .survey-result-btn-div {
   @apply text-center mt-4 mb-4 px-10;
 }
-.survey-result-btn {
+/* .survey-result-btn {
   @apply py-4  text-xl w-full  bg-red-500 text-white rounded-md hover:bg-blue-700;
-}
+} */
 .container-survey-time {
-  @apply flex justify-center p-5 text-white bg-[#00A1ED] font-semibold mb-4;
+  @apply flex justify-center p-5 text-white bg-primary font-semibold mb-4;
 }
 .container-survey-timeleft {
-  @apply ml-2 text-red-600;
+  @apply ml-2 text-orange-red;
 }

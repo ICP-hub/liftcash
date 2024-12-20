@@ -52,7 +52,7 @@
 }
 
 .footer-bottom-container {
-  @apply lg:mt-10 sm:mx-[4%] text-[#CED4DA] text-center font-inter font-medium  border-t border-[#3B4261]  text-xs md:text-sm  flex justify-between p-4 bg-transparent;
+  @apply lg:mt-10 sm:mx-[4%] text-[#CED4DA] text-center  font-medium  border-t border-[#3B4261]  text-xs md:text-sm  flex justify-between p-4 bg-transparent;
 }
 .footer-bottom-items {
   @apply lg:pt-4  lg:ml-36 lg:mr-20 md:ml-10 md:mr-10 md:bg-transparent;

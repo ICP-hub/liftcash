@@ -17,6 +17,8 @@ const ClaimAndAssets = () => {
     unlocked_promo: 0.0,
     burn_history: [],
     lift_token_balance: 0.0,
+    last_week_reward: 0.0,
+    icp_balance: 0.0,
   });
 
   const [isOpen, setIsOpen] = useState(true);
@@ -124,7 +126,14 @@ const ClaimAndAssets = () => {
       console.error("Error getting phase info:", error);
     }
   };
-  if (isOpen) return <CongratsModal isOpen={isOpen} setIsOpen={setIsOpen} />;
+  if (isOpen)
+    return (
+      <CongratsModal
+        reward={userRecord.last_week_reward || 0}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
+    );
 
   return (
     <div className="claim-assets-container ">
@@ -183,7 +192,7 @@ const ClaimAndAssets = () => {
             </div>
             <div className="w-1/3 flex flex-col items-end flex-wrap">
               <p className="text-xs">Next Claim</p>
-              <p className="text-xl font-semibold">{formattedTimeLeft}</p>
+              <p className="text-lg font-semibold">{formattedTimeLeft}</p>
             </div>
           </div>
         </div>
@@ -192,9 +201,9 @@ const ClaimAndAssets = () => {
       <div className="locked-section">
         <div className="flex justify-between items-center mb-4">
           <h2 className="locked-header">
-            Locked <span>PROMO</span>:
+            Locked <span>PROMO</span> :
           </h2>
-          <p className="text-[24px] text-gray-900 font-medium">
+          <p className="text-xl text-dark-grey font-semibold">
             {userRecord.locked_promo}
           </p>
         </div>
@@ -202,7 +211,7 @@ const ClaimAndAssets = () => {
         <p className="text-xs flex flex-row gap-2">
           For more info on Locked PROMO{" "}
           <p
-            className="text-[#0000EE] underline"
+            className="text-blue-violet underline"
             onClick={() => window.open("/", "_blank")}
           >
             click here
@@ -210,13 +219,13 @@ const ClaimAndAssets = () => {
         </p>
 
         <div className="unlock-info">
-          <p className="unlock-percentage">Unlock 0%</p>
+          <button className="unlock-percentage">Unlock 0%</button>
         </div>
 
         <p className="info-text flex flex-row gap-2">
           Your PROMO cannot be unlocked. For more info{" "}
           <p
-            className="text-[#8256AA] underline"
+            className="text-blue-violet underline"
             onClick={() => window.open("/claim", "_blank")}
           >
             click here

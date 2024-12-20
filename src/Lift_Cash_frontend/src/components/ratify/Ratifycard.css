@@ -1,5 +1,5 @@
 .ratify-main-div {
-  @apply w-full max-w-md mx-auto bg-white mb-6 rounded-lg border border-blue-500 shadow-md mt-8;
+  @apply w-full max-w-md mx-auto bg-white mb-6 rounded-lg border border-primary shadow-md mt-8;
 }
 
 .ratify-title {
@@ -7,11 +7,11 @@
 }
 
 .ratify-vote-title {
-  @apply pl-2 md:pl-10  py-5 text-xl  text-white font-bold bg-[#00A1ED];
+  @apply pl-2 md:pl-10  py-5 text-xl  text-white font-bold bg-primary;
 }
 
 .ratify-vote-lable-even {
-  @apply pl-2 md:pl-10 py-5 bg-[#DAECFA];
+  @apply pl-2 md:pl-10 py-5 bg-light-grey;
 }
 .ratify-vote-lable-odd {
   @apply pl-2 md:pl-10 py-5 flex md:space-x-2;
@@ -21,18 +21,18 @@
   @apply font-bold;
 }
 .ratify-indicator {
-  @apply text-sm text-red-500 flex items-center;
+  @apply text-sm text-orange-red flex items-center;
 }
 
 .container-survey-time {
-  @apply flex justify-center p-5 text-white bg-[#00A1ED] font-semibold mb-4;
+  @apply flex justify-center p-5 text-white bg-cyan font-semibold mb-4;
 }
 .container-survey-timeleft {
-  @apply ml-2 text-red-600;
+  @apply ml-2 text-orange-red;
 }
 
 .ratify-vote-question-title {
-  @apply p-4 bg-[#00A1ED] text-white text-lg font-bold text-center;
+  @apply p-4 bg-orange-red text-white text-lg font-bold text-center;
 }
 
 .ratify-vote-btn-container {
@@ -40,17 +40,17 @@
 }
 
 .ratify-vote-btn {
-  @apply text-white bg-[#00A1ED] mb-2 py-3 px-14 rounded-lg hover:bg-blue-500;
+  @apply text-white bg-coral mb-2 py-3 px-14 rounded-lg hover:bg-red-400;
 }
 
 .ratify-note {
-  @apply text-sm text-center text-red-600 my-5;
+  @apply text-sm text-center text-orange-red my-5;
 }
 
 .messageContainer {
-  @apply bg-blue-400 px-4 gap-1 py-8 flex flex-col justify-center items-center;
+  @apply bg-orange-red rounded-b-lg px-4 gap-1 py-8 flex flex-col justify-center items-center;
 }
 
 .textmessage {
-  @apply font-semibold text-lg text-red-500;
+  @apply font-semibold text-lg text-white;
 }

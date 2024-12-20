@@ -1,6 +1,6 @@
 import React from "react";
 
-const CongratsModal = ({ setIsOpen }) => {
+const CongratsModal = ({ setIsOpen, reward }) => {
   // if (!isOpen) return null;
 
   return (
@@ -48,7 +48,7 @@ const CongratsModal = ({ setIsOpen }) => {
           Congratulations
         </h2>
         <p className="text-gray-600 mt-2">
-          Awesome! 🎉 You’ve been rewarded with 30 PROMO 😊
+          {`Awesome! 🎉 You’ve been rewarded with ${reward} PROMO 😊`}
         </p>
       </div>
     </div>

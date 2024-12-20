@@ -121,7 +121,7 @@ const Transferpage = () => {
     <div className="page-container">
       <DashBoardHead className="border-red-900" />
 
-      <div className="card-container border-blue-500">
+      <div className="card-container ">
         <h2 className="balance-title">Your current balances:</h2>
 
         <div className="balanceContainer">
@@ -164,7 +164,11 @@ const Transferpage = () => {
         <div className="info-section">
           <p className="info-text">
             For more info on sending LIFT{" "}
-            <a href="#" className="text-[#0000EE] underline">
+            <a
+              href="#"
+              className="text-blue-violet
+             underline"
+            >
               click here
             </a>
             .
@@ -179,7 +183,7 @@ const Transferpage = () => {
         <h2 className="receive-title">Receive Tokens</h2>
         <p className="receive-info-text">
           For more info{" "}
-          <a href="#" className="text-[#0000EE] underline">
+          <a href="#" className="text-blue-violet underline">
             click here
           </a>
           .

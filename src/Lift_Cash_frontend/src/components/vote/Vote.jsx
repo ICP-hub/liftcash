@@ -218,7 +218,7 @@ const Vote = ({ timeLeft, onSubmit, onTimeUp }) => {
           .
         </p>
 
-        <h1 className="vote-title bg-blue-200 py-5">
+        <h1 className="vote-title bg-light-grey py-5">
           Ready to Vote? Let's start.
         </h1>
         {voteQuestions.map((data, index) => (

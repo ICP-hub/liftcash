@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
 
 const SurveyResult = ({ timeLeft, onTimeUp }) => {
-
   const formattedTimeLeft = useFormattedTimeLeft(timeLeft);
 
   const communityActor = useSelector(
@@ -14,7 +13,7 @@ const SurveyResult = ({ timeLeft, onTimeUp }) => {
 
   useEffect(() => {
     console.log("Formated time in SR ::: ", formattedTimeLeft);
-    if(formattedTimeLeft === "0 mins"){
+    if (formattedTimeLeft === "0 mins") {
       onTimeUp();
     }
   }, [formattedTimeLeft]);
@@ -27,7 +26,6 @@ const SurveyResult = ({ timeLeft, onTimeUp }) => {
     fetchSurveyResults();
   }, []);
 
-
   const [surveyResults, setSurveyResults] = useState([]);
   const [question, setQuestion] = useState([
     "Where do you feel the Bitcoin & Wider crypto markets are heading?",
@@ -36,7 +34,6 @@ const SurveyResult = ({ timeLeft, onTimeUp }) => {
     "How long before the LIFTCASH market changes direction?",
     "What are the  priorities for voting this week ?",
   ]);
-
 
   function sortSurveyResults(results) {
     return results.sort((a, b) => {
@@ -92,17 +89,18 @@ const SurveyResult = ({ timeLeft, onTimeUp }) => {
       </div>
       <p className="survey-result-p">
         {" "}
-        Thank you to everyone who participated in the weekly survey. This
-        week's survey results are:
+        Thank you to everyone who participated in the weekly survey. This week's
+        survey results are:
       </p>
 
       {surveyResults.map((data, index) => (
         <div
           key={data.id}
-          className={` ${index % 2 === 0
+          className={` ${
+            index % 2 === 0
               ? "survey-result-container"
-              : `bg-blue-100  survey-result-container`
-            }`}
+              : `bg-light-grey  survey-result-container`
+          }`}
         >
           <h2 className="survey-result-question">{`Q${data.id}: ${data.question}`}</h2>
           <div className="survey-result-options-container">
@@ -112,7 +110,6 @@ const SurveyResult = ({ timeLeft, onTimeUp }) => {
           </div>
         </div>
       ))}
-
     </div>
   );
 };

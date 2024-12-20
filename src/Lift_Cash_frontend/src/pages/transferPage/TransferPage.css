@@ -5,11 +5,11 @@
 }
 
 .card-container {
-  @apply shadow-md rounded-lg  mt-6 py-6  w-full max-w-lg mx-auto text-center;
+  @apply shadow-md rounded-lg  mt-6 py-6 border-primary w-full max-w-lg mx-auto text-center;
 }
 
 .balance-title {
-  @apply text-base font-bold text-[#00A1ED] mt-5 mb-2;
+  @apply text-base font-bold text-cyan mt-5 mb-2;
 }
 
 .balanceContainer {
@@ -17,15 +17,15 @@
 }
 
 .balance-item {
-  @apply bg-[#DAECFA] rounded-md p-1 w-[40%] mb-6;
+  @apply bg-light-grey rounded-md p-1 w-[40%] mb-6;
 }
 
 .balance-amount {
-  @apply text-base font-medium text-[#222222];
+  @apply text-base font-medium text-dark-grey;
 }
 
 .balance-label {
-  @apply text-sm text-[#00A1ED] font-semibold;
+  @apply text-sm text-cyan font-semibold;
 }
 
 /* .tabs-container {
@@ -45,7 +45,7 @@
 } */
 
 .transfer-fee {
-  @apply bg-[#00A1ED];
+  @apply bg-primary;
 }
 
 .transfer-fee-text {
@@ -57,23 +57,23 @@
 }
 
 .info-text {
-  @apply text-sm text-gray-800 mb-5;
+  @apply text-sm text-dark-grey mb-5;
 }
 
 .balance-info {
-  @apply text-sm text-gray-800;
+  @apply text-sm text-dark-grey;
 }
 
 .receive-tokens-container {
-  @apply bg-white rounded-lg mt-6 p-6 w-full max-w-md mx-auto text-center border-2 border-blue-500;
+  @apply bg-white rounded-lg mt-6 p-6 w-full max-w-md mx-auto text-center border-2 border-primary;
 }
 
 .receive-title {
-  @apply text-3xl text-[#222222] font-semibold mb-2;
+  @apply text-3xl text-black font-semibold mb-2;
 }
 
 .receive-info-text {
-  @apply text-xs text-gray-800;
+  @apply text-xs text-dark-grey;
 }
 
 .receive-username {
@@ -81,5 +81,5 @@
 }
 
 .need-tokens-button {
-  @apply border-2 border-[#00A1ED] font-medium text-[#00A1ED] py-2 px-6 rounded-lg w-full hover:bg-blue-100 transition duration-300;
+  @apply border-2 border-cyan font-medium text-cyan py-2 px-6 rounded-lg w-full hover:bg-coral hover:border-coral hover:text-white transition duration-300;
 }
