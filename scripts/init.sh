@@ -9,6 +9,7 @@ chmod +x survey.sh
 chmod +x vote.sh
 chmod +x ratify.sh
 chmod +x remove.sh
+chmod +x constants.sh
 
 echo -e "\e[1;34mPermissions set successfully!\e[0m"
 

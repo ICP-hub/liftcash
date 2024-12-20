@@ -1,12 +1,14 @@
 #!/bin/bash
 
+source constants.sh
+
 # Enable environment variable export
 set -a
 source ../.env  # Adjust the relative path to point to the root directory
 set +a
 
 # Number of users to handle dynamically
-NUM_USERS=5
+NUM_USERS=$TOTAL_USERS
 
 # Loop through the users
 for ((i=1; i<=NUM_USERS; i++)); do

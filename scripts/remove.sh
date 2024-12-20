@@ -1,7 +1,8 @@
 #!/bin/bash
 
+source constants.sh
 # Define the ending number for the loop
-ENDING=5
+ENDING=$TOTAL_USERS
 
 # Loop to delete identities
 for ((i = 1; i <= ENDING; i++)) 

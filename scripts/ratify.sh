@@ -1,15 +1,14 @@
 #!/bin/bash
 
+source constants.sh
+
 # Enable environment variable export
 set -a
 source ../.env  # Adjust the relative path to point to the root directory
 set +a
 
 # Number of users to handle dynamically
-NUM_USERS=5
-
-# Define constants
-CANISTER_NAME="Community_Backend"
+NUM_USERS=$TOTAL_USERS
 
 # Loop through the users
 for ((i=1; i<=NUM_USERS; i++)); do
@@ -19,7 +18,7 @@ for ((i=1; i<=NUM_USERS; i++)); do
 
     # Switch to the already created identity
     dfx identity use "$IDENTITY_NAME"
-    echo -e "\e[1;36mTask $j: Original Value = $random_value, Scaled Value = ${scaled_value%%.*}\e[0m"
+    
 
     # Assign random ratification response (true or false)
     if (( RANDOM % 2 == 0 )); then
@@ -30,7 +29,7 @@ for ((i=1; i<=NUM_USERS; i++)); do
 
     # Submit ratification response
     echo -e "\e[1;33mSubmitting ratification response for $IDENTITY_NAME...\e[0m"
-    dfx canister call "$CANISTER_NAME" submit_ratification "($RATIFICATION_RESPONSE)"
+    dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_ratification "($RATIFICATION_RESPONSE)"
     if [ $? -eq 0 ]; then
         echo -e "\e[1;32mRatification response ($RATIFICATION_RESPONSE) submitted successfully for $IDENTITY_NAME!\e[0m"
     else

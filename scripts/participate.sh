@@ -1,12 +1,14 @@
 #!/bin/bash
 
+source constants.sh
+
 # Enable environment variable export
 set -a
 source ../.env  # Adjust the relative path to point to the root directory
 set +a
 
-PHASE_DURATION=60  # Duration of each phase in seconds
-PHASE_DURATION2=120  # Duration of each phase in seconds
+PHASE_DURATION=$VOTE_PHASE_DURATION  # Duration of Vote phase in seconds
+PHASE_DURATION2=$OTHER_PHASE_DURATION  # Duration of other phases in seconds
 SURVEY_SCRIPT="./survey.sh"
 VOTE_SCRIPT="./vote.sh"
 RATIFY_SCRIPT="./ratify.sh"
