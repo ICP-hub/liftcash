@@ -1,5 +1,5 @@
 .vote-main-div {
-  @apply max-w-lg mb-6  mx-auto bg-white rounded-lg  border border-blue-500 shadow-md mt-8 overflow-hidden;
+  @apply max-w-lg mb-6  mx-auto bg-white rounded-lg  border border-primary shadow-md mt-8 overflow-hidden;
 }
 .navigate-to-survey-result {
   @apply p-4 text-blue-400 hover:underline cursor-pointer;
@@ -13,31 +13,31 @@
   @apply py-5 text-2xl  font-bold text-center;
 }
 .vote-sub-title {
-  @apply py-5 text-center bg-blue-200;
+  @apply py-5 text-center bg-light-grey;
 }
 .vote-time-description {
   @apply mb-4;
 }
 .vote-remaining-time {
-  @apply text-lg  py-5 text-center bg-[#00A1ED] font-bold text-white;
+  @apply text-lg  py-5 text-center bg-primary font-bold text-white;
 }
 
 .vote-description {
   @apply px-10 my-4;
 }
 .vote-link {
-  @apply text-blue-600 underline;
+  @apply text-blue-violet underline;
 }
 /* .vote-card-container {
   @apply mb-6 p-5;
 } */
 
 .vote-card-title {
-  @apply px-10 text-lg py-5 font-bold text-white bg-[#00A1ED];
+  @apply px-10 text-lg py-5 font-bold text-white bg-primary;
 }
 
 .vote-card-sub-title {
-  @apply px-10 py-5  bg-[#DAECFA];
+  @apply px-10 py-5  bg-light-grey;
 }
 .vote-card-question {
   @apply px-10 py-5  mt-2  font-semibold;
@@ -82,19 +82,19 @@
 }
 
 .vote-bottom-instruction {
-  @apply bg-[#00A1ED] text-white text-center font-bold py-5;
+  @apply bg-orange-red text-white text-center font-bold py-5;
 }
 
 .vote-btn-div {
   @apply text-center mt-4 mb-4 px-10;
 }
 .vote-btn {
-  @apply py-4 flex justify-center text-xl w-full  bg-[#00A1ED] text-white rounded-md hover:bg-blue-700;
+  @apply py-4 flex justify-center text-xl w-full  bg-coral text-white rounded-md hover:bg-red-400;
 }
 
 .container-survey-time {
-  @apply flex justify-center p-5 text-white bg-[#00A1ED] font-semibold mb-4;
+  @apply flex justify-center p-5 text-white bg-cyan font-semibold mb-4;
 }
 .container-survey-timeleft {
-  @apply ml-2 text-red-600;
+  @apply ml-2 text-orange-red;
 }

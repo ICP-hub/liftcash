@@ -1,9 +1,9 @@
 .claim-assets-container {
-  @apply min-h-screen flex flex-col items-center p-5;
+  @apply min-h-screen  font-sans flex flex-col items-center p-5;
 }
 
 .card-container {
-  @apply mt-6 pt-6 w-full max-w-md mx-auto bg-white rounded-lg border-2 border-[#00A1ED];
+  @apply mt-6 pt-6 w-full max-w-md mx-auto bg-white rounded-lg border-2 border-primary;
 }
 
 .asset-row {
@@ -11,11 +11,11 @@
 }
 
 .asset-label {
-  @apply text-xs text-gray-700;
+  @apply text-xs text-dark-grey;
 }
 
 .asset-amount {
-  @apply text-lg font-bold;
+  @apply text-xl font-bold;
 }
 
 .mint-button-container {
@@ -27,7 +27,7 @@
 }
 
 .enabled-claim-button {
-  @apply absolute -top-[50px] left-[35%] z-10 text-gray-500 bg-[#51C5FB] rounded-full w-[120px] h-[120px] flex flex-col justify-center items-center;
+  @apply absolute -top-[50px] left-[35%] z-10 text-light-grey bg-coral rounded-full w-[120px] h-[120px] flex flex-col justify-center items-center;
 }
 
 /* .enabled-claim-button:hover {
@@ -43,23 +43,23 @@
 }
 
 .claim-box {
-  @apply relative bg-white rounded-xl p-4 border-t-2 border-blue-400;
+  @apply relative bg-white rounded-xl p-4 border-t-2 border-primary;
 }
 
 .locked-section {
-  @apply w-full max-w-md mx-auto mt-6 p-6 pb-8 bg-white rounded-lg border-2 border-[#00A1ED];
+  @apply w-full max-w-md mx-auto mt-6 p-6 pb-8 bg-white rounded-lg border-2 border-primary;
 }
 
 .locked-header {
-  @apply text-[22px] text-gray-900 font-medium;
+  @apply text-xl text-dark-grey font-semibold;
 }
 
 .unlock-info {
-  @apply border-2 border-[#66C7F4] rounded-lg py-3 px-6 text-center mt-6;
+  @apply border-2 text-cyan hover:bg-coral hover:border-coral hover:text-white border-cyan rounded-lg py-3 px-6 text-center mt-6;
 }
 
 .unlock-percentage {
-  @apply text-xl text-[#66C7F4] font-bold;
+  @apply text-xl  font-bold ;
 }
 
 .info-text {

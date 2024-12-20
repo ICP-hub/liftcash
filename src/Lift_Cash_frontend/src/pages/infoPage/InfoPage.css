@@ -39,5 +39,5 @@
 }
 
 info-link {
-  @apply mt-6 bg-primary text-white px-4 py-2 rounded hover:bg-indigo-600;
+  @apply mt-6 text-blue-violet px-4 py-2 rounded hover:bg-indigo-600;
 }
