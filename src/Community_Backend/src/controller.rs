@@ -97,6 +97,8 @@ pub fn submit_survey(answers: HashMap<String, SurveyResponse>) -> Result<(), Str
 pub fn submit_vote(votes: HashMap<String, VoteResponse>) -> Result<(), String> {
     let current_phase = STATE.with(|state| state.borrow().current_phase.clone());
 
+    ic_cdk::println!("hey {:?}",votes);
+
     if current_phase != Phase::Vote {
         return Err("Vote submissions are only allowed during the vote phase.".to_string());
     }
