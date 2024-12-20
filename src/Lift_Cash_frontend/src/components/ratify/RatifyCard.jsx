@@ -18,7 +18,6 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
 
   const [isParticipated, setIsParticipated] = useState(false);
 
-  // const PassValue = propsFormattedTimeLeft;
 
   const fetchUserParticipation = async () => {
     try {

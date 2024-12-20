@@ -22,7 +22,7 @@ export const useAuthClient = () => {
     const authStatus = await client.isAuthenticated();
     const identity = client.getIdentity();
     const principal = identity.getPrincipal();
-    console.log("principal : ", principal);
+    console.log("principal : ", principal.toText());
 
     setAuthClient(client);
     setIsAuthenticated(authStatus);
@@ -56,6 +56,7 @@ export const useAuthClient = () => {
         })
       );
     }
+    localStorage.setItem("userPrincipal", principal);
     return true;
   };
 
@@ -116,3 +117,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+ 
