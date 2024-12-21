@@ -6,6 +6,8 @@ set -a
 source ../.env  # Adjust the relative path to point to the root directory
 set +a
 
+echo $CANISTER_ID_ECONOMY_BACKEND
+
 # Define colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -37,11 +39,22 @@ do
     dfx identity use "$IDENTITY_NAME"
 
     # Call the backend canister to create a user record
-    if dfx canister call "$CANISTER_ID_ECONOMY_BACKEND" create_user_record; then
-        echo -e "${GREEN}User record created for identity: $IDENTITY_NAME${RESET}"
+    if [[ $1 == "ic" ]]; then
+        if dfx canister call "$CANISTER_ID_ECONOMY_BACKEND" create_user_record --network ic; then
+            echo -e "${GREEN}User record created for identity: $IDENTITY_NAME${RESET}"
+        else
+            echo -e "${RED}Error: Failed to create user record for identity: $IDENTITY_NAME${RESET}"
+        fi
     else
-        echo -e "${RED}Error: Failed to create user record for identity: $IDENTITY_NAME${RESET}"
+        if dfx canister call "$CANISTER_ID_ECONOMY_BACKEND" create_user_record; then
+            echo -e "${GREEN}User record created for identity: $IDENTITY_NAME${RESET}"
+        else
+            echo -e "${RED}Error: Failed to create user record for identity: $IDENTITY_NAME${RESET}"
+        fi
     fi
+    
+
+    
 done
 
 # Reset to default identity

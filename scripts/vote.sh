@@ -45,7 +45,12 @@ for ((i=1; i<=NUM_USERS; i++)); do
 
     # Submit the vote records dynamically for each user
     echo -e "\e[1;33mSubmitting vote records for $IDENTITY_NAME...\e[0m"
-    dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_vote "($VOTE_RECORDS)"
+
+    if [[ $1 == "ic" ]]; then
+        dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_vote "($VOTE_RECORDS)" --network ic
+    else
+        dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_vote "($VOTE_RECORDS)"
+    fi
     if [ $? -eq 0 ]; then
         echo -e "\e[1;32mVote records submitted successfully for $IDENTITY_NAME!\e[0m"
     else

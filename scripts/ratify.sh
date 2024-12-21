@@ -29,7 +29,12 @@ for ((i=1; i<=NUM_USERS; i++)); do
 
     # Submit ratification response
     echo -e "\e[1;33mSubmitting ratification response for $IDENTITY_NAME...\e[0m"
-    dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_ratification "($RATIFICATION_RESPONSE)"
+    if [[ $1 == "ic" ]]; then
+        dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_ratification "($RATIFICATION_RESPONSE)" --network ic
+    else
+        dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_ratification "($RATIFICATION_RESPONSE)"
+    fi
+
     if [ $? -eq 0 ]; then
         echo -e "\e[1;32mRatification response ($RATIFICATION_RESPONSE) submitted successfully for $IDENTITY_NAME!\e[0m"
     else

@@ -15,7 +15,15 @@ RATIFY_SCRIPT="./ratify.sh"
 
 # Function to check and handle the current phase
 handle_phase() {
-    phase=$(dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" get_current_phase_info)
+    if [[ $1 == "ic" ]]; then
+        phase=$(dfx canister call $CANISTER_ID_COMMUNITY_BACKEND get_current_phase_info --network ic)
+    else
+        phase=$(dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" get_current_phase_info)
+    fi  
+
+    # Debugging raw output
+    echo "Raw phase output: $phase"
+
     variant_value=$(echo "$phase" | grep -oP '(?<=variant \{ ).*?(?= \})')
     echo -e "\e[1;34mCurrent Phase : \e[0m \e[1;32m$variant_value\e[0m"
 
@@ -23,19 +31,31 @@ handle_phase() {
         ("Survey")
             echo -e "\e[1;34mRunning the $variant_value script...\e[0m"
             sleep 2  # Pause for 2 seconds
-            bash $SURVEY_SCRIPT
+            if [[ $1 == "ic" ]]; then
+                bash $SURVEY_SCRIPT ic
+            else
+                bash $SURVEY_SCRIPT 
+            fi
             sleep $PHASE_DURATION2
             ;;
         ("Vote")
             echo -e "\e[1;34mRunning the $variant_value script...\e[0m"
             sleep 2  # Pause for 2 seconds
-            bash $VOTE_SCRIPT
+            if [[ $1 == "ic" ]]; then
+                bash $VOTE_SCRIPT ic
+            else
+                bash $VOTE_SCRIPT 
+            fi
             sleep $PHASE_DURATION
             ;;
         ("Ratify")
             echo -e "\e[1;34mRunning the $variant_value script...\e[0m"
             sleep 2  # Pause for 2 seconds
-            bash $RATIFY_SCRIPT
+            if [[ $1 == "ic" ]]; then
+                bash $RATIFY_SCRIPT ic
+            else
+                bash $RATIFY_SCRIPT 
+            fi
             sleep $PHASE_DURATION2
             ;;
         (*)

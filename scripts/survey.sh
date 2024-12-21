@@ -38,7 +38,13 @@ for ((i=1; i<=NUM_USERS; i++)); do
 
     # Submit the survey records dynamically for each user
     echo -e "\e[1;33mSubmitting survey records for $IDENTITY_NAME...\e[0m"
-    dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_survey "($SURVEY_RECORDS)"
+    
+    if [[ $1 == "ic" ]]; then
+        dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_survey "($SURVEY_RECORDS)" --network ic
+    else
+        dfx canister call "$CANISTER_ID_COMMUNITY_BACKEND" submit_survey "($SURVEY_RECORDS)"
+    fi
+    
     if [ $? -eq 0 ]; then
         echo -e "\e[1;32mSurvey records submitted successfully for $IDENTITY_NAME!\e[0m"
     else
