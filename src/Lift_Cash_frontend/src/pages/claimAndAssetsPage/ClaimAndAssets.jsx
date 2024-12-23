@@ -145,14 +145,7 @@ const ClaimAndAssets = () => {
             <p className="asset-label">PROMO</p>
             <p className="asset-amount">{userRecord.unlocked_promo}</p>
           </div>
-          {/* <div>
-            <p className="text-xs text-gray-600">Mint</p>
-            <div className="mint-button-container">
-              <Link to={"/mint"}>
-                <RiLoginCircleLine style={{ fontSize: "32px" }} />{" "}
-              </Link>
-            </div>
-          </div> */}
+
           <div>
             <p className="asset-label">LIFT</p>
             <p className="asset-amount">{userRecord.lift_token_balance}</p>
