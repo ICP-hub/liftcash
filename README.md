@@ -53,11 +53,14 @@ Run the following command to deploy the Lift Cash canisters:
 ```bash
 cd scripts 
 
+# give permission to the script
+chmod +x deploy.sh
+
 # To deploy the canisters to the local replica
 ./deploy.sh 
 
 # To deploy the canisters on IC Mainnet
-./deploy.sh ic
+# ./deploy.sh ic
 ```
 
 ### 6. Start the Frontend
@@ -78,11 +81,14 @@ To run the tests for the Lift Cash project, run the following command:
 ```bash 
 cd scripts
 
+# give permission to the script
+chmod +x Test.sh
+
 # To run the tests on the local replica
-./init.sh
+./Test.sh
 
 # To run the tests on the IC Mainnet
-./init.sh ic
+# ./init.sh ic
 ```
 
 This command will initialize the test environment and run the test cases for the Lift Cash project. When the tests are complete, you will see the test results in the terminal.
