@@ -1,5 +1,6 @@
-type Result = variant { Ok : text; Err : text };
-type Result_1 = variant { Ok : float64; Err : text };
+type Result = variant { Ok; Err : text };
+type Result_1 = variant { Ok : text; Err : text };
+type Result_2 = variant { Ok : float64; Err : text };
 type UserRecord = record {
   last_week_reward : float64;
   total_promo : float64;
@@ -10,8 +11,9 @@ type UserRecord = record {
   burn_history : vec float64;
 };
 service : () -> {
+  convert_promo_to_lift : (float64, float64) -> (Result);
   create_user_record : () -> ();
-  distribute_rewards : (float64) -> (Result);
+  distribute_rewards : (float64) -> (Result_1);
   fetch_all_user_records : () -> (vec record { principal; UserRecord }) query;
   fetch_burn_history : () -> (vec float64) query;
   fetch_icp_balance : () -> (float64) query;
@@ -23,6 +25,7 @@ service : () -> {
   fetch_unlocked_promo : () -> (float64) query;
   fetch_user_record : () -> (UserRecord) query;
   init_prize_pool : (opt float64) -> ();
+  mint_lift_tokens : (float64) -> (Result);
   reset_prize_pool : () -> ();
   test_intercall : (text) -> (text);
   update_burn_history : (float64) -> ();
@@ -30,7 +33,7 @@ service : () -> {
   update_last_week_reward : (float64) -> ();
   update_lift_token_balance : (float64) -> ();
   update_locked_promo : (float64) -> ();
-  update_prize_pool_balance : (float64) -> (Result_1);
+  update_prize_pool_balance : (float64) -> (Result_2);
   update_total_promo : (float64) -> ();
   update_unlocked_promo : (float64) -> ();
 }
