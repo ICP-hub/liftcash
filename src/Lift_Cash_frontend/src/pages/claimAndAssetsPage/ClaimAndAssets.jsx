@@ -1,9 +1,7 @@
 import "./ClaimAndAssets.css";
 import DashBoardHead from "../../components/dashboardHead/DashBoardHead";
 import { RiLoginCircleLine } from "react-icons/ri";
-import { CiWarning } from "react-icons/ci";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import bgimg from "../../assets/images/background.svg";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useFormattedTimeLeft from "../../hooks/useFormattedTimeLeft";
@@ -151,32 +149,14 @@ const ClaimAndAssets = () => {
             <p className="asset-amount">{userRecord.lift_token_balance}</p>
           </div>
         </div>
-        {/* <div className="asset-row my-4 py-4">
-          <div>
-            <p className="asset-label">FREEBI</p>
-            <p className="asset-amount">0</p>
-          </div>
-        </div> */}
 
         <div className="claim-box">
-          {/* {formattedTimeLeft === "0 mins" ? ( */}
           <button
             onClick={() => navigate("/mint")}
             className="enabled-claim-button"
           >
             <RiLoginCircleLine style={{ fontSize: "32px" }} />{" "}
-            {/* <span className="claim-text">MINT</span> */}
-            {/* <span className="small-description">Your PROMO</span> */}
           </button>
-          {/* ) : (
-            <button className="disabled-claim-button">
-              <span>
-                <CiWarning style={{ fontSize: "28px", color: "white" }} />
-              </span>
-              <span className="claim-text">CLAIM</span>
-              <span className="small-description">Your PROMO</span>
-            </button>
-          )} */}
 
           <div className="flex justify-between items-center text-center mb-8 mt-4">
             <div className="w-1/2 flex-wrap flex-col items-start flex">
@@ -196,33 +176,33 @@ const ClaimAndAssets = () => {
           <h2 className="locked-header">
             Locked <span>PROMO</span> :
           </h2>
-          <p className="text-xl text-dark-grey font-semibold">
+          <p className="text-xl text-dark-grey font-medium sm:font-semibold">
             {userRecord.locked_promo}
           </p>
         </div>
 
-        <p className="text-xs flex flex-row gap-2">
+        <p className="text-xs ">
           For more info on Locked PROMO{" "}
-          <p
+          <span
             className="text-blue-violet underline"
             onClick={() => window.open("/", "_blank")}
           >
             click here
-          </p>
+          </span>
         </p>
 
         <div className="unlock-info">
           <button className="unlock-percentage">Unlock 0%</button>
         </div>
 
-        <p className="info-text flex flex-row gap-2">
-          Your PROMO cannot be unlocked. For more info{" "}
-          <p
-            className="text-blue-violet underline"
+        <p className="info-text ">
+          Your PROMO cannot be unlocked. For more info{"  "}
+          <span
+            className="text-blue-violet  underline"
             onClick={() => window.open("/claim", "_blank")}
           >
             click here
-          </p>
+          </span>
         </p>
       </div>
     </div>

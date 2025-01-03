@@ -17,7 +17,7 @@
 }
 
 .ratify-result-card-container {
-  @apply bg-[#00A1ED] w-32 h-32 rounded-full flex justify-center items-center ;
+  @apply bg-[#00A1ED] w-32 h-32 rounded-full flex justify-center items-center;
 }
 .ratify-result-card {
   @apply bg-orange-red w-28 h-28  border border-white rounded-full flex  flex-col items-center justify-center;
@@ -28,7 +28,7 @@
 }
 
 .ratify-result-card-last-h1 {
-  @apply pt-5 text-dark-grey pb-5 font-bold text-2xl;
+  @apply pt-5 text-dark-grey pb-5 px-1 font-bold md:text-2xl text-xl;
 }
 
 .vote-remaining-time {

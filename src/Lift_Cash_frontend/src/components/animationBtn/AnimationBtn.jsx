@@ -6,7 +6,7 @@ const AnimationBtn = ({ onToggleAnimation }) => {
 
   const toggleSwitch = () => {
     setIsEnabled(!isEnabled);
-    onToggleAnimation(); // Call parent function to toggle animation
+    onToggleAnimation();
   };
 
   return (
