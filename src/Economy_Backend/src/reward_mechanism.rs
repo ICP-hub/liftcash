@@ -67,14 +67,17 @@ pub async fn distribute_rewards(weekly_issuance_percentage: f64) -> Result<Strin
         // Update user records with new rewards
         update_user_record(*principal, user_reward)?;
     }
-
+    
+    calculate_unlocked_amount().await;
     // // Step 6: Deduct weekly issuance from the pool
     update_prize_pool_balance(-global_reward_distributed).map_err(|err| format!("Failed to update pool: {}", err))?;
+    // calculate_unlocked_amount().await;
 
     Ok(format!("Successfully distributed {:?} tokens to {} users.",global_reward_distributed, total_users))
 }
 
 fn update_user_record(user: Principal, reward: f64) -> Result<(), String> {
+
     // Define locking percentage (can be fetched dynamically)
     let locking_percentage = 50.0;
 
@@ -91,7 +94,7 @@ fn update_user_record(user: Principal, reward: f64) -> Result<(), String> {
 
         // Unlock the remaining rewards
         record.update_unlocked_promo(reward - locked_amount);
-
+        // calculate_unlocked_amount();
         Ok(())
     })
 }
@@ -139,6 +142,81 @@ async fn get_all_claims() -> Result<Vec<(Principal, u8)>, String> {
             code, msg
         )),
     }
+}
+
+
+// #[ic_cdk_macros::update]
+// async fn calculate_unlocked_amount() -> () {
+//     match get_all_claims().await {
+//         Ok(claims) => {
+//             let mut results = Vec::new();
+
+//             for (principal, claim) in claims {
+//                 if matches!(claim, 20 | 80 | 90 | 100) {
+//                     let unlocked_amount = (15.0 / 100.0) * (claim as f64);
+//                     results.push((principal, claim, unlocked_amount));
+//                     if let Err(e) = update_unlocked_record(principal, unlocked_amount) {
+//                         ic_cdk::print(format!("Failed to update record for {}: {}", principal, e));
+//                     }
+//                 }
+//             }
+
+//             for (principal, claim, unlocked_amount) in &results {
+//                 ic_cdk::print(format!(
+//                     "Principal: {}, Claim: {}, Unlocked Amount: {:.2}",
+//                     principal, claim, unlocked_amount
+//                 ));
+//             }
+//         }
+//         Err(e) => {
+//             let error_message = format!("Failed to get claims: {}", e);
+//             ic_cdk::print(&error_message);
+//             Err(error_message)
+//         }
+//     }
+// }
+
+#[ic_cdk_macros::update]
+async fn calculate_unlocked_amount() {
+    ic_cdk::println!("Debug : inside calculate_unlocked_amount");
+    match get_all_claims().await {
+        Ok(claims) => {
+            let mut results = Vec::new();
+
+            for (principal, claim) in claims {
+                if matches!(claim, 20 | 80 | 90 | 100) {
+                    let unlocked_amount = (15.0 / 100.0) * (claim as f64);
+                    results.push((principal, claim, unlocked_amount));
+                    
+                    // Attempt to update the unlocked record
+                    if let Err(e) = update_unlocked_record(principal, unlocked_amount) {
+                        ic_cdk::print(format!("Failed to update record for {}: {}", principal, e));
+                    }
+                }
+            }
+
+            // Log the results
+            for (principal, claim, unlocked_amount) in &results {
+                ic_cdk::print(format!(
+                    "Principal: {}, Claim: {}, Unlocked Amount: {:.2}",
+                    principal, claim, unlocked_amount
+                ));
+            }
+        }
+        Err(e) => {
+            let error_message = format!("Failed to get claims: {}", e);
+            ic_cdk::print(&error_message);
+        }
+    }
+}
+
+
+fn update_unlocked_record(user: Principal, unlocked_amount: f64) -> Result<(), String> {
+    mutate_user_record(user, |record| {
+        record.update_locked_promo(-unlocked_amount);
+        record.update_unlocked_promo(unlocked_amount);
+        Ok(())
+    })
 }
 
 
