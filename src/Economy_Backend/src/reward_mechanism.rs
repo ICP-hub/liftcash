@@ -1,10 +1,10 @@
 use crate::promo_pool::{fetch_prize_pool_balance, update_prize_pool_balance};
-use crate::user_records::with_user_records;
+// use crate::user_records::with_user_records;
 use candid::Principal;
 use ic_cdk::api::call::{call, CallResult};
 use ic_cdk_macros::update;
 use crate :: user_records::mutate_user_record;
-use ic_cdk_macros::query;
+// use ic_cdk_macros::query;
 
 #[update]
 pub async fn distribute_rewards(weekly_issuance_percentage: f64) -> Result<String, String> {

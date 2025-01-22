@@ -25,7 +25,6 @@ service : () -> {
   fetch_user_record : () -> (UserRecord) query;
   init_prize_pool : (opt float64) -> ();
   reset_prize_pool : () -> ();
-  test_intercall : (text) -> (text);
   update_burn_history : (float64) -> ();
   update_icp_balance : (float64) -> ();
   update_last_week_reward : (float64) -> ();
