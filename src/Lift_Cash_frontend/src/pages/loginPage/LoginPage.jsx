@@ -84,25 +84,6 @@ const LoginPage = () => {
         <img src={svg} alt="images" className="login-bottom-img" />
       </div>
 
-      {/* Toggle Switch */}
-      {/* <div className="login-toggle-switch-main">
-        <label className="login-toggle-switch-lable">
-          <div
-            className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer ${
-              isAnimationEnabled ? "bg-[#6cb2eb]" : "bg-gray-300"
-            }`}
-            onClick={handleToggle}
-          >
-            <div
-              className={` login-toggle-animation ${
-                isAnimationEnabled ? "translate-x-6 bg-[#00A1ED]" : "bg-white"
-              }`}
-            />
-          </div>
-          <span className="login-bottom-span">Enable Animation</span>
-        </label>
-      </div> */}
-
       {/* Version Text */}
       <div className="login-version-text">v0.1.0</div>
     </div>

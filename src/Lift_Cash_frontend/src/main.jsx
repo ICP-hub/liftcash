@@ -14,7 +14,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <AuthProvider>
         <BrowserRouter>
-          <ToastContainer />
+          <ToastContainer
+            position="top-right"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            theme="light"
+          />
           <App />
         </BrowserRouter>
       </AuthProvider>

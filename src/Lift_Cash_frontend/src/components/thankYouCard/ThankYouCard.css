@@ -8,7 +8,7 @@
   @apply text-center text-base font-medium pt-2 text-cyan;
 }
 .thank-you-card-h2 {
-  @apply mt-5  w-full pl-10 font-bold text-xl  text-center p-5;
+  @apply mt-5  w-full pl-10 font-bold text-lg  text-center p-5;
 }
 
 .thank-you-card-image-container {
@@ -28,7 +28,7 @@
 }
 
 .thank-you-card-h2-bottom {
-  @apply text-2xl  bg-primary text-white  py-5;
+  @apply text-xl md:text-2xl bg-primary text-white  py-5;
 }
 .thank-you-card-h2-time {
   @apply py-5  font-bold bg-light-grey  text-2xl;
@@ -38,7 +38,7 @@
 }
 
 .thank-you-card-last-h1 {
-  @apply py-5 font-bold text-2xl;
+  @apply py-5 font-bold text-xl md:text-2xl;
 }
 .container-survey-timeleft {
   @apply ml-2 text-orange-red;

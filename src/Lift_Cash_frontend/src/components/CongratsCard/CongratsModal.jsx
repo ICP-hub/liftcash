@@ -1,8 +1,6 @@
 import React from "react";
 
 const CongratsModal = ({ setIsOpen, reward }) => {
-  // if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-blue-400 bg-opacity-50 z-50">
       <div className="relative bg-white rounded-xl shadow-xl p-8 w-[400px] h-[300px] sm:w-[500px] text-center">

@@ -7,7 +7,6 @@ const DashBoardHead = () => {
   return (
     <>
       <div className="claim-assets-logo ">
-        {/* logo */}
         <img src={logo} alt="" />
       </div>
       <div className="claim-assets-tagline">

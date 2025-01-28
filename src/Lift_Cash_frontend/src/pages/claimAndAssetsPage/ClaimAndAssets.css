@@ -51,7 +51,7 @@
 }
 
 .locked-header {
-  @apply text-xl text-dark-grey font-semibold;
+  @apply text-lg sm:text-xl text-dark-grey font-semibold;
 }
 
 .unlock-info {
@@ -63,5 +63,5 @@
 }
 
 .info-text {
-  @apply text-xs mt-3 mb-4 text-gray-800;
+  @apply text-xs mt-3 mb-4  text-gray-800;
 }
