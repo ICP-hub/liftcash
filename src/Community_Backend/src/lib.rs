@@ -20,4 +20,3 @@ lazy_static! {
 }
 
 export_candid!();
-

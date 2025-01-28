@@ -13,6 +13,8 @@ use ic_cdk::{api, call, caller, init, query, update};
 use ic_stable_structures::StableCell;
 use std::collections::BTreeMap;
 use std::collections::HashMap;
+use ic_cdk_timers::set_timer_interval;
+use std::time::Duration;
 
 pub fn read_voting_system<R>(f: impl FnOnce(&VotingSystem) -> R) -> R {
     VOTING_SYSTEM_CELL.with(|cell| {
@@ -53,8 +55,13 @@ pub fn init() {
     STATE.with(|state| {
         let mut state = state.borrow_mut();
         state.current_phase = Phase::Survey;
-        state.phase_start_time = ic_cdk::api::time();
+        if state.phase_start_time == 0 {
+            state.phase_start_time = ic_cdk::api::time();
+        }
+        // state.phase_start_time = ic_cdk::api::time();
     });
+
+    initialize_timer();
 }
 
 // #[update]
@@ -209,11 +216,89 @@ pub fn chck_userparticipation_vote() -> &'static str {
     })
 }
 
-#[ic_cdk_macros::heartbeat]
-pub fn heartbeat() {
+// #[ic_cdk_macros::heartbeat]
+// pub fn heartbeat() {
+//     STATE.with(|state| {
+//         let mut state = state.borrow_mut();
+//         let now = ic_cdk::api::time();
+//         if state.current_phase == Phase::Uninitialized {
+//             start_new_week();
+//             state.current_phase = Phase::Survey;
+//             state.phase_start_time = now;
+//         }
+
+//         let elapsed = now - state.phase_start_time;
+
+//         let phase_duration = match state.current_phase {
+//             Phase::Survey | Phase::Vote | Phase::Ratify => PHASE_DURATION,
+//             Phase::SurveyResults | Phase::RatifyResults => RESULTS_DURATION,
+//             _ => 0,
+//         };
+
+//         // Calculate remaining time for the current phase
+//         let remaining_time = phase_duration - elapsed;
+//         state.remaining_time = remaining_time;
+
+//         match state.current_phase {
+//             Phase::Survey if elapsed >= PHASE_DURATION => {
+//                 mutate_voting_system(|voting_system| {
+//                     let week = voting_system.last_week;
+//                     voting_system.calculate_survey_results(week);
+//                 });
+//                 state.current_phase = Phase::SurveyResults;
+//                 state.phase_start_time = now;
+//             }
+//             Phase::SurveyResults if elapsed >= RESULTS_DURATION => {
+//                 state.current_phase = Phase::Vote;
+//                 state.phase_start_time = now;
+//             }
+//             Phase::Vote if elapsed >= PHASE_DURATION => {
+//                 mutate_voting_system(|voting_system| {
+//                     let week = voting_system.last_week;
+//                     // Calculate and store vote results
+//                     let vote_results = voting_system.calculate_average_votes(week);
+//                     voting_system
+//                         .weekly_vote_results
+//                         .insert(week + 1, vote_results);
+//                 });
+//                 state.current_phase = Phase::Ratify;
+//                 state.phase_start_time = now;
+//             }
+//             Phase::Ratify if elapsed >= PHASE_DURATION => {
+//                 mutate_voting_system(|voting_system| {
+//                     let week = voting_system.last_week;
+//                     voting_system.calculate_ratification_results(week);
+//                 });
+//                 ic_cdk::spawn(async move {
+//                     trigger_reward_mechanism().await;
+//                 });
+//                 state.current_phase = Phase::RatifyResults;
+//                 state.phase_start_time = now;
+//             }
+//             Phase::RatifyResults if elapsed >= RESULTS_DURATION => {
+//                 start_new_week();
+//                 state.current_phase = Phase::Survey;
+//                 state.phase_start_time = now;
+//             }
+//             _ => {}
+//         }
+//     });
+// }
+
+pub fn initialize_timer() {
+    // Set the interval for checking and updating the phases
+    set_timer_interval(Duration::from_secs(30), || {
+        ic_cdk::spawn(async {
+            process_phases().await;
+        });
+    });
+}
+
+async fn process_phases() {
     STATE.with(|state| {
         let mut state = state.borrow_mut();
         let now = ic_cdk::api::time();
+
         if state.current_phase == Phase::Uninitialized {
             start_new_week();
             state.current_phase = Phase::Survey;
@@ -229,8 +314,9 @@ pub fn heartbeat() {
         };
 
         // Calculate remaining time for the current phase
-        let remaining_time = phase_duration - elapsed;
-        state.remaining_time = remaining_time;
+        // let remaining_time = phase_duration - elapsed;
+        // state.remaining_time = remaining_time;
+        state.remaining_time = phase_duration.saturating_sub(elapsed);
 
         match state.current_phase {
             Phase::Survey if elapsed >= PHASE_DURATION => {

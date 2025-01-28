@@ -10,6 +10,7 @@ type UserRecord = record {
   burn_history : vec float64;
 };
 service : () -> {
+  calculate_unlocked_amount : () -> ();
   create_user_record : () -> ();
   distribute_rewards : (float64) -> (Result);
   fetch_all_user_records : () -> (vec record { principal; UserRecord }) query;
