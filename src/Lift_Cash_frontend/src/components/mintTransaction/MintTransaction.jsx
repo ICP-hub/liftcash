@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { balances, mintOptions } from "../../assets/data/MintTransaction";
 import "./MintTransaction.css";
+import requestVerification from "../decideID/DecideID";
+import { Principal } from "@dfinity/principal";
 
 const MintTransaction = () => {
   const [balance, setBalance] = useState("Select");
@@ -18,6 +20,14 @@ const MintTransaction = () => {
       };
       console.log(userInput);
     }
+  };
+
+  // Use this function to test the Decide ID functionality
+  const testDecideID = async () => {
+    // convert the string to a Principal object
+    const verifyPrincipal = "qif2s-5axyb-lyuzi-cyekr-jwzoa-3dn34-g4qia-mqxsp-f3gox-7uqfq-qqe";
+    requestVerification(Principal.fromText(verifyPrincipal));
+    // requestVerification(verifyPrincipal);
   };
 
   return (
@@ -83,9 +93,9 @@ const MintTransaction = () => {
         <div className="mint-transaction-btn-div">
           <button
             className="mint-transaction-submit-btn"
-            onClick={handleSubmit}
+            onClick={testDecideID}
           >
-            Mint LIFT CASH
+            Mint LIFT CASH --as
           </button>
         </div>
       </div>
