@@ -42,3 +42,8 @@ pub enum Phase {
     Ratify,
     RatifyResults,
 }
+
+#[derive(Debug)]
+pub struct VerificationError {
+    message: String,
+}

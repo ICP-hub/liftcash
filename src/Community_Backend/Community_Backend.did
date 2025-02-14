@@ -8,11 +8,17 @@ type Phase = variant {
 };
 type Result = variant { Ok : text; Err : text };
 type Result_1 = variant { Ok; Err : text };
+type Result_2 = variant { Ok : UniquePersonProof; Err : text };
 type SurveyResponse = variant {
   PercentageSlider : nat8;
   MultipleChoice : text;
   Dropdown : vec text;
 };
+type UniquePersonProof = record {
+  provider : UniquePersonProofProvider;
+  timestamp : nat64;
+};
+type UniquePersonProofProvider = variant { DecideAI };
 type VoteResponse = variant { PercentageVote : nat8 };
 service : () -> {
   calculate_total_claim : (principal) -> (opt nat8) query;
@@ -40,5 +46,13 @@ service : () -> {
   submit_survey : (vec record { text; SurveyResponse }) -> (Result_1);
   submit_vote : (vec record { text; VoteResponse }) -> (Result_1);
   trigger_reward_mechanism : () -> ();
+  verify_proof_of_unique_personhood : (
+      principal,
+      principal,
+      principal,
+      text,
+      blob,
+      nat64,
+    ) -> (Result_2);
   whoiam : () -> (principal) query;
 }

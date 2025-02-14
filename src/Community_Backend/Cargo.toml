@@ -21,3 +21,5 @@ sha2 = "0.9"
 lazy_static = "1.4.0"
 futures = "0.3.31"
 kaires = { git = "https://github.com/wantedbear007/kaires", rev = "f9e6ce3c67be26d1fed8f5a84a71eaec0ecf97e1" }
+ic-verifiable-credentials = "1.0.1"
+getrandom = { version = "0.2.15", default-features = false, features = ["custom"] }

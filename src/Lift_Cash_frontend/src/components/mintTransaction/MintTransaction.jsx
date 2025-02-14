@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { balances, mintOptions } from "../../assets/data/MintTransaction";
 import "./MintTransaction.css";
-import requestVerification from "../decideID/DecideID";
+// import getUserPrincipal from "../decideID/DecideID";
+import { requestVerification  } from "../decideID/DecideID";
+// import  {TestBackendComponent} from "../decideID/DecideID";
 import { Principal } from "@dfinity/principal";
+import { useSelector } from "react-redux";
+import { useAuthClient } from "../../utils/useAuthClient";
+
+const useCommunityActor = () => {
+  return useSelector((state) => state?.actors?.actors?.communityActor);
+};
 
 const MintTransaction = () => {
   const [balance, setBalance] = useState("Select");
   const [amount, setAmount] = useState(0);
   const [mintFee, setMintFee] = useState("Select");
+
+  const communityActor = useCommunityActor();
+  const [principalText,setPrincipalText]=useState();
 
   const handleSubmit = () => {
     if (balance === "Select" || amount <= 0 || mintFee === "Select") {
@@ -22,13 +33,30 @@ const MintTransaction = () => {
     }
   };
 
+  const { principal } = useAuthClient();
+  useEffect(() => {
+    if (principal) {
+      const principalText = principal.toText();
+      setPrincipalText(principalText);
+      console.log("principal =>", principalText);
+    } else {
+      console.log("Principal is not available yet.");
+    }
+  }, [principal]);
+
   // Use this function to test the Decide ID functionality
-  const testDecideID = async () => {
-    // convert the string to a Principal object
-    const verifyPrincipal = "qif2s-5axyb-lyuzi-cyekr-jwzoa-3dn34-g4qia-mqxsp-f3gox-7uqfq-qqe";
-    requestVerification(Principal.fromText(verifyPrincipal));
-    // requestVerification(verifyPrincipal);
-  };
+  // const testDecideID = async () => {
+  //   // convert the string to a Principal object
+  //   const verifyPrincipal ="6yj63-v3br4-nfizx-fpw6t-4gq2r-rlxyd-2r3bx-vypil-exu46-tlv7a-yqe";
+  //   requestVerification(Principal.fromText(verifyPrincipal));
+  //   // requestVerification(verifyPrincipal);
+  // };
+
+  const testDecideID = async () => {    
+    await requestVerification(Principal.fromText('6zhab-muyfi-4dfm7-fpf5q-gva6j-d7x5c-74dvp-2oimy-5n6qi-osyf3-mqe'),communityActor,principalText);
+  };  
+
+  
 
   return (
     <div className="mint-transaction-main-div">
