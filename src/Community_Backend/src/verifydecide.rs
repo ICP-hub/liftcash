@@ -70,7 +70,7 @@ pub type CanisterId = Principal;
 
 #[derive(CandidType, Serialize, Deserialize, Clone, Debug)]
 pub struct UniquePersonProof {
-    pub timestamp: TimestampMillis,~
+    pub timestamp: TimestampMillis,
     pub provider: UniquePersonProofProvider,
 }
 

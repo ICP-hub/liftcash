@@ -30,6 +30,7 @@ import { HttpAgent } from '@dfinity/agent';
 //   return userPrincipal;
 // };
 
+
 // let internet_identity_canister_id = CanisterId::from_text("4agml-qgeiw-cd6gc-bafgz-nybm6-a3ewj-7z2kl-sam4k-i2cny-hb67w-bae").unwrap();
 export const requestVerification = async (verifyPrincipal,communityActor,principalText) => {
 // const [principal,setPrincipal]=useState(null);
@@ -84,7 +85,8 @@ const now =time;
       });
     });
     console.log("communityActor",communityActor);
-    await communityActor.verify_proof_of_unique_personhood(Principal.fromText(principalText),internet_identity_canister_id,website_canister_id,jwt,rootKey,now);
+    await communityActor.verify_proof_of_unique_personhood(verifyPrincipal,internet_identity_canister_id,website_canister_id,jwt,rootKey,now);
+    // Principal.fromText(principalText)
   } catch (error) {
     console.error("Verification failed:", error);
     throw error;
