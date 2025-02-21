@@ -21,5 +21,10 @@ ic_principal="0.1.1"
 sha2 = "0.9"
 ic-stable-structures = "0.6.5"
 lazy_static = "1.4.0"
+<<<<<<< HEAD
 decode = "0.0.0"
 rust_decimal = "1.26"
+=======
+rust_decimal = "1.26"
+icrc-ledger-types = "0.1.8"
+>>>>>>> 9486168 ((Backend and Integration: added token tranfer function and integrated with mint transction))

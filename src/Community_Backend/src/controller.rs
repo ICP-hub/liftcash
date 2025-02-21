@@ -287,7 +287,7 @@ pub fn chck_userparticipation_vote() -> &'static str {
 
 pub fn initialize_timer() {
     // Set the interval for checking and updating the phases
-    set_timer_interval(Duration::from_secs(30), || {
+    set_timer_interval(Duration::from_secs(20), || {
         ic_cdk::spawn(async {
             process_phases().await;
         });

@@ -1,9 +1,11 @@
 use crate::promo_pool::{fetch_prize_pool_balance, update_prize_pool_balance};
 // use crate::user_records::with_user_records;
-use candid::Principal;
+use candid::{Nat,Principal};
 use ic_cdk::api::call::{call, CallResult};
 use ic_cdk_macros::update;
 use crate :: user_records::mutate_user_record;
+use crate::tokentransfer::transfer_amount;
+
 // use ic_cdk_macros::query;
 
 #[update]
@@ -224,4 +226,51 @@ fn update_unlocked_record(user: Principal, unlocked_amount: f64) -> Result<(), S
 pub async fn test_intercall(input : String) -> String{
     ic_cdk::println!("Inter canister call made to RMech: {:?}", input);
     input
-} 
+}
+
+
+// #[update]
+// pub async fn check() {
+//     let principal_str = "jy7kn-p4wmz-jec7j-tf3tv-fhesw-q7zko-tqnol-wcmgu-iksuy-6h2hg-iqe";
+//     let recipient = Principal::from_text(principal_str).unwrap();
+//     let amount = 1_000_000;  // Dummy token amount
+//     let response = transfer_amount(amount, recipient).await;
+//     ic_cdk::println!("Transfer Response: {:?}", response);
+// }
+
+// #[update]
+// pub async fn mint_token(principal_str: String, amount: u64) {
+//     match Principal::from_text(&principal_str) {
+//         Ok(recipient) => {
+//             let response = transfer_amount(amount, recipient).await;
+//             println!("Transfer Response: {:?}", response);
+//         }
+//         Err(e) => {
+//             println!("Invalid principal: {:?}", e);
+//         }
+//     }
+// }
+#[update]
+pub async fn mint_token(principal_str: String, amount: u64) -> Result<Nat, String> {
+    match Principal::from_text(&principal_str) {
+        Ok(recipient) => {
+            // Now handling the response and returning it
+            let response = transfer_amount(amount, recipient).await;
+            match response {
+                Ok(transaction_id) => {
+                    println!("Transfer Successful: Transaction ID: {:?}", transaction_id);
+                    Ok(transaction_id)
+                },
+                Err(e) => {
+                    println!("Transfer failed: {:?}", e);
+                    Err(e)
+                }
+            }
+        },
+        Err(e) => {
+            let error_msg = format!("Invalid principal: {:?}", e);
+            println!("{:?}", error_msg);
+            Err(error_msg)
+        }
+    }
+}
