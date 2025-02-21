@@ -5,6 +5,9 @@ use ic_cdk::api::call::{call, CallResult};
 use ic_cdk_macros::update;
 use crate :: user_records::mutate_user_record;
 // use ic_cdk_macros::query;
+use crate::tokentransfer::transfer_amount;
+use candid::Nat;
+
 
 #[update]
 pub async fn distribute_rewards(weekly_issuance_percentage: f64) -> Result<String, String> {
@@ -225,3 +228,28 @@ pub async fn test_intercall(input : String) -> String{
     ic_cdk::println!("Inter canister call made to RMech: {:?}", input);
     input
 } 
+
+#[update]
+pub async fn mint_token(principal_str: String, amount: u64) -> Result<Nat, String> {
+    match Principal::from_text(&principal_str) {
+        Ok(recipient) => {
+            // Now handling the response and returning it
+            let response = transfer_amount(amount, recipient).await;
+            match response {
+                Ok(transaction_id) => {
+                    println!("Transfer Successful: Transaction ID: {:?}", transaction_id);
+                    Ok(transaction_id)
+                },
+                Err(e) => {
+                    println!("Transfer failed: {:?}", e);
+                    Err(e)
+                }
+            }
+        },
+        Err(e) => {
+            let error_msg = format!("Invalid principal: {:?}", e);
+            println!("{:?}", error_msg);
+            Err(error_msg)
+        }
+    }
+}

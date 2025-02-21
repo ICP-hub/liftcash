@@ -515,6 +515,11 @@ pub fn get_all_claim_percentages() -> Vec<(Principal, u8)> {
 }
 
 #[query]
+pub fn get_data() -> (){
+    ic_cdk::println!("Weekly issuance percentage");
+}
+
+#[query]
 pub fn get_week_count() -> u64 {
     let weekly_vote_result = get_weekly_vote_results();
     let sorted_data = sort_records(weekly_vote_result);

@@ -6,6 +6,9 @@ use promo_pool::init_prize_pool;
 mod user_records;
 use crate::user_records::*;
 mod reward_mechanism;
+mod tokentransfer;
+// use crate::tokentransfer::*;
+use candid::Nat;
 
 #[init]
 fn init() {
