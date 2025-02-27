@@ -21,7 +21,7 @@
   @apply flex justify-between items-center px-2;
 }
 .mint-transaction-lable-span {
-  @apply text-dark-grey font-normal text-[11px] bg-transparent;
+  @apply text-dark-grey font-normal text-[11px] line-clamp-1 break-all bg-transparent;
 }
 .mint-transaction-hr {
   @apply my-4 border-[#9A9A9A];

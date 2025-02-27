@@ -10,14 +10,11 @@ const Loading = () => {
           height="120"
           width="120"
           color="#00A1ED"
-            // secondaryColor="#4fa94d"
+          // secondaryColor="#4fa94d"
           radius="20"
           ariaLabel="mutating-dots-loading"
-          //   wrapperStyle={{}}
-          //   wrapperClass=""
         />
       </div>
-      {/* <div className="text-xl font-semibold -ml-5">Loading...</div> */}
     </div>
   );
 };

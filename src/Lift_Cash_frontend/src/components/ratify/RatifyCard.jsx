@@ -18,7 +18,6 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
 
   const [isParticipated, setIsParticipated] = useState(false);
 
-
   const fetchUserParticipation = async () => {
     try {
       await communityActor
@@ -38,10 +37,6 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
       console.log("somethig wrong with the user participation", err);
     }
   };
-
-  // useEffect(() => {
-  //   fetchUserParticipation();
-  // }, []);
 
   useEffect(() => {
     console.log("Formated time in Ratify Card ::: ", formattedTimeLeft);
@@ -194,12 +189,8 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
                 {index === 3
                   ? `${Number(weeklyVoteResult[index]).toFixed(4)} USD`
                   : `${weeklyVoteResult[index]} %`}{" "}
-                {/* {weeklyVoteResult[index]}% */}
               </span>
             </p>
-            {/* <span className="ratify-indicator">
-          <FaArrowDown />
-        </span> */}
           </div>
           <div className="ratify-vote-lable-odd">
             <p className="">
@@ -260,8 +251,6 @@ const RatifyCard = ({ timeLeft, onSubmit, onTimeUp }) => {
           </p>
         </div>
       )}
-
-      {/* <p className="ratify-note">{voteData.important_note.text}</p> */}
     </div>
   );
 };
