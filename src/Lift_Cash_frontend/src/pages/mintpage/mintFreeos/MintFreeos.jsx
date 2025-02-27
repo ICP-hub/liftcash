@@ -7,6 +7,7 @@ const MintFreeos = () => {
   const [userRecord, setUserRecord] = useState({
     total_promo: 0.0,
     lift_token_balance: 0.0,
+    icp_balance:0.0
   });
 
   const economyActor = useSelector(
@@ -26,7 +27,7 @@ const MintFreeos = () => {
   useEffect(() => {
     console.log("economyActor in transfer page:", economyActor);
     fetchUserRecords();
-  }, [economyActor]);
+  }, [economyActor,userRecord]);
 
   return (
     <div>
@@ -49,15 +50,15 @@ const MintFreeos = () => {
         <h2 className="balance-heading">Your Current balances:</h2>
         <div className="balance-grid">
           <div className="balance-card">
-            <p className="balance-text">{userRecord.total_promo} </p>
-            <p>POROMO</p>
+            <p className="balance-text">{userRecord.unlocked_promo} </p>
+            <p>PROMO</p>
           </div>
           <div className="balance-card">
             <p className="balance-text">{userRecord.lift_token_balance} </p>
             <p>LIFT</p>
           </div>
           <div className="balance-card   ">
-            <p className="balance-text">{userRecord.total_icp || 0} </p>
+            <p className="balance-text">{userRecord.icp_balance || 0} </p>
             <p>ICP</p>
           </div>
           {/* <div className="balance-card   ">

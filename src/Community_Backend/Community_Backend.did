@@ -21,6 +21,7 @@ service : () -> {
   get_all_users : () -> (vec record { principal; text });
   get_average_votes : () -> (vec record { text; VoteResponse }) query;
   get_current_phase_info : () -> (Phase, nat64) query;
+  get_data : () -> () query;
   get_ratification_results : () -> (vec record { text; nat64 }) query;
   get_survey_results : () -> (vec record { text; text }) query;
   get_user : () -> (opt record { principal; text });

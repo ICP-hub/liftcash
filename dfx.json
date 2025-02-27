@@ -1,8 +1,14 @@
 {
   "canisters": {
-    "internet_identity": {
-      "type": "pull",
-      "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+    "Community_Backend": {
+      "candid": "src/Community_Backend/Community_Backend.did",
+      "package": "Community_Backend",
+      "type": "rust"
+    },
+    "Economy_Backend": {
+      "candid": "src/Economy_Backend/Economy_Backend.did",
+      "package": "Economy_Backend",
+      "type": "rust"
     },
     "Lift_Cash_frontend": {
       "dependencies": [
@@ -14,15 +20,9 @@
       "type": "assets",
       "workspace": "Lift_Cash_frontend"
     },
-    "Community_Backend": {
-      "candid": "src/Community_Backend/Community_Backend.did",
-      "package": "Community_Backend",
-      "type": "rust"
-    },
-    "Economy_Backend": {
-      "candid": "src/Economy_Backend/Economy_Backend.did",
-      "package": "Economy_Backend",
-      "type": "rust"
+    "internet_identity": {
+      "id": "rdmx6-jaaaa-aaaaa-aaadq-cai",
+      "type": "pull"
     }
   },
   "defaults": {

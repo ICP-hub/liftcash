@@ -287,7 +287,7 @@ pub fn chck_userparticipation_vote() -> &'static str {
 
 pub fn initialize_timer() {
     // Set the interval for checking and updating the phases
-    set_timer_interval(Duration::from_secs(30), || {
+    set_timer_interval(Duration::from_secs(20), || {
         ic_cdk::spawn(async {
             process_phases().await;
         });
@@ -512,6 +512,11 @@ pub fn whoiam() -> Principal {
 #[update]
 pub fn get_all_claim_percentages() -> Vec<(Principal, u8)> {
     read_voting_system(|voting_system| voting_system.get_all_claim_percentages())
+}
+
+#[query]
+pub fn get_data() -> (){
+    ic_cdk::println!("Weekly issuance percentage");
 }
 
 #[query]
