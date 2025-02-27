@@ -27,7 +27,7 @@ const MintFreeos = () => {
   useEffect(() => {
     console.log("economyActor in transfer page:", economyActor);
     fetchUserRecords();
-  }, [economyActor,userRecord]);
+  }, [economyActor]);
 
   return (
     <div>

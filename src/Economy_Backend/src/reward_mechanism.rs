@@ -98,6 +98,10 @@ fn update_user_record(user: Principal, reward: f64) -> Result<(), String> {
         // Unlock the remaining rewards
         record.update_unlocked_promo(reward - locked_amount);
         // calculate_unlocked_amount();
+
+        // update_last_week_reward
+        record.update_last_week_reward(reward);
+
         Ok(())
     })
 }
