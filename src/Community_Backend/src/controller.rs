@@ -189,9 +189,22 @@ pub fn get_weekly_vote_results() -> HashMap<u64, HashMap<String, VoteResponse>> 
         let mut results = HashMap::new();
         let mut weeks: Vec<u64> = voting_system.weekly_vote_results.keys().cloned().collect();
         weeks.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
-        for week in weeks.iter().take(4) {
+        // for week in weeks.iter().take(4) {
+        //     if let Some(week_results) = voting_system.weekly_vote_results.get(week) {
+        //         results.insert(*week, week_results.clone());
+        //     }
+        // }
+        // results
+        for (i, week) in weeks.iter().enumerate().take(4) { // Process only the four most recent weeks
             if let Some(week_results) = voting_system.weekly_vote_results.get(week) {
-                results.insert(*week, week_results.clone());
+                if !week_results.is_empty() {
+                    results.insert(*week, week_results.clone());
+                } else if i > 0 { // Check if it's not the first week in the list
+                    // Get the previous week's results if current week's results are empty
+                    if let Some(prev_week_results) = results.get(&weeks[i - 1]) {
+                        results.insert(*week, prev_week_results.clone());
+                    }
+                }
             }
         }
         results

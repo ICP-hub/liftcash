@@ -8,4 +8,4 @@ pub const ANONYMOUS_USER:&str = "Anonymous users are not allowed for this call";
 pub const PHASE_DURATION: u64 = 4 * 60 * 1_000_000_000;
 // 2 * 24 * 60 * 60 * 1_000_000_000; // 2 days in nanoseconds
 pub const RESULTS_DURATION: u64 = 2 * 60 * 1_000_000_000;
-// 8 * 60 * 60 * 1_000_000_000;
+// 8 * 60 * 60 * 1_000_000_000;~
