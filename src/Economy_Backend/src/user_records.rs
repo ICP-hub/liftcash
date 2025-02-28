@@ -36,15 +36,17 @@ impl UserRecord {
     }
 
     pub fn update_total_promo(&mut self, amount: f64) {
-        self.total_promo += amount;
+        // self.total_promo += amount;
+        self.total_promo = round_to_five_decimals(self.total_promo + amount);
     }
 
     pub fn update_locked_promo(&mut self, amount: f64) {
-        self.locked_promo += amount;
+        // self.locked_promo += amount;
+        self.locked_promo = round_to_five_decimals(self.locked_promo + amount);
     }
 
     pub fn update_unlocked_promo(&mut self, amount: f64) {
-        self.unlocked_promo += amount;
+        self.unlocked_promo = round_to_five_decimals(self.unlocked_promo + amount);
     }
 
     pub fn update_burn_history(&mut self, amount: f64) {
@@ -52,15 +54,15 @@ impl UserRecord {
     }
 
     pub fn update_lift_token_balance(&mut self, amount: f64) {
-        self.lift_token_balance += amount;
+        self.lift_token_balance = round_to_five_decimals(self.lift_token_balance + amount);
     }
 
     pub fn update_last_week_reward(&mut self, amount: f64) {
-        self.last_week_reward = amount;
+        self.last_week_reward = round_to_five_decimals(amount);
     }
 
     pub fn update_icp_balance(&mut self, amount: f64) {
-        self.icp_balance = amount;
+        self.icp_balance = round_to_five_decimals(self.icp_balance + amount);
     }
 
     pub fn fetch_total_promo(&self) -> f64 {
@@ -303,3 +305,6 @@ pub fn fetch_all_user_records() -> Vec<(Principal, UserRecord)> {
     })
 }
 
+pub fn round_to_five_decimals(num: f64) -> f64 {
+    (num * 100000.0).round() / 100000.0
+}
